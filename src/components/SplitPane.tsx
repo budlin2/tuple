@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './SplitPane.css'
 
 type Direction = 'horizontal' | 'vertical' | 'none';
@@ -17,12 +17,16 @@ const SplitPane = ({
     size = '50%',
     resizable = true,
 }: Props) => {
+    let [rootLength, setRootLength] = useState(0)
     const rootRef = useRef(null);
     const firstRef = useRef(null);
     const secondRef = useRef(null);
-    const [lengths, setLengths] = useState({first: '50%', second: '50%'});
-
+    const [length, setLength] = useState<number | string>('50%');
     let [resizing, setResizing] = useState<Boolean>(false);
+
+    useEffect(() => {
+        setRootLength(rootRef.current.clientWidth + 32);
+    }, [rootLength, rootRef, setRootLength]);
 
     const handleMouseDown = (e: MouseEvent) => {
         e.preventDefault();
@@ -36,9 +40,8 @@ const SplitPane = ({
         console.log(rootRef)
 
         const offset = e.clientX;
-        const rightWidth = rootRef.current.clientWidth - offset;
 
-        setLengths({ first: offset, second: rightWidth + 32}); // why 32? idk
+        setLength(offset); // why 32? idk
     };
 
     const handleMouseUp = (e: MouseEvent) => {
@@ -46,17 +49,35 @@ const SplitPane = ({
         setResizing(false);
     }
 
+    // window.addEventListener('resize', () => {
+    //    // handle potential window resizing issues...
+    //     const length1 = firstRef?.current?.clientWidth;
+    //     const length2 = secondRef?.current?.clientWidth;
+    //     const totalLength = rootRef?.current?.clientWidth;
+    //     if (length1 && length2 && totalLength && length1 + length2 != totalLength) {
+    //         console.log(length1);
+    //         console.log(totalLength);
+    //         setLengths({
+    //             first: length1, 
+    //             second: totalLength - length2
+    //         });
+    //     }
+    // });
+
     return (
         <div
-            id="root"
             ref={rootRef}
             style={styles.root}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}>
-            <section style={{ ...styles.first, width: lengths.first }}>
+            <div
+                ref={firstRef}
+                style={{ ...styles.first, width: length }}>
                 <div style={styles.dragbar} onMouseDown={handleMouseDown}></div>
-            </section>
-            <div style={{ ...styles.second, width: lengths.second }}>
+            </div>
+            <div
+                ref={secondRef}
+                style={{ ...styles.second, width: rootLength - length }}>
             </div>
         </div>
     )
