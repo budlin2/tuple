@@ -1,120 +1,152 @@
-import { useState, useRef, useEffect } from 'react';
-import './SplitPane.css'
+import {useState, useRef, MouseEvent, Component} from 'react'
+
 
 type Direction = 'horizontal' | 'vertical' | 'none';
 
 
 interface Props {
     dir: Direction,
-    size: number | string,
+    width: number | string,
+    height: number | string,
+    initialLength: number | string,
     resizable: boolean,
     onResize?: (e: Event) => null,
+    child1: Component,
+    child2: Component,
 }
 
 
-const SplitPane = ({
+const SplitPane2 = ({
     dir = 'horizontal',
-    size = '50%',
+    width = '100%',
+    height = '16rem',
+    initialLength = '50%',
     resizable = true,
+    child1,
+    child2,
 }: Props) => {
-    let [rootLength, setRootLength] = useState(0)
-    const rootRef = useRef(null);
-    const firstRef = useRef(null);
+    // Query the element
+    const containerRef = useRef<any>(null);
+    const firstRef = useRef<any>(null);
+    const resizerRef = useRef(null);
     const secondRef = useRef(null);
-    const [length, setLength] = useState<number | string>('50%');
-    let [resizing, setResizing] = useState<Boolean>(false);
 
-    useEffect(() => {
-        setRootLength(rootRef.current.clientWidth + 32);
-    }, [rootLength, rootRef, setRootLength]);
+    const [resizing, setResizing] = useState(false);
+    const [firstLength, setFirstLength] = useState<number | string>(initialLength);
+    const [mousePos, setMousePos] = useState<number>(0);
 
-    const handleMouseDown = (e: MouseEvent) => {
-        e.preventDefault();
-        setResizing(true);
+    const mouseDownHandler = (e: MouseEvent) => {
+        if (dir === 'horizontal') {
+            setResizing(true);
+            setMousePos(e.clientX);
+            setFirstLength(firstRef.current.clientWidth);
+        } else if (dir === 'vertical') {
+            setResizing(true);
+            setMousePos(e.clientY);
+            setFirstLength(firstRef.current.clientHeight);
+        }
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const mouseMoveHandler = (e: MouseEvent): void => {
         if (!resizing) return;
 
-        console.log(e.clientX)
-        console.log(rootRef)
-
-        const offset = e.clientX;
-
-        setLength(offset); // why 32? idk
+        if (dir === 'horizontal') {
+            const dx = e.clientX - mousePos;
+            const newFirstLength = typeof(firstLength) === 'number'
+                && ((firstLength + dx) * 100) / containerRef.current.clientWidth;
+            firstRef.current.style.width = `${newFirstLength}%`;
+        } else if (dir === 'vertical') {
+            const dy = e.clientY - mousePos;
+            const newFirstLength = typeof(firstLength) === 'number'
+                && ((firstLength + dy) * 100) / containerRef.current.clientHeight;
+            firstRef.current.style.height = `${newFirstLength}%`;
+        }
     };
 
-    const handleMouseUp = (e: MouseEvent) => {
-        e.preventDefault();
+    const mouseUpHandler = (e: MouseEvent) => {
         setResizing(false);
-    }
+    };
 
-    // window.addEventListener('resize', () => {
-    //    // handle potential window resizing issues...
-    //     const length1 = firstRef?.current?.clientWidth;
-    //     const length2 = secondRef?.current?.clientWidth;
-    //     const totalLength = rootRef?.current?.clientWidth;
-    //     if (length1 && length2 && totalLength && length1 + length2 != totalLength) {
-    //         console.log(length1);
-    //         console.log(totalLength);
-    //         setLengths({
-    //             first: length1, 
-    //             second: totalLength - length2
-    //         });
-    //     }
-    // });
-
+    const containerStyle = dir === 'horizontal'
+        ? styles.containerHorizontal
+        : styles.containerVertical;
+    const leftStyle = dir === 'horizontal'
+        ? { ...styles.left, width: firstLength }
+        : { ...styles.top, height: firstLength }
+    const resizerStyle = dir === 'horizontal'
+        ? styles.resizerHorizontal
+        : styles.resizerVertical;
+    const rightStyle = dir === 'horizontal'
+        ? styles.right
+        : styles.bottom;
+    
     return (
         <div
-            ref={rootRef}
-            style={styles.root}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}>
-            <div
-                ref={firstRef}
-                style={{ ...styles.first, width: length }}>
-                <div style={styles.dragbar} onMouseDown={handleMouseDown}></div>
+            ref={containerRef}
+            style={{...containerStyle, width, height}}
+            onMouseMove={mouseMoveHandler}
+            onMouseUp={mouseUpHandler}>
+            <div ref={firstRef} style={leftStyle}>
+                Left
             </div>
-            <div
-                ref={secondRef}
-                style={{ ...styles.second, width: rootLength - length }}>
+            <div ref={resizerRef}
+                style={resizerStyle}
+                onMouseDown={mouseDownHandler} />
+            <div ref={secondRef} style={rightStyle}>
+                Right
             </div>
         </div>
-    )
+    );
 }
 
 
 const styles = {
-    root: {
-        width: '100%',
-        height: '100%',
+    containerHorizontal: {
+        display: "flex",
+        border: "1px solid #cbd5e0",
+        height: "16rem",
+        width: "100%"
     },
-    first: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        height: '100%',
+    resizerHorizontal: {
+        backgroundColor: "#cbd5e0",
+        cursor: "w-resize",
+        height: "100%",
+        width: "2px",
+        // opacity: 0
+    },
+    left: {
         background: 'red',
-    },
-    second: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
         height: '100%',
+    },
+    right: {
+        flex: 1,
         background: 'yellow',
-    },
-    dragbar: {
-        top: 0,
-        right: '-4px',
-        width: '8px',
         height: '100%',
-        position: 'absolute',
-        opacity: 0,
-        cursor: 'w-resize',
-        transition: '0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s',
-        zIndex: 1,
     },
+    containerVertical: {
+        display: "flex",
+        flexDirection: 'column',
+        border: "1px solid #cbd5e0",
+        height: "100%",
+        width: "100%"
+    },
+    resizerVertical: {
+        backgroundColor: "#cbd5e0",
+        cursor: "n-resize",
+        height: "2px",
+        width: "100%",
+        // opacity: 0
+    },
+    top: {
+        background: 'red',
+        width: '100%',
+    },
+    bottom: {
+        flex: 1,
+        background: 'yellow',
+        width: '100%',
+    }
 };
 
 
-export default SplitPane;
+export default SplitPane2;

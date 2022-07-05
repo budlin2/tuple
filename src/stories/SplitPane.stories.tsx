@@ -1,4 +1,3 @@
-import { any } from 'prop-types';
 import SplitPane from '../components/SplitPane';
 
 export default {
@@ -8,10 +7,17 @@ export default {
 
 const Template = (args: any) => <SplitPane {...args} />;
 
-export const Basic = Template.bind({});
-Basic.args = {
+export const Horizontal = Template.bind({});
+Horizontal.args = {
     dir: 'horizontal',
-    size: '50%',
+    firstLength: '50%',
     resizable: true,
 };
 
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    dir: 'vertical',
+    firstLength: '50%',
+    resizable: true,
+};
