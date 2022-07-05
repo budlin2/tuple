@@ -88,10 +88,10 @@ const SplitPane2 = ({
             onMouseUp={mouseUpHandler}>
             <div ref={firstRef} style={leftStyle}>
                 Left
+                <div ref={resizerRef}
+                    style={resizerStyle}
+                    onMouseDown={mouseDownHandler} />
             </div>
-            <div ref={resizerRef}
-                style={resizerStyle}
-                onMouseDown={mouseDownHandler} />
             <div ref={secondRef} style={rightStyle}>
                 Right
             </div>
@@ -101,28 +101,34 @@ const SplitPane2 = ({
 
 
 const styles = {
+    // Horizontal
     containerHorizontal: {
         display: "flex",
         border: "1px solid #cbd5e0",
         height: "16rem",
         width: "100%"
     },
-    resizerHorizontal: {
-        backgroundColor: "#cbd5e0",
-        cursor: "w-resize",
-        height: "100%",
-        width: "2px",
-        // opacity: 0
-    },
     left: {
         background: 'red',
         height: '100%',
+        position: 'relative',
     },
     right: {
         flex: 1,
         background: 'yellow',
         height: '100%',
     },
+    resizerHorizontal: {
+        position: 'absolute',
+        top: 0,
+        right: '-4px',
+        width: "8px",
+        cursor: "w-resize",
+        height: "100%",
+        opacity: 0
+    },
+
+    // VERTICAL
     containerVertical: {
         display: "flex",
         flexDirection: 'column',
@@ -130,22 +136,25 @@ const styles = {
         height: "100%",
         width: "100%"
     },
-    resizerVertical: {
-        backgroundColor: "#cbd5e0",
-        cursor: "n-resize",
-        height: "2px",
-        width: "100%",
-        // opacity: 0
-    },
     top: {
         background: 'red',
         width: '100%',
+        position: 'relative',
     },
     bottom: {
         flex: 1,
         background: 'yellow',
         width: '100%',
-    }
+    },
+    resizerVertical: {
+        position: 'absolute',
+        left: 0,
+        bottom: '-4px',
+        height: '8px',
+        cursor: "n-resize",
+        width: "100%",
+        opacity: 0,
+    },
 };
 
 
