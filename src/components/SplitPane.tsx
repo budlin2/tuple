@@ -1,3 +1,4 @@
+import { assert } from 'console';
 import {useState, useRef, MouseEvent, Component} from 'react'
 
 
@@ -16,16 +17,18 @@ interface Props {
 }
 
 
-const SplitPane2 = ({
+const SplitPane = ({
     dir = 'horizontal',
     width = '100%',
     height = '16rem',
     initialLength = '50%',
     resizable = true,
-    child1,
-    child2,
+    onResize=null,
+    children
 }: Props) => {
-    // Query the element
+    assert()
+
+
     const containerRef = useRef<any>(null);
     const firstRef = useRef<any>(null);
     const resizerRef = useRef(null);
@@ -61,6 +64,10 @@ const SplitPane2 = ({
                 && ((firstLength + dy) * 100) / containerRef.current.clientHeight;
             firstRef.current.style.height = `${newFirstLength}%`;
         }
+
+        if (onResize) {
+            onResize(e);
+        }
     };
 
     const mouseUpHandler = (e: MouseEvent) => {
@@ -88,9 +95,9 @@ const SplitPane2 = ({
             onMouseUp={mouseUpHandler}>
             <div ref={firstRef} style={leftStyle}>
                 Left
-                <div ref={resizerRef}
-                    style={resizerStyle}
-                    onMouseDown={mouseDownHandler} />
+                { resizable &&
+                    <div ref={resizerRef} style={resizerStyle} onMouseDown={mouseDownHandler} />
+                }
             </div>
             <div ref={secondRef} style={rightStyle}>
                 Right
@@ -158,4 +165,4 @@ const styles = {
 };
 
 
-export default SplitPane2;
+export default SplitPane;
