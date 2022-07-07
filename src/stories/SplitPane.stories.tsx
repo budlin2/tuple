@@ -5,7 +5,12 @@ export default {
     component: SplitPane,
 }
 
-const Template = (args: any) => <SplitPane {...args} />;
+const Template = (args: any) => (
+    <SplitPane {...args}>
+        <div style={{ background: 'red', width: '100%', height: '100%' }}>HEAD</div>
+        <div style={{ background: 'yellow', width: '100%', height: '100%' }}>TAIL</div>
+    </SplitPane>
+);
 
 export const Horizontal = Template.bind({});
 Horizontal.args = {

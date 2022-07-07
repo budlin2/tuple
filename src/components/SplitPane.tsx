@@ -1,5 +1,4 @@
-import { assert } from 'console';
-import {useState, useRef, MouseEvent, Component} from 'react'
+import {useState, useRef, MouseEvent, ReactNode, FC, CSSProperties, Children} from 'react'
 
 
 type Direction = 'horizontal' | 'vertical' | 'none';
@@ -9,44 +8,42 @@ interface Props {
     dir: Direction,
     width: number | string,
     height: number | string,
-    initialLength: number | string,
+    headLen: number | string,
     resizable: boolean,
-    onResize?: (e: Event) => null,
-    child1: Component,
-    child2: Component,
+    onResize?: (e: MouseEvent) => null,
+    children: ReactNode,
 }
 
 
-const SplitPane = ({
-    dir = 'horizontal',
-    width = '100%',
-    height = '16rem',
-    initialLength = '50%',
-    resizable = true,
+const SplitPane: FC<Props> = ({
+    dir='horizontal',
+    width='100%',
+    height='16rem',
+    headLen='50%',
+    resizable=true,
     onResize=null,
-    children
-}: Props) => {
-    assert()
-
-
+    children,
+}) => {
     const containerRef = useRef<any>(null);
-    const firstRef = useRef<any>(null);
+    const headRef = useRef<any>(null);
     const resizerRef = useRef(null);
-    const secondRef = useRef(null);
+    const tailRef = useRef(null);
 
     const [resizing, setResizing] = useState(false);
-    const [firstLength, setFirstLength] = useState<number | string>(initialLength);
+    const [headLength, setHeadLength] = useState<number | string>(headLen);
     const [mousePos, setMousePos] = useState<number>(0);
+
+    const childrenArr = Children.toArray(children);
 
     const mouseDownHandler = (e: MouseEvent) => {
         if (dir === 'horizontal') {
             setResizing(true);
             setMousePos(e.clientX);
-            setFirstLength(firstRef.current.clientWidth);
+            setHeadLength(headRef.current.clientWidth);
         } else if (dir === 'vertical') {
             setResizing(true);
             setMousePos(e.clientY);
-            setFirstLength(firstRef.current.clientHeight);
+            setHeadLength(headRef.current.clientHeight);
         }
     };
 
@@ -55,14 +52,14 @@ const SplitPane = ({
 
         if (dir === 'horizontal') {
             const dx = e.clientX - mousePos;
-            const newFirstLength = typeof(firstLength) === 'number'
-                && ((firstLength + dx) * 100) / containerRef.current.clientWidth;
-            firstRef.current.style.width = `${newFirstLength}%`;
+            const newHeadLength = typeof(headLength) === 'number'
+                && ((headLength + dx) * 100) / containerRef.current.clientWidth;
+            headRef.current.style.width = `${newHeadLength}%`;
         } else if (dir === 'vertical') {
             const dy = e.clientY - mousePos;
-            const newFirstLength = typeof(firstLength) === 'number'
-                && ((firstLength + dy) * 100) / containerRef.current.clientHeight;
-            firstRef.current.style.height = `${newFirstLength}%`;
+            const newHeadLength = typeof(headLength) === 'number'
+                && ((headLength + dy) * 100) / containerRef.current.clientHeight;
+            headRef.current.style.height = `${newHeadLength}%`;
         }
 
         if (onResize) {
@@ -77,13 +74,13 @@ const SplitPane = ({
     const containerStyle = dir === 'horizontal'
         ? styles.containerHorizontal
         : styles.containerVertical;
-    const leftStyle = dir === 'horizontal'
-        ? { ...styles.left, width: firstLength }
-        : { ...styles.top, height: firstLength }
+    const headStyle = dir === 'horizontal'
+        ? { ...styles.left, width: headLength } as CSSProperties
+        : { ...styles.top, height: headLength } as CSSProperties;
     const resizerStyle = dir === 'horizontal'
-        ? styles.resizerHorizontal
-        : styles.resizerVertical;
-    const rightStyle = dir === 'horizontal'
+        ? styles.resizerHorizontal as CSSProperties
+        : styles.resizerVertical as CSSProperties; 
+    const tailStyle = dir === 'horizontal'
         ? styles.right
         : styles.bottom;
     
@@ -93,14 +90,14 @@ const SplitPane = ({
             style={{...containerStyle, width, height}}
             onMouseMove={mouseMoveHandler}
             onMouseUp={mouseUpHandler}>
-            <div ref={firstRef} style={leftStyle}>
-                Left
+            <div ref={headRef} style={headStyle}>
+                { childrenArr && childrenArr[0] }
                 { resizable &&
                     <div ref={resizerRef} style={resizerStyle} onMouseDown={mouseDownHandler} />
                 }
             </div>
-            <div ref={secondRef} style={rightStyle}>
-                Right
+            <div ref={tailRef} style={tailStyle}>
+                { dir !== 'none' && childrenArr && childrenArr[1] }
             </div>
         </div>
     );
@@ -116,13 +113,11 @@ const styles = {
         width: "100%"
     },
     left: {
-        background: 'red',
         height: '100%',
         position: 'relative',
     },
     right: {
         flex: 1,
-        background: 'yellow',
         height: '100%',
     },
     resizerHorizontal: {
@@ -144,13 +139,11 @@ const styles = {
         width: "100%"
     },
     top: {
-        background: 'red',
         width: '100%',
         position: 'relative',
     },
     bottom: {
         flex: 1,
-        background: 'yellow',
         width: '100%',
     },
     resizerVertical: {
