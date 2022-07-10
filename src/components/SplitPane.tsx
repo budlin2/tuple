@@ -76,36 +76,39 @@ const SplitPane: FC<Props> = ({
     };
 
     const mouseUpHandler = (e: MouseEvent) => {
-        setResizing(false);
-        containerRef.current.style.cursor = 'default';
-
         e.stopPropagation();
         e.preventDefault();
+
+        setResizing(false);
+        containerRef.current.style.cursor = 'default';
     };
 
-    const containerStyle = dir === 'horizontal'
-        ? styles.containerHorizontal
-        : styles.containerVertical;
-    const headStyle = dir === 'horizontal'
-        ? { ...styles.left, width: headLength } as CSSProperties
-        : { ...styles.top, height: headLength } as CSSProperties;
-    const resizerStyle = dir === 'horizontal'
-        ? styles.resizerHorizontal as CSSProperties
-        : styles.resizerVertical as CSSProperties; 
-    const tailStyle = dir === 'horizontal'
-        ? styles.right
-        : styles.bottom;
+
+    let containerStyle: CSSProperties;
+    let headStyle: CSSProperties;
+    let resizerStyle: CSSProperties;
+    let tailStyle: CSSProperties;
+    
+    if (dir === 'horizontal') {
+        containerStyle = styles.containerHorizontal;
+        headStyle = { ...styles.left, width: headLength } as CSSProperties;
+        resizerStyle = styles.resizerHorizontal as CSSProperties;
+        tailStyle = styles.right;
+    } else {
+        containerStyle = styles.containerVertical as CSSProperties;
+        headStyle = { ...styles.top, height: headLength } as CSSProperties;
+        resizerStyle = styles.resizerVertical as CSSProperties; 
+        tailStyle = styles.bottom;
+    }
     
     return (
         <div
-        id='container'
             ref={containerRef}
             style={{...containerStyle, width, height}}
             onMouseMove={mouseMoveHandler}
             onMouseUp={mouseUpHandler}
             onMouseLeave={mouseUpHandler}>
             <div
-            id='left'
                 ref={headRef}
                 style={headStyle}>
                 { childrenArr && childrenArr[0] }
@@ -118,7 +121,6 @@ const SplitPane: FC<Props> = ({
                 }
             </div>
             <div
-            id='right'
                 ref={tailRef}
                 style={tailStyle}>
                 { dir !== 'none' && childrenArr && childrenArr[1] }
@@ -160,7 +162,7 @@ const styles = {
         flexDirection: 'column',
         border: "1px solid #cbd5e0",
         height: "100%",
-        width: "100%"
+        width: "100%",
     },
     top: {
         width: '100%',
