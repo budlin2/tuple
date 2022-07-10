@@ -14,6 +14,8 @@ interface StyleProps {
 interface Props {
     tree: object,
     styles?: StyleProps,
+    // maxDepth: number,
+    // theme?,
 }
 
 

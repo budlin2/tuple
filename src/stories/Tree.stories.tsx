@@ -6,7 +6,7 @@ export default {
     argTypes: { handleClick: { action: "handleClick" } },
 }
 
-const Template = args => <Tree {...args} />;
+const Template = (args: any) => <Tree {...args} />;
 
 
 const hello = <div>hello</div>;

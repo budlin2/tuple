@@ -19,7 +19,7 @@ const SplitPane: FC<Props> = ({
     dir='horizontal',
     width='100%',
     height='16rem',
-    headLen='50%',
+    headLen='50%',  // todo : just rename to reizerPos
     resizable=true,
     onResize=null,
     children,
@@ -36,9 +36,6 @@ const SplitPane: FC<Props> = ({
     const childrenArr = Children.toArray(children);
 
     const mouseDownHandler = (e: MouseEvent) => {
-        e.stopPropagation();
-        e.preventDefault();
-
         if (dir === 'horizontal') {
             setResizing(true);
             setMousePos(e.clientX);
@@ -48,12 +45,12 @@ const SplitPane: FC<Props> = ({
             setMousePos(e.clientY);
             setHeadLength(headRef.current.clientHeight);
         }
+
+        e.stopPropagation();
+        e.preventDefault();
     };
 
     const mouseMoveHandler = (e: MouseEvent): void => {
-        e.stopPropagation();
-        e.preventDefault();
-
         if (!resizing) return;
 
         containerRef.current.style.cursor = 'w-resize';
@@ -73,14 +70,17 @@ const SplitPane: FC<Props> = ({
         if (onResize) {
             onResize(e);
         }
+
+        e.stopPropagation();
+        e.preventDefault();
     };
 
     const mouseUpHandler = (e: MouseEvent) => {
-        e.stopPropagation();
-        e.preventDefault();
-
         setResizing(false);
         containerRef.current.style.cursor = 'default';
+
+        e.stopPropagation();
+        e.preventDefault();
     };
 
 

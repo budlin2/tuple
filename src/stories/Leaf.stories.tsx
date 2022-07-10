@@ -6,9 +6,9 @@ export default {
     argTypes: { handleClick: { action: "handleClick" } },
 }
 
-const Template = args => <Leaf {...args} />;
+const Template = (args: any) => <Leaf {...args} />;
 
-export const Basic = Template.bind({});
+export const Basic = (args: any)Template.bind({});
 Basic.args = {
     children: <>HI!</>,
     text: 'Hi, I\'m a leaf!',
