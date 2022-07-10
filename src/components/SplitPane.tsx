@@ -36,6 +36,9 @@ const SplitPane: FC<Props> = ({
     const childrenArr = Children.toArray(children);
 
     const mouseDownHandler = (e: MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+
         if (dir === 'horizontal') {
             setResizing(true);
             setMousePos(e.clientX);
@@ -48,7 +51,12 @@ const SplitPane: FC<Props> = ({
     };
 
     const mouseMoveHandler = (e: MouseEvent): void => {
+        e.stopPropagation();
+        e.preventDefault();
+
         if (!resizing) return;
+
+        containerRef.current.style.cursor = 'w-resize';
 
         if (dir === 'horizontal') {
             const dx = e.clientX - mousePos;
@@ -69,6 +77,10 @@ const SplitPane: FC<Props> = ({
 
     const mouseUpHandler = (e: MouseEvent) => {
         setResizing(false);
+        containerRef.current.style.cursor = 'default';
+
+        e.stopPropagation();
+        e.preventDefault();
     };
 
     const containerStyle = dir === 'horizontal'
@@ -86,17 +98,29 @@ const SplitPane: FC<Props> = ({
     
     return (
         <div
+        id='container'
             ref={containerRef}
             style={{...containerStyle, width, height}}
             onMouseMove={mouseMoveHandler}
-            onMouseUp={mouseUpHandler}>
-            <div ref={headRef} style={headStyle}>
+            onMouseUp={mouseUpHandler}
+            onMouseLeave={mouseUpHandler}>
+            <div
+            id='left'
+                ref={headRef}
+                style={headStyle}>
                 { childrenArr && childrenArr[0] }
                 { resizable &&
-                    <div ref={resizerRef} style={resizerStyle} onMouseDown={mouseDownHandler} />
+                    <div
+                    id='resizer'
+                        ref={resizerRef}
+                        style={resizerStyle}
+                        onMouseDown={mouseDownHandler}/>
                 }
             </div>
-            <div ref={tailRef} style={tailStyle}>
+            <div
+            id='right'
+                ref={tailRef}
+                style={tailStyle}>
                 { dir !== 'none' && childrenArr && childrenArr[1] }
             </div>
         </div>

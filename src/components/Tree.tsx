@@ -36,9 +36,7 @@ const Tree: FC<Props> = ({
             } else {
                 return (
                     <Branch text={key}>
-                        <>
                         { buildTree(value) }
-                        </>
                     </Branch>
                 );
             }
