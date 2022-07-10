@@ -8,7 +8,7 @@ export default {
 
 const Template = (args: any) => <Leaf {...args} />;
 
-export const Basic = (args: any)Template.bind({});
+export const Basic = Template.bind({});
 Basic.args = {
     children: <>HI!</>,
     text: 'Hi, I\'m a leaf!',

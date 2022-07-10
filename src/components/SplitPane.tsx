@@ -5,11 +5,11 @@ type Direction = 'horizontal' | 'vertical' | 'none';
 
 
 interface Props {
-    dir: Direction,
-    width: number | string,
-    height: number | string,
-    headLen: number | string,
-    resizable: boolean,
+    dir?: Direction,
+    width?: number | string,
+    height?: number | string,
+    headLen?: number | string,
+    resizable?: boolean,
     onResize?: (e: MouseEvent) => null,
     children: ReactNode,
 }
@@ -18,7 +18,7 @@ interface Props {
 const SplitPane: FC<Props> = ({
     dir='horizontal',
     width='100%',
-    height='16rem',
+    height='20rem',
     headLen='50%',  // todo : just rename to reizerPos
     resizable=true,
     onResize=null,
@@ -141,6 +141,7 @@ const styles = {
     left: {
         height: '100%',
         position: 'relative',
+        overflow: 'hidden',
     },
     right: {
         flex: 1,
@@ -167,6 +168,7 @@ const styles = {
     top: {
         width: '100%',
         position: 'relative',
+        overflow: 'hidden',
     },
     bottom: {
         flex: 1,
