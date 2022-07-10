@@ -1,5 +1,14 @@
-import {useState, useRef, MouseEvent, ReactNode, FC, CSSProperties, Children} from 'react'
+import {
+    useState,
+    useRef,
+    MouseEvent,
+    ReactNode,
+    FC,
+    CSSProperties,
+    Children
+} from 'react'
 
+import '../index.css';
 
 type Direction = 'horizontal' | 'vertical' | 'none';
 
@@ -110,11 +119,11 @@ const SplitPane: FC<Props> = ({
             onMouseLeave={mouseUpHandler}>
             <div
                 ref={headRef}
+                className='noScrollbar'
                 style={headStyle}>
                 { childrenArr && childrenArr[0] }
                 { resizable &&
                     <div
-                    id='resizer'
                         ref={resizerRef}
                         style={resizerStyle}
                         onMouseDown={mouseDownHandler}/>
@@ -122,6 +131,7 @@ const SplitPane: FC<Props> = ({
             </div>
             <div
                 ref={tailRef}
+                className='noScrollbar'
                 style={tailStyle}>
                 { dir !== 'none' && childrenArr && childrenArr[1] }
             </div>
@@ -133,54 +143,60 @@ const SplitPane: FC<Props> = ({
 const styles = {
     // Horizontal
     containerHorizontal: {
-        display: "flex",
-        border: "1px solid #cbd5e0",
-        height: "16rem",
-        width: "100%"
+        display: 'flex',
+        border: '1px solid #cbd5e0',
+        height: '16rem',
+        width: '100%',
     },
     left: {
         height: '100%',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'scroll',
+        minWidth: '1px',
     },
     right: {
         flex: 1,
+        overflow: 'scroll',
         height: '100%',
+        minWidth: '1px',
     },
     resizerHorizontal: {
         position: 'absolute',
         top: 0,
         right: '-4px',
-        width: "8px",
-        cursor: "w-resize",
-        height: "100%",
+        width: '8px',
+        cursor: 'w-resize',
+        height: '100%',
         opacity: 0
     },
 
     // VERTICAL
     containerVertical: {
-        display: "flex",
+        display: 'flex',
         flexDirection: 'column',
-        border: "1px solid #cbd5e0",
-        height: "100%",
-        width: "100%",
+        border: '1px solid #cbd5e0',
+        height: '100%',
+        width: '100%',
     },
     top: {
         width: '100%',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'scroll',
+        minHeight: '1px',
     },
     bottom: {
         flex: 1,
+        overflow: 'scroll',
         width: '100%',
+        minHeight: '1px',
     },
     resizerVertical: {
         position: 'absolute',
         left: 0,
         bottom: '-4px',
         height: '8px',
-        cursor: "n-resize",
-        width: "100%",
+        cursor: 'n-resize',
+        width: '100%',
         opacity: 0,
     },
 };
