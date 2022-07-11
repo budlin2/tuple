@@ -5,10 +5,13 @@ import {
     ReactNode,
     FC,
     CSSProperties,
-    Children
+    Children,
+    useEffect,
+    MutableRefObject,
 } from 'react'
 
 import '../index.css';
+
 
 type Direction = 'horizontal' | 'vertical' | 'none';
 
@@ -17,7 +20,7 @@ interface Props {
     dir?: Direction,
     width?: number | string,
     height?: number | string,
-    headLen?: number | string,
+    resizerPos?: number | string,
     resizable?: boolean,
     onResize?: (e: MouseEvent) => null,
     children: ReactNode,
@@ -28,31 +31,40 @@ const SplitPane: FC<Props> = ({
     dir='horizontal',
     width='100%',
     height='20rem',
-    headLen='50%',  // todo : just rename to reizerPos
+    resizerPos='50%',  // todo : just rename to reizerPos
     resizable=true,
     onResize=null,
     children,
 }) => {
-    const containerRef = useRef<any>(null);
-    const headRef = useRef<any>(null);
-    const resizerRef = useRef(null);
-    const tailRef = useRef(null);
+    const childrenArr = Children.toArray(children);
+    if (childrenArr.length > 2) throw 'SplitPane can only take a maximum of two children';
 
-    const [resizing, setResizing] = useState(false);
-    const [headLength, setHeadLength] = useState<number | string>(headLen);
+    const containerRef = useRef<HTMLDivElement>();
+    const headRef = useRef<HTMLDivElement>();
+    const resizerRef = useRef<HTMLDivElement>();
+    const tailRef = useRef<HTMLDivElement>();
+
+    const [resizing, setResizing] = useState<boolean>(false);
+    const [headLength, setHeadLength] = useState<number | string>(resizerPos);
     const [mousePos, setMousePos] = useState<number>(0);
 
-    const childrenArr = Children.toArray(children);
+    useEffect(() => {
+        // After first render, make sure headLength is number
+        const headLen = dir === 'horizontal'
+            ? headRef.current?.offsetWidth as number
+            : headRef.current?.offsetHeight as number;
+        setHeadLength(headLen);
+    }, [resizerPos, headRef, setHeadLength]);
 
     const mouseDownHandler = (e: MouseEvent) => {
         if (dir === 'horizontal') {
             setResizing(true);
             setMousePos(e.clientX);
-            setHeadLength(headRef.current.clientWidth);
+            setHeadLength(headRef.current?.offsetWidth as number);
         } else if (dir === 'vertical') {
             setResizing(true);
             setMousePos(e.clientY);
-            setHeadLength(headRef.current.clientHeight);
+            setHeadLength(headRef.current?.offsetHeight as number);
         }
 
         e.stopPropagation();
@@ -62,23 +74,24 @@ const SplitPane: FC<Props> = ({
     const mouseMoveHandler = (e: MouseEvent): void => {
         if (!resizing) return;
 
-        containerRef.current.style.cursor = 'w-resize';
+        const container = containerRef.current as HTMLDivElement;
+        const head = headRef.current as HTMLDivElement;
+
+        container.style.cursor = 'w-resize';
 
         if (dir === 'horizontal') {
-            const dx = e.clientX - mousePos;
-            const newHeadLength = typeof(headLength) === 'number'
-                && ((headLength + dx) * 100) / containerRef.current.clientWidth;
-            headRef.current.style.width = `${newHeadLength}%`;
+            const deltaX = e.clientX - mousePos;
+            const offsetWidth = containerRef.current?.offsetWidth as number;
+            const newHeadLength = (((headLength as number) + deltaX) * 100) / offsetWidth;
+            head.style.width = `${newHeadLength}%`;
         } else if (dir === 'vertical') {
-            const dy = e.clientY - mousePos;
-            const newHeadLength = typeof(headLength) === 'number'
-                && ((headLength + dy) * 100) / containerRef.current.clientHeight;
-            headRef.current.style.height = `${newHeadLength}%`;
+            const deltaY = e.clientY - mousePos;
+            const offsetHeight = containerRef.current?.offsetHeight as number;
+            const newHeadLength = (((headLength as number) + deltaY) * 100) / offsetHeight;
+            head.style.height = `${newHeadLength}%`;
         }
 
-        if (onResize) {
-            onResize(e);
-        }
+        onResize && onResize(e);
 
         e.stopPropagation();
         e.preventDefault();
@@ -86,12 +99,12 @@ const SplitPane: FC<Props> = ({
 
     const mouseUpHandler = (e: MouseEvent) => {
         setResizing(false);
-        containerRef.current.style.cursor = 'default';
+        const container = containerRef.current as HTMLDivElement;
+        container.style.cursor = 'default';
 
         e.stopPropagation();
         e.preventDefault();
     };
-
 
     let containerStyle: CSSProperties;
     let headStyle: CSSProperties;
@@ -112,25 +125,25 @@ const SplitPane: FC<Props> = ({
     
     return (
         <div
-            ref={containerRef}
+            ref={ containerRef as MutableRefObject<HTMLDivElement> }
             style={{...containerStyle, width, height}}
             onMouseMove={mouseMoveHandler}
             onMouseUp={mouseUpHandler}
             onMouseLeave={mouseUpHandler}>
             <div
-                ref={headRef}
+                ref={ headRef as MutableRefObject<HTMLDivElement> }
                 className='noScrollbar'
                 style={headStyle}>
                 { childrenArr && childrenArr[0] }
                 { resizable &&
                     <div
-                        ref={resizerRef}
+                        ref={ resizerRef as MutableRefObject<HTMLDivElement> }
                         style={resizerStyle}
                         onMouseDown={mouseDownHandler}/>
                 }
             </div>
             <div
-                ref={tailRef}
+                ref={ tailRef  as MutableRefObject<HTMLDivElement> }
                 className='noScrollbar'
                 style={tailStyle}>
                 { dir !== 'none' && childrenArr && childrenArr[1] }

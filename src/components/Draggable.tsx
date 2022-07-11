@@ -3,7 +3,8 @@ import {
     useEffect,
     useRef,
     useState,
-    MouseEvent as r_MouseEvent
+    MouseEvent as r_MouseEvent,
+    MutableRefObject,
 } from 'react';
 
 
@@ -36,7 +37,7 @@ const Draggable = ({
     style = {},
 }: Props) => {
     const [pos, setPos] = useState<PositionType>();
-    const draggableRef = useRef<HTMLDivElement>(null);
+    const draggableRef = useRef<HTMLDivElement>();
     const [parent, setParent] = useState<HTMLElement | null>();
     const [xBounds, setXBounds] = useState<MinMaxType>({ min: 0, max: 0});
     const [yBounds, setYBounds] = useState<MinMaxType>({ min: 0, max: 0});
@@ -103,7 +104,7 @@ const Draggable = ({
 
     return (
         <div
-            ref={draggableRef}
+            ref={draggableRef as MutableRefObject<HTMLDivElement>}
             style={draggableStyle}
             onMouseDown={mouseDownHandler}>
             { text }
