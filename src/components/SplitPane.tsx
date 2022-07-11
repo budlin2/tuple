@@ -22,20 +22,20 @@ interface Props {
     height?: number | string,
     resizerPos?: number | string,
     resizable?: boolean,
-    onResize?: (e: MouseEvent) => null,
+    onResize?: ((e: MouseEvent) => null) | null,
     children: ReactNode,
 }
 
 
-const SplitPane: FC<Props> = ({
+const SplitPane = ({
     dir='horizontal',
     width='100%',
     height='20rem',
-    resizerPos='50%',  // todo : just rename to reizerPos
+    resizerPos='50%',
     resizable=true,
     onResize=null,
     children,
-}) => {
+}: Props) => {
     const childrenArr = Children.toArray(children);
     if (childrenArr.length > 2) throw 'SplitPane can only take a maximum of two children';
 

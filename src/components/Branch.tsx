@@ -15,12 +15,12 @@ interface Props {
 }
 
 
-const Branch: FC<Props> = ({
+const Branch = ({
     text,
     children,
     open=false,
     styles={},
-}) => {
+}: Props) => {
     const [expanded, setExpanded] = useState(open);
     const baseStyle = {..._styles.base, ...styles.base }
     const branchesStyle = {..._styles.branches, ...styles.branches }

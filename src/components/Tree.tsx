@@ -19,29 +19,20 @@ interface Props {
 }
 
 
-const Tree: FC<Props> = ({
+const isReactComponent = (comp: any) => !!comp?.prototype?.isReactComponent || isValidElement(comp);
+
+
+const Tree = ({
     tree={},
     styles={},
-}) => {
+}: Props) => {
     const treeStyle = { ..._styles.tree, ...styles.tree}
-    
-    const isReactComponent = (comp: any) => !!comp?.prototype?.isReactComponent || isValidElement(comp);
 
     const buildTree = (tree: object): ReactNode => {
-        return Object.entries(tree).map( ([key, value]) => {
-            if (isReactComponent(value)) {
-                return (
-                    <Leaf text={key}>
-                        {value}
-                    </Leaf>
-                );
-            } else {
-                return (
-                    <Branch text={key}>
-                        { buildTree(value) }
-                    </Branch>
-                );
-            }
+        return Object.entries(tree).map( ([k,v]) => {
+            return isReactComponent(v)
+                ? <Leaf text={k}> {v} </Leaf>
+                : <Branch text={k}> {buildTree(v)} </Branch>;
         })
     };
 

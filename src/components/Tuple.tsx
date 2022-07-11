@@ -11,7 +11,7 @@ interface Props {
 }
 
 
-const Tuple: FC<Props> = ({
+const Tuple = ({
     tree,
     style={},
 }: Props) => {
@@ -19,7 +19,7 @@ const Tuple: FC<Props> = ({
 
     return (
         <div style={tupleStyle}>
-            <SplitPane headLen='25%'>
+            <SplitPane resizerPos='25%'>
                 <Tree tree={tree} />
                 <div style={{ height: '100%', borderLeft: '2px solid black' }}>Window View</div>
             </SplitPane>
