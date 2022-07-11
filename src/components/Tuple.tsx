@@ -26,7 +26,7 @@ const Tuple: FC<Props> = ({
             <Draggable
                 text='Foo'
                 style={{ background: 'lightgrey' }}
-                position={{}}
+                position={{x: 20, y: 30}}
             />
         </div>
     );
@@ -34,7 +34,7 @@ const Tuple: FC<Props> = ({
 
 
 const _styles = {
-    tuple: {}
+    tuple: { background: 'red' }
 }
 
 

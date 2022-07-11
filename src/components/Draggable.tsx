@@ -27,7 +27,6 @@ interface Props {
 }
 
 
-const cleanPx = (str: string | undefined | number):number => typeof str === 'number' ? str : parseInt(str && str?.replace('px', '') || '0');
 const clamp = (num: number, min: number, max: number): number => Math.min(max, Math.max(min, num));
 
 
@@ -36,31 +35,39 @@ const Draggable = ({
     position,
     style = {},
 }: Props) => {
-    const [pos, setPos] = useState<PositionType>(position);
+    const [pos, setPos] = useState<PositionType>();
     const draggableRef = useRef<HTMLDivElement>(null);
     const [parent, setParent] = useState<HTMLElement | null>();
     const [xBounds, setXBounds] = useState<MinMaxType>({ min: 0, max: 0});
     const [yBounds, setYBounds] = useState<MinMaxType>({ min: 0, max: 0});
 
     useEffect(() => {
-        const parentElement = draggableRef?.current?.parentElement
-        const parentWidth = cleanPx(parentElement?.style.width);
-        const parentHeight = cleanPx(parentElement?.style.height);
-        const parentOffsetLeft = cleanPx(parentElement?.offsetLeft);
-        const parentOffsetTop = cleanPx(parentElement?.offsetLeft);
-        const draggableWidth = cleanPx(draggableRef.current?.style.width);
-        const draggableHeight = cleanPx(draggableRef.current?.style.height);
+        const parentElement: HTMLDivElement = draggableRef?.current?.parentElement as HTMLDivElement;
+        const parentWidth: number = parentElement?.offsetWidth as number;
+        const parentHeight: number = parentElement?.offsetHeight as number;
+        const parentLeft: number = parentElement?.offsetLeft as number;
+        const parentTop: number = parentElement?.offsetTop as number;
+
+        const draggableWidth: number = draggableRef?.current?.offsetWidth as number;
+        const draggableHeight: number = draggableRef?.current?.offsetHeight as number;
 
         setParent(parentElement);
+
+        setPos({
+            x: parentLeft + position.x,
+            y: parentTop + position.y
+        });
+
         setXBounds({
-            min: parentOffsetLeft,
-            max: parentWidth + parentOffsetLeft - draggableWidth,
+            min: parentLeft,
+            max: parentWidth + parentLeft - draggableWidth,
         });
+
         setYBounds({
-            min: parentOffsetTop,
-            max: parentHeight + parentOffsetTop - draggableHeight,
+            min: parentTop,
+            max: parentHeight + parentTop - draggableHeight,
         });
-    }, [draggableRef, setParent, setXBounds, setYBounds]);
+    }, [draggableRef, setParent, setPos, setXBounds, setYBounds, position]);
 
     const mouseDownHandler = (e: r_MouseEvent) => {
         if (e.button !== 0) return  // only left mouse button
@@ -91,7 +98,7 @@ const Draggable = ({
         e.preventDefault();
     };
 
-    const positionStyle = { left: `${pos.x}px`, top: `${pos.y}px` }
+    const positionStyle = pos && { left: `${pos.x}px`, top: `${pos.y}px` };
     const draggableStyle = { ..._styles.draggable, ...positionStyle, ...style } as CSSProperties;
 
     return (
@@ -99,7 +106,7 @@ const Draggable = ({
             ref={draggableRef}
             style={draggableStyle}
             onMouseDown={mouseDownHandler}>
-                {text}
+            { text }
         </div>
     );
 }
@@ -111,9 +118,7 @@ const _styles = {
         padding: '2px',
         border: '1px solid black',
         borderRadius: '5px',
-        // height: '50px',
-        // width: '50px',
-    }
+    },
 };
 
 
