@@ -3,7 +3,6 @@ import {
     useRef,
     MouseEvent,
     ReactNode,
-    FC,
     CSSProperties,
     Children,
     useEffect,
@@ -20,21 +19,23 @@ interface Props {
     dir?: Direction,
     width?: number | string,
     height?: number | string,
+    style?: CSSProperties
     resizerPos?: number | string,
     resizable?: boolean,
-    onResize?: ((e: MouseEvent) => null) | null,
     children: ReactNode,
+    onResize?: ((e: MouseEvent) => null) | null,
 }
 
 
 const SplitPane = ({
     dir='horizontal',
     width='100%',
-    height='20rem',
+    height='100%',
+    style={},
     resizerPos='50%',
     resizable=true,
-    onResize=null,
     children,
+    onResize=null,
 }: Props) => {
     const childrenArr = Children.toArray(children);
     if (childrenArr.length > 2) throw 'SplitPane can only take a maximum of two children';
@@ -77,17 +78,17 @@ const SplitPane = ({
         const container = containerRef.current as HTMLDivElement;
         const head = headRef.current as HTMLDivElement;
 
-        container.style.cursor = 'w-resize';
-
         if (dir === 'horizontal') {
             const deltaX = e.clientX - mousePos;
             const offsetWidth = containerRef.current?.offsetWidth as number;
             const newHeadLength = (((headLength as number) + deltaX) * 100) / offsetWidth;
+            container.style.cursor = 'w-resize';
             head.style.width = `${newHeadLength}%`;
         } else if (dir === 'vertical') {
             const deltaY = e.clientY - mousePos;
             const offsetHeight = containerRef.current?.offsetHeight as number;
             const newHeadLength = (((headLength as number) + deltaY) * 100) / offsetHeight;
+            container.style.cursor = 'n-resize';
             head.style.height = `${newHeadLength}%`;
         }
 
@@ -112,15 +113,15 @@ const SplitPane = ({
     let tailStyle: CSSProperties;
     
     if (dir === 'horizontal') {
-        containerStyle = styles.containerHorizontal;
-        headStyle = { ...styles.left, width: headLength } as CSSProperties;
-        resizerStyle = styles.resizerHorizontal as CSSProperties;
-        tailStyle = styles.right;
+        containerStyle = { ..._styles.containerHorizontal, ...style };
+        headStyle = { ..._styles.left, width: headLength } as CSSProperties;
+        resizerStyle = _styles.resizerHorizontal as CSSProperties;
+        tailStyle = _styles.right;
     } else {
-        containerStyle = styles.containerVertical as CSSProperties;
-        headStyle = { ...styles.top, height: headLength } as CSSProperties;
-        resizerStyle = styles.resizerVertical as CSSProperties; 
-        tailStyle = styles.bottom;
+        containerStyle = { ..._styles.containerVertical, ...style } as CSSProperties;
+        headStyle = { ..._styles.top, height: headLength } as CSSProperties;
+        resizerStyle = _styles.resizerVertical as CSSProperties; 
+        tailStyle = _styles.bottom;
     }
     
     return (
@@ -153,12 +154,11 @@ const SplitPane = ({
 }
 
 
-const styles = {
+const _styles = {
     // Horizontal
     containerHorizontal: {
         display: 'flex',
-        border: '1px solid #cbd5e0',
-        height: '16rem',
+        height: '100%',
         width: '100%',
     },
     left: {
@@ -187,7 +187,6 @@ const styles = {
     containerVertical: {
         display: 'flex',
         flexDirection: 'column',
-        border: '1px solid #cbd5e0',
         height: '100%',
         width: '100%',
     },

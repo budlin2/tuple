@@ -1,4 +1,5 @@
 import Tuple from '../components/Tuple';
+import { TreeType } from '../components/Tree';
 
 
 export default {
@@ -12,7 +13,7 @@ const hello = <div>hello</div>;
 const world = <div>world</div>;
 
 
-const tree = {
+const tree: TreeType = {
     hello: hello,
     world: world,
     hello_div: {

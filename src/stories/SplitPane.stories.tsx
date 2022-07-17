@@ -15,7 +15,7 @@ const Template = (args: any) => (
 export const Horizontal = Template.bind({});
 Horizontal.args = {
     dir: 'horizontal',
-    firstLength: '50%',
+    resizerPos: '50%',
     resizable: true,
 };
 
@@ -23,6 +23,6 @@ Horizontal.args = {
 export const Vertical = Template.bind({});
 Vertical.args = {
     dir: 'vertical',
-    firstLength: '50%',
+    resizerPos: '50%',
     resizable: true,
 };

@@ -5,11 +5,11 @@ interface Props {
     text: string,
     children: ReactNode,
     style?: CSSProperties,
-    mouseDown?: (event: MouseEvent, leafView: ReactNode, leaf: ReactNode) => void,
-    mouseMove?: (event: MouseEvent, leafView: ReactNode, leaf: ReactNode) => void,
-    mouseUp?: (event: MouseEvent, leafView: ReactNode, leaf: ReactNode) => void,
-    mouseEnter?: (event: MouseEvent, leafView: ReactNode, leaf: ReactNode) => void,
-    mouseLeave?: (event: MouseEvent, leafView: ReactNode, leaf: ReactNode) => void,
+    mouseDown?: (event: MouseEvent, leaf: ReactNode, leafView: ReactNode) => void,
+    mouseMove?: (event: MouseEvent, leaf: ReactNode, leafView: ReactNode) => void,
+    mouseUp?: (event: MouseEvent, leaf: ReactNode, leafView: ReactNode) => void,
+    mouseEnter?: (event: MouseEvent, leaf: ReactNode, leafView: ReactNode) => void,
+    mouseLeave?: (event: MouseEvent, leaf: ReactNode, leafView: ReactNode) => void,
 }
 
 
@@ -30,11 +30,11 @@ const Leaf = ({
         <div
             ref = { leafRef as MutableRefObject<HTMLDivElement> }
             style={ leafStyle }
-            onMouseDown={ e => mouseDown && mouseDown(e, children, (leafRef as MutableRefObject<ReactNode>).current) }
-            onMouseMove={ e => mouseMove && mouseMove(e, children, (leafRef as MutableRefObject<ReactNode>).current) }
-            onMouseUp={ e => mouseUp && mouseUp(e, children, (leafRef as MutableRefObject<ReactNode>).current) }
-            onMouseEnter={ e => mouseEnter && mouseEnter(e, children, (leafRef as MutableRefObject<ReactNode>).current) }
-            onMouseLeave={ e => mouseLeave && mouseLeave(e, children, (leafRef as MutableRefObject<ReactNode>).current) }>
+            onMouseDown={ e => mouseDown && mouseDown(e, (leafRef as MutableRefObject<ReactNode>).current, children) }
+            onMouseMove={ e => mouseMove && mouseMove(e, (leafRef as MutableRefObject<ReactNode>).current, children) }
+            onMouseUp={ e => mouseUp && mouseUp(e, (leafRef as MutableRefObject<ReactNode>).current, children) }
+            onMouseEnter={ e => mouseEnter && mouseEnter(e, (leafRef as MutableRefObject<ReactNode>).current, children) }
+            onMouseLeave={ e => mouseLeave && mouseLeave(e, (leafRef as MutableRefObject<ReactNode>).current, children) }>
             { text }
         </div>
     );
@@ -42,7 +42,8 @@ const Leaf = ({
 
 
 const _styles = {
-    leaf: {}
+    leaf: {
+    }
 };
 
 

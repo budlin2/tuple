@@ -1,7 +1,10 @@
-import { ReactNode, FC, CSSProperties, isValidElement } from 'react'
+import { ReactNode, CSSProperties, isValidElement } from 'react';
 
 import Leaf from './Leaf'
 import Branch from './Branch';
+
+
+export type TreeType = { [key: string]: ReactNode | TreeType };
 
 
 interface StyleProps {
@@ -12,7 +15,7 @@ interface StyleProps {
 
 
 interface Props {
-    tree: object,
+    tree: TreeType,
     styles?: StyleProps,
     // maxDepth: number,
     // theme?,
@@ -28,11 +31,11 @@ const Tree = ({
 }: Props) => {
     const treeStyle = { ..._styles.tree, ...styles.tree}
 
-    const buildTree = (tree: object): ReactNode => {
+    const buildTree = (tree: TreeType): ReactNode => {
         return Object.entries(tree).map( ([k,v]) => {
             return isReactComponent(v)
-                ? <Leaf text={k}> {v} </Leaf>
-                : <Branch text={k}> {buildTree(v)} </Branch>;
+                ? <Leaf text={k}> {v as ReactNode} </Leaf>
+                : <Branch text={k}> {buildTree(v as TreeType)} </Branch>;
         })
     };
 
