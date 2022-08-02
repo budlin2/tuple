@@ -18,5 +18,5 @@ export const Basic = Template.bind({});
 Basic.args = {
     text: 'Foo',
     style: { background: 'red' },
-    position: { x: 0, y: 0 }
+    offset: { x: 0, y: 0 }
 };

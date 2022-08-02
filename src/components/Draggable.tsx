@@ -20,11 +20,12 @@ interface MinMaxType {
 }
 
 
-interface Props {
+export interface Props {
     text: string,
-    position: PositionType
+    offset: PositionType
     isDragging?: boolean,
     style?: CSSProperties,
+    mouseUp?: (e: MouseEvent) => void
 }
 
 
@@ -33,14 +34,22 @@ const clamp = (num: number, min: number, max: number): number => Math.min(max, M
 
 const Draggable = ({
     text,
-    position,
+    offset,
+    isDragging,
     style = {},
+    mouseUp = () => {}
 }: Props) => {
-    const [pos, setPos] = useState<PositionType>();
+    const [position, setPosition] = useState<PositionType>();
     const draggableRef = useRef<HTMLDivElement>();
     const [parent, setParent] = useState<HTMLElement | null>();
     const [xBounds, setXBounds] = useState<MinMaxType>({ min: 0, max: 0});
     const [yBounds, setYBounds] = useState<MinMaxType>({ min: 0, max: 0});
+
+    const startDragging = () => {
+        parent?.addEventListener( 'mousemove', mouseMoveHandler );
+        parent?.addEventListener( 'mouseup', mouseUpHandler );
+        parent?.addEventListener( 'mouseleave', mouseUpHandler );
+    }
 
     useEffect(() => {
         const parentElement: HTMLDivElement = draggableRef?.current?.parentElement as HTMLDivElement;
@@ -53,11 +62,7 @@ const Draggable = ({
         const draggableHeight: number = draggableRef?.current?.offsetHeight as number;
 
         setParent(parentElement);
-
-        setPos({
-            x: parentLeft + position.x,
-            y: parentTop + position.y
-        });
+        parentElement.style.cursor = "grabbing";
 
         setXBounds({
             min: parentLeft,
@@ -68,23 +73,30 @@ const Draggable = ({
             min: parentTop,
             max: parentHeight + parentTop - draggableHeight,
         });
-    }, [draggableRef, setParent, setPos, setXBounds, setYBounds, position]);
+
+        return () => { parentElement.style.cursor = "default" };
+
+    }, [draggableRef, setParent, setPosition, setXBounds, setYBounds, offset]);
+
+    useEffect(() => {
+        if (isDragging) {
+            startDragging();
+        }
+    }, [isDragging, parent]);
 
     const mouseDownHandler = (e: r_MouseEvent) => {
         if (e.button !== 0) return  // only left mouse button
 
-        parent?.addEventListener( 'mousemove', mouseMoveHandler );
-        parent?.addEventListener( 'mouseup', mouseUpHandler );
-        parent?.addEventListener( 'mouseleave', mouseUpHandler );
+        startDragging();
 
         e.stopPropagation();
         e.preventDefault();
     };
 
     const mouseMoveHandler = (e: MouseEvent) => {
-        setPos({
-            x: clamp(e.pageX, xBounds?.min, xBounds?.max),
-            y: clamp(e.pageY, yBounds?.min, yBounds?.max),
+        setPosition({
+            x: clamp(e.pageX + offset.x, xBounds?.min, xBounds?.max),
+            y: clamp(e.pageY + offset.y, yBounds?.min, yBounds?.max),
         })
 
         e.stopPropagation();
@@ -95,11 +107,13 @@ const Draggable = ({
         parent?.removeEventListener( 'mousemove', mouseMoveHandler );
         parent?.removeEventListener( 'mouseup', mouseUpHandler );
 
+        mouseUp(e);
+
         e.stopPropagation();
         e.preventDefault();
     };
 
-    const positionStyle = pos && { left: `${pos.x}px`, top: `${pos.y}px` };
+    const positionStyle = position && { left: `${position.x}px`, top: `${position.y}px` };
     const draggableStyle = { ..._styles.draggable, ...positionStyle, ...style } as CSSProperties;
 
     return (

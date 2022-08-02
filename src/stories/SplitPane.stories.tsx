@@ -6,10 +6,12 @@ export default {
 }
 
 const Template = (args: any) => (
-    <SplitPane {...args}>
-        <div style={{ background: 'red', width: '100%', height: '100%' }}>HEAD</div>
-        <div style={{ background: 'yellow', width: '100%', height: '100%' }}>TAIL</div>
-    </SplitPane>
+    <div style = {{ height: '700px', width: '1000px' }}>
+        <SplitPane {...args}>
+            <div style={{ background: 'red', width: '100%', height: '100%' }}>HEAD</div>
+            <div style={{ background: 'yellow', width: '100%', height: '100%' }}>TAIL</div>
+        </SplitPane>
+    </div>
 );
 
 export const Horizontal = Template.bind({});

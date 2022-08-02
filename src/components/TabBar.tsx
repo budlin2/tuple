@@ -1,22 +1,33 @@
-import { CSSProperties, ReactNode, useState, useRef, MouseEvent, MutableRefObject } from 'react';
+import {
+    CSSProperties,
+    ReactNode,
+    useState,
+    useRef,
+    MouseEvent as rMouseEvent,
+    MutableRefObject
+} from 'react';
 
-import Leaf from './Leaf';
+import Leaf, { LeafEvent } from './Leaf';
 
 
 export interface TabProps {
+    id: string,
     label: string,
     view: ReactNode,
     tabStyle?: CSSProperties,
     tabCloseStyle?: CSSProperties,
-    mouseDown?: (event: MouseEvent, tab: ReactNode, tabView: ReactNode) => void,
-    mouseMove?: (event: MouseEvent, tab: ReactNode, tabView: ReactNode) => void,
-    mouseUp?: (event: MouseEvent, tab: ReactNode, tabView: ReactNode) => void,
-    mouseEnter?: (event: MouseEvent, tab: ReactNode, tabView: ReactNode) => void,
-    mouseLeave?: (event: MouseEvent, tab: ReactNode, tabView: ReactNode) => void,
+    mouseDown?: LeafEvent,
+    mouseMove?: LeafEvent,
+    mouseUp?: LeafEvent,
+    mouseEnter?: LeafEvent,
+    mouseLeave?: LeafEvent,
+    removeTab?: (id: string) => void,
+    createDraggable?: LeafEvent,
 }
 
 
 export const Tab = ({
+    id,
     label,
     view,
     tabStyle,
@@ -24,21 +35,49 @@ export const Tab = ({
     mouseDown,
     mouseMove,
     mouseUp,
-    mouseEnter,
-    mouseLeave
+    removeTab,
+    createDraggable,
 }: TabProps) => {
     const tabRef = useRef<HTMLDivElement>();
+    const [closeVisible, setCloseVisible] = useState(false);
+
+    const mouseEnterHandler = () => {
+        tabRef.current.style.cursor = 'grab';
+        setCloseVisible(true);
+    }
+
+    const mouseLeaveHandler = () => {
+        // tabRef.current.style.cursor = 'grab';
+        setCloseVisible(false);
+    }
+
+    const mouseDownHandler = () => {
+        tabRef.current.style.cursor = 'grabbing';
+    }
+
+    const mouseMoveHandler: LeafEvent = (e, leaf, leafView) => {
+        removeTab && removeTab(id);
+        createDraggable && createDraggable(e, leaf, leafView);
+    };
+
     return (
         <div
             ref={tabRef as MutableRefObject<HTMLDivElement> }
             style={tabStyle}
-            onMouseDown={ e => mouseDown && mouseDown(e, (tabRef as MutableRefObject<ReactNode>).current, view) }
-            onMouseMove={ e => mouseMove && mouseMove(e, (tabRef as MutableRefObject<ReactNode>).current, view) }
-            onMouseUp={ e => mouseUp && mouseUp(e, (tabRef as MutableRefObject<ReactNode>).current, view) }
-            onMouseEnter={ e => mouseEnter && mouseEnter(e, (tabRef as MutableRefObject<ReactNode>).current, view) }
-            onMouseLeave={ e => mouseLeave && mouseLeave(e, (tabRef as MutableRefObject<ReactNode>).current, view) }>
-            <Leaf style={_styles.leaf} text={label}> { view } </Leaf>
-            <div style={tabCloseStyle}> { "\u2716" } </div>
+            onMouseEnter={ mouseEnterHandler }
+            onMouseLeave={ mouseLeaveHandler }
+            onMouseDown={ mouseDownHandler }>
+            <Leaf
+                mouseMove = { mouseMoveHandler }
+                style={_styles.leaf}
+                text={label}>
+                { view }
+            </Leaf>
+            { closeVisible && <div
+                style={ tabCloseStyle }
+                onClick={ removeTab && (() => removeTab(id)) }>
+                { "\u2716" }
+            </div> }
         </div>
     );
 };
@@ -54,27 +93,35 @@ interface StyleProps {
 interface Props {
     tabs: Array<TabProps>,
     styles?: StyleProps,
+    createDraggable?: LeafEvent
 }
 
 
 const TabBar = ({
     tabs,
     styles={},
+    createDraggable=() => {},
 }: Props) => {
+    const [_tabs, setTabs] = useState(tabs);
     const [activeTab, setActiveTab] = useState(tabs[0]);
 
     const tabBarStyle = { ..._styles.tabBar, ...styles.tabBar };
     const tabStyle = { ..._styles.tab, ...styles.tab } as CSSProperties;
     const tabCloseStyle = { ..._styles.tabClose, ...styles.tabClose } as CSSProperties;
 
+    const removeTab = (id: string) => setTabs(tbs => tbs.filter(tab => tab.id !== id ));
+
     return (
         <div style={tabBarStyle}>
-            { tabs.map( tab => (
+            { _tabs.map( tab => (
                 <Tab
+                    id={tab.id}
                     tabStyle={tabStyle}
                     tabCloseStyle={tabCloseStyle}
                     label={tab.label}
-                    view={tab.view} />
+                    view={tab.view}
+                    removeTab={removeTab}
+                    createDraggable={createDraggable}/>
             )) }
         </div>
     );
@@ -106,10 +153,6 @@ const _styles = {
         position: 'absolute',
         borderRadius: '5px',
         right: 0,
-        
-        // Potentially hacky fix
-        paddingRight: '1px',
-        paddingBottom: '1px',
 
         width: `${TAB_CLOSE_SIZE}px`,
         height: `${TAB_CLOSE_SIZE}px`,

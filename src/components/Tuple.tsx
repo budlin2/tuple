@@ -1,8 +1,9 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 
 import Tree, { TreeType } from './Tree';
+import { LeafEvent } from './Leaf';
 import SplitPane from './SplitPane';
-import Draggable from './Draggable';
+import Draggable, { Props as DraggableProps } from './Draggable';
 import TabBar from './TabBar';
 
 
@@ -20,7 +21,18 @@ const Tuple = ({
     tree,
     style={},
 }: Props) => {
-    const tupleStyle = {..._styles.tuple, ...style}
+    const tupleStyle = {..._styles.tuple, ...style};
+    const [draggableProps, setDraggableProps] = useState<DraggableProps | null>();
+
+    const createDraggable: LeafEvent = (e, leaf, leafView) => {
+        setDraggableProps({
+            text: leaf.innerText,
+            style: { background: 'lightgrey' },
+            offset: { x: -15, y: -15 },
+            isDragging: true,
+            mouseUp: () => setDraggableProps(null)
+        })
+    }
 
     return (
         <div style={tupleStyle}>
@@ -30,51 +42,50 @@ const Tuple = ({
                     <div style={{ height: '100%', width: '100%', background: 'orange' }}>
                         <TabBar 
                             tabs={[
-                                { label: 'hello', view: hello },
-                                { label: 'world', view: world },
+                                { id: '1', label: 'hello', view: hello },
+                                { id: '2', label: 'world', view: world },
                             ]}
                             styles={{
                                 tabBar: { background: 'yellow' },
                                 tab: { background: 'blue', color: 'white' },
                                 tabClose: { background: 'green' },
                             }}
+                            createDraggable={createDraggable}
                         />
                     </div>
                     <SplitPane dir='horizontal' resizerPos='50%'>
                         <div style={{ height: '100%', width: '100%', background: 'purple' }}>
                             <TabBar 
                                 tabs={[
-                                    { label: 'hello', view: hello },
-                                    { label: 'world', view: world },
+                                    { id: '1', label: 'hello', view: hello },
+                                    { id: '2', label: 'world', view: world },
                                 ]}
                                 styles={{
                                     tabBar: { background: 'yellow' },
                                     tab: { background: 'blue', color: 'white' },
                                     tabClose: { background: 'green' },
                                 }}
+                                createDraggable={createDraggable}
                             />
                         </div>
                         <div style={{ height: '100%', width: '100%', background: 'hotpink' }}>
                             <TabBar 
                                 tabs={[
-                                    { label: 'hello', view: hello },
-                                    { label: 'world', view: world },
+                                    { id: '1', label: 'hello', view: hello },
+                                    { id: '2', label: 'world', view: world },
                                 ]}
                                 styles={{
                                     tabBar: { background: 'yellow' },
                                     tab: { background: 'blue', color: 'white' },
                                     tabClose: { background: 'green' },
                                 }}
+                                createDraggable={createDraggable}
                             />
                         </div>
                     </SplitPane>
                 </SplitPane>
             </SplitPane>
-            <Draggable
-                text='Foo'
-                style={{ background: 'lightgrey' }}
-                position={{ x: 20, y: 30 }}
-            />
+            { draggableProps && <Draggable {...draggableProps} /> }
         </div>
     );
 }

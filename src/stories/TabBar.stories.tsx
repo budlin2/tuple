@@ -18,8 +18,8 @@ const world = <div>world</div>;
 export const Basic = Template.bind({});
 Basic.args = {
     tabs: [
-        { label: 'hello', view: hello },
-        { label: 'world', view: world },
+        { id: '1', label: 'hello', view: hello },
+        { id: '2', label: 'world', view: world },
     ],
     styles: {
         tabBar: { background: 'yellow' },
