@@ -25,6 +25,7 @@ export interface Props {
     offset: PositionType
     isDragging?: boolean,
     style?: CSSProperties,
+    // TODO : 
     mouseUp?: (e: MouseEvent) => void
 }
 
@@ -33,6 +34,7 @@ const clamp = (num: number, min: number, max: number): number => Math.min(max, M
 
 
 const Draggable = ({
+    pos,
     text,
     offset,
     isDragging,
@@ -97,7 +99,7 @@ const Draggable = ({
         setPosition({
             x: clamp(e.pageX + offset.x, xBounds?.min, xBounds?.max),
             y: clamp(e.pageY + offset.y, yBounds?.min, yBounds?.max),
-        })
+        });
 
         e.stopPropagation();
         e.preventDefault();
@@ -114,7 +116,12 @@ const Draggable = ({
     };
 
     const positionStyle = position && { left: `${position.x}px`, top: `${position.y}px` };
-    const draggableStyle = { ..._styles.draggable, ...positionStyle, ...style } as CSSProperties;
+    const draggableStyle = position
+        ? { ..._styles.draggable, ...positionStyle, ...style } as CSSProperties
+        : { visibility: 'hidden', display: 'none' } as CSSProperties;
+
+    console.log(positionStyle)
+    console.log(draggableStyle)
 
     return (
         <div
