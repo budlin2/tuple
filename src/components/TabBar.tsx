@@ -7,22 +7,19 @@ import {
     MutableRefObject
 } from 'react';
 
-import Leaf, { LeafEvent } from './Leaf';
+import Leaf from './Leaf';
+import { DragEvent } from './Draggable';
+import { ID } from '../types';
 
 
 export interface TabProps {
-    id: string,
+    id: ID,
     label: string,
     view: ReactNode,
     tabStyle?: CSSProperties,
     tabCloseStyle?: CSSProperties,
-    mouseDown?: LeafEvent,
-    mouseMove?: LeafEvent,
-    mouseUp?: LeafEvent,
-    mouseEnter?: LeafEvent,
-    mouseLeave?: LeafEvent,
-    removeTab?: (id: string) => void,
-    createDraggable?: LeafEvent,
+    removeTab?: (id: ID) => void,
+    createDraggable?: DragEvent,
 }
 
 
@@ -32,9 +29,6 @@ export const Tab = ({
     view,
     tabStyle,
     tabCloseStyle,
-    mouseDown,
-    mouseMove,
-    mouseUp,
     removeTab,
     createDraggable,
 }: TabProps) => {
@@ -55,7 +49,7 @@ export const Tab = ({
         tabRef.current.style.cursor = 'grabbing';
     }
 
-    const mouseMoveHandler: LeafEvent = (e, leaf, leafView) => {
+    const mouseMoveHandler: DragEvent = (e, leaf, leafView) => {
         removeTab && removeTab(id);
         createDraggable && createDraggable(e, leaf, leafView);
     };
@@ -83,7 +77,7 @@ export const Tab = ({
 };
 
 
-interface StyleProps {
+export interface StyleProps {
     tabBar?: CSSProperties,
     tab?: CSSProperties,
     tabClose?: CSSProperties,
@@ -91,9 +85,9 @@ interface StyleProps {
 
 
 interface Props {
-    tabs: Array<TabProps>,
+    tabs: TabProps[],
     styles?: StyleProps,
-    createDraggable?: LeafEvent
+    createDraggable?: DragEvent
 }
 
 
@@ -103,13 +97,11 @@ const TabBar = ({
     createDraggable=() => {},
 }: Props) => {
     const [_tabs, setTabs] = useState(tabs);
-    const [activeTab, setActiveTab] = useState(tabs[0]);
-
     const tabBarStyle = { ..._styles.tabBar, ...styles.tabBar };
     const tabStyle = { ..._styles.tab, ...styles.tab } as CSSProperties;
     const tabCloseStyle = { ..._styles.tabClose, ...styles.tabClose } as CSSProperties;
 
-    const removeTab = (id: string) => setTabs(tbs => tbs.filter(tab => tab.id !== id ));
+    const removeTab = (id: ID) => setTabs(tbs => tbs.filter(tab => tab.id !== id ));
 
     return (
         <div style={tabBarStyle}>

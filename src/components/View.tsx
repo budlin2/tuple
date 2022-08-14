@@ -1,10 +1,26 @@
-import { CSSProperties, useContext, useState } from 'react';
+import { CSSProperties, useContext, useState, useRef, MutableRefObject, useEffect } from 'react';
 
 import { ID, PageT, PagesT } from '../types';
 import TabBar, { TabProps, StyleProps } from './TabBar';
-import { LeafEvent } from './Leaf';
+import { DragEvent } from './Draggable';
 import { TupleContext } from './Tuple';
 import Draggable, { Props as DraggableProps } from './Draggable';
+
+
+// TODO : Typing could be better here
+const createTabs = (pages: PagesT, pageIds: ID[]) => Object.entries<any>(pages).reduce<any>(
+    (acc, [key, value]) => {
+        if (pageIds.includes(key)) {
+            acc.push({
+                id: key,
+                label: value.name,
+                view: value.component,
+            } as TabProps);
+        }
+        return acc;
+    }
+    , [] as TabProps[]
+);
 
 
 interface Props {
@@ -13,6 +29,8 @@ interface Props {
     activePageId: ID,
     // TODO : Move Styles to Context
     styles?: CSSProperties,
+    disableDraggable?: boolean,
+    createDraggable?: DragEvent | null,
 }
 
 
@@ -21,14 +39,25 @@ const View = ({
     pageIds,
     activePageId,
     styles,
+    disableDraggable,
+    createDraggable,
 }: Props) => {
+    // TODO : memoize this and check pageIDs against ids in context
+    const validateProps = () => {
+        if (createDraggable && !disableDraggable) {
+            throw 'Local draggable needs to be disabled via "disableDraggable" prop when passing in "createDraggable" callback';
+        }
+    }
+
+    validateProps();
+
     const {pages}: {pages: PagesT} = useContext(TupleContext);
     const activePage: PageT = pages[activePageId];
-    
+
+    const viewRef = useRef<HTMLDivElement>();
     const [draggableProps, setDraggableProps] = useState<DraggableProps | null>();
 
-    const createDraggable: LeafEvent = (e, leaf, leafView) => {
-        console.log(e);
+    const createLocalDraggable: DragEvent = (e, leaf, leafView) => {
         setDraggableProps({
             text: leaf.innerText,
             style: { background: 'lightgrey' },
@@ -38,30 +67,19 @@ const View = ({
         } as DraggableProps);
     };
 
-    // TODO : Typing could be better here
-    const tabs = Object.entries<any>(pages).reduce<any>(
-        (acc, [key, value]) => {
-            if (pageIds.includes(key)) {
-                acc.push({
-                    id: key,
-                    label: value.name,
-                    view: value.component,
-                } as TabProps);
-            }
-            return acc;
-        }
-        , [] as TabProps[]
-    );
+    const tabs = createTabs(pages, pageIds);
 
     return (
-        <div style={_styles.container}>
+        <div
+            ref={viewRef as MutableRefObject<HTMLDivElement>}
+            style={_styles.container}>
             <TabBar
                 tabs={tabs}
                 styles={styles as StyleProps}
-                createDraggable={createDraggable}
+                createDraggable={createDraggable || createLocalDraggable}
             />
             {activePage.component}
-            { draggableProps && <Draggable {...draggableProps} /> }
+            { !disableDraggable && draggableProps && <Draggable {...draggableProps} /> }
         </div>
     );
 }

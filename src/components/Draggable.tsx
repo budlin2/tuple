@@ -3,8 +3,9 @@ import {
     useEffect,
     useRef,
     useState,
-    MouseEvent as r_MouseEvent,
+    MouseEvent as rMouseEvent,
     MutableRefObject,
+    ReactNode,
 } from 'react';
 
 
@@ -20,21 +21,23 @@ interface MinMaxType {
 }
 
 
+const clamp = (num: number, min: number, max: number): number => Math.min(max, Math.max(min, num));
+
+
+export type DragEvent = (e: MouseEvent | rMouseEvent, leaf: HTMLElement, leafView: ReactNode) => void;
+
+
 export interface Props {
     text: string,
     offset: PositionType
     isDragging?: boolean,
     style?: CSSProperties,
-    // TODO : 
+    // TODO : Move to context
     mouseUp?: (e: MouseEvent) => void
 }
 
 
-const clamp = (num: number, min: number, max: number): number => Math.min(max, Math.max(min, num));
-
-
 const Draggable = ({
-    pos,
     text,
     offset,
     isDragging,
@@ -60,11 +63,10 @@ const Draggable = ({
         const parentLeft: number = parentElement?.offsetLeft as number;
         const parentTop: number = parentElement?.offsetTop as number;
 
+        setParent(parentElement);
+
         const draggableWidth: number = draggableRef?.current?.offsetWidth as number;
         const draggableHeight: number = draggableRef?.current?.offsetHeight as number;
-
-        setParent(parentElement);
-        parentElement.style.cursor = "grabbing";
 
         setXBounds({
             min: parentLeft,
@@ -86,7 +88,7 @@ const Draggable = ({
         }
     }, [isDragging, parent]);
 
-    const mouseDownHandler = (e: r_MouseEvent) => {
+    const mouseDownHandler = (e: rMouseEvent) => {
         if (e.button !== 0) return  // only left mouse button
 
         startDragging();
@@ -119,9 +121,6 @@ const Draggable = ({
     const draggableStyle = position
         ? { ..._styles.draggable, ...positionStyle, ...style } as CSSProperties
         : { visibility: 'hidden', display: 'none' } as CSSProperties;
-
-    console.log(positionStyle)
-    console.log(draggableStyle)
 
     return (
         <div

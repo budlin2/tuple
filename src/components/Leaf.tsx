@@ -6,17 +6,16 @@ import {
     MutableRefObject,
 } from 'react'
 
-
-export type LeafEvent = (e: MouseEvent | rMouseEvent, leaf: HTMLElement, leafView: ReactNode) => void;
+import { DragEvent } from './Draggable';
 
 
 interface Props {
     text: string,
     children: ReactNode,
     style?: CSSProperties,
-    mouseDown?: LeafEvent,
-    mouseMove?: LeafEvent,
-    mouseUp?: LeafEvent,
+    mouseDown?: DragEvent,
+    mouseMove?: DragEvent,
+    mouseUp?: DragEvent,
 }
 
 
