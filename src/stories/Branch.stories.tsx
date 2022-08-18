@@ -1,4 +1,4 @@
-import Branch from '../components/Branch';
+import Branch from '../components/Tree/Branch';
 
 export default {
     title: 'Components/Branch',

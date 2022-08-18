@@ -8,23 +8,21 @@ import {
     ReactNode,
 } from 'react';
 
-
-interface PositionType {
-    x: number,
-    y: number,
-}
+import { PositionType, MinMaxType, DragEvent } from '../types';
 
 
-interface MinMaxType {
-    min: number,
-    max: number,
-}
+const createLocalDraggable: DragEvent = (e, leaf, leafView) => {
+    setDraggableProps({
+        text: leaf.innerText,
+        style: { background: 'lightgrey' },
+        offset: { x: -15, y: -15 },
+        isDragging: true,
+        mouseUp: () => setDraggableProps(null),
+    } as DraggableProps);
+};
 
 
 const clamp = (num: number, min: number, max: number): number => Math.min(max, Math.max(min, num));
-
-
-export type DragEvent = (e: MouseEvent | rMouseEvent, leaf: HTMLElement, leafView: ReactNode) => void;
 
 
 export interface Props {

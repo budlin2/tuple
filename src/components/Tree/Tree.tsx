@@ -4,6 +4,7 @@ import Leaf from './Leaf'
 import Branch from './Branch';
 
 
+// TODO : Replace this with TreeT from types.ts
 export type TreeType = { [key: string]: ReactNode | TreeType };
 
 

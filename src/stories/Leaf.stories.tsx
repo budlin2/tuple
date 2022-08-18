@@ -1,4 +1,4 @@
-import Leaf from '../components/Leaf';
+import Leaf from '../components/Tree/Leaf';
 
 export default {
     title: 'Components/Leaf',

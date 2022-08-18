@@ -1,8 +1,10 @@
-import View from '../components/View';
-import { TupleContext } from '../components/Tuple';
-import { PagesT } from '../types';
 import { useEffect, useRef, useState } from 'react';
-import Draggable, { Props as DraggableProps, DragEvent } from '../components/Draggable';
+
+import View from '../components/Viewport/View';
+import { TupleContext } from '../components/Tuple';
+import { PagesT, DragEvent } from '../types';
+import Draggable, { Props as DraggableProps } from '../components/Draggable';
+
 
 export default {
     title: 'Components/View',
@@ -18,10 +20,10 @@ const pox = <div>pox</div>;
 
 
 const pages: PagesT = {
-    'a': { name: 'hello', component: hello },
-    'b': { name: 'world', component: world },
-    'c': { name: 'monkey', component: monkey },
-    'd': { name: 'pox', component: pox },
+    'a': { name: 'hello', component: () => hello },
+    'b': { name: 'world', component: () => world },
+    'c': { name: 'monkey', component: () => monkey },
+    'd': { name: 'pox', component: () => pox },
 };
 
 // TODO : Styles need to be added to Context
@@ -33,7 +35,6 @@ const styles={
 
 
 const Template = (args: any) => {
-    const rootRef = useRef<HTMLElement>(document.createElement('div'));
     const [draggableProps, setDraggableProps] = useState<DraggableProps | null>();
 
     let context = {

@@ -1,4 +1,4 @@
-import TabBar from '../components/TabBar';
+import TabBar from '../components/Viewport/TabBar';
 
 export default {
     title: 'Components/TabBar',

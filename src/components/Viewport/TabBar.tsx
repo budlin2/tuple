@@ -7,9 +7,8 @@ import {
     MutableRefObject
 } from 'react';
 
-import Leaf from './Leaf';
-import { DragEvent } from './Draggable';
-import { ID } from '../types';
+import Leaf from '../Tree/Leaf';
+import { ID, DragEvent } from '../../types';
 
 
 export interface TabProps {

@@ -6,7 +6,7 @@ import {
     MutableRefObject,
 } from 'react'
 
-import { DragEvent } from './Draggable';
+import { DragEvent } from '../../types';
 
 
 interface Props {

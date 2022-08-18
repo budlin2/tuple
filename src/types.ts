@@ -1,13 +1,36 @@
-import { ReactNode } from "react";
+import { MouseEvent as rMouseEvent } from 'react';
+
+
+//---------------------------------------------------------------------------------------------------------------------
+
+
+export interface PositionType {
+    x: number,
+    y: number,
+}
+
+export interface MinMaxType {
+    min: number,
+    max: number,
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+
+
+export type DragEvent = (e: MouseEvent | rMouseEvent, leaf: HTMLElement, leafView: ReactNode) => void;
+
+
+//---------------------------------------------------------------------------------------------------------------------
 
 
 export type ID = number | string;
 
-
 export interface PageT {
     name: string,
-    // props: TODO
-    component: ReactNode,
+    // TODO: Better typing thany any? Probz not tbh...
+    component: (props: any) => JSX.Element,
+    props?: object,
 }
 export type PagesT = { [key: ID]: PageT }
 

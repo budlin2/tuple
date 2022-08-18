@@ -1,10 +1,9 @@
 import { CSSProperties, useContext, useState, useRef, MutableRefObject, useEffect } from 'react';
 
-import { ID, PageT, PagesT } from '../types';
+import { ID, PageT, PagesT } from '../../types';
 import TabBar, { TabProps, StyleProps } from './TabBar';
-import { DragEvent } from './Draggable';
-import { TupleContext } from './Tuple';
-import Draggable, { Props as DraggableProps } from './Draggable';
+import { DragEvent } from '../../types';
+import { TupleContext } from '../Tuple';
 
 
 // TODO : Typing could be better here
@@ -29,8 +28,7 @@ interface Props {
     activePageId: ID,
     // TODO : Move Styles to Context
     styles?: CSSProperties,
-    disableDraggable?: boolean,
-    createDraggable?: DragEvent | null,
+    createDraggable: DragEvent,
 }
 
 
@@ -39,34 +37,12 @@ const View = ({
     pageIds,
     activePageId,
     styles,
-    disableDraggable,
     createDraggable,
 }: Props) => {
-    // TODO : memoize this and check pageIDs against ids in context
-    const validateProps = () => {
-        if (createDraggable && !disableDraggable) {
-            throw 'Local draggable needs to be disabled via "disableDraggable" prop when passing in "createDraggable" callback';
-        }
-    }
-
-    validateProps();
-
     const {pages}: {pages: PagesT} = useContext(TupleContext);
     const activePage: PageT = pages[activePageId];
 
     const viewRef = useRef<HTMLDivElement>();
-    const [draggableProps, setDraggableProps] = useState<DraggableProps | null>();
-
-    const createLocalDraggable: DragEvent = (e, leaf, leafView) => {
-        setDraggableProps({
-            text: leaf.innerText,
-            style: { background: 'lightgrey' },
-            offset: { x: -15, y: -15 },
-            isDragging: true,
-            mouseUp: () => setDraggableProps(null),
-        } as DraggableProps);
-    };
-
     const tabs = createTabs(pages, pageIds);
 
     return (
@@ -76,10 +52,9 @@ const View = ({
             <TabBar
                 tabs={tabs}
                 styles={styles as StyleProps}
-                createDraggable={createDraggable || createLocalDraggable}
+                createDraggable={createDraggable}
             />
-            {activePage.component}
-            { !disableDraggable && draggableProps && <Draggable {...draggableProps} /> }
+            <activePage.component {...activePage.props} />
         </div>
     );
 }
