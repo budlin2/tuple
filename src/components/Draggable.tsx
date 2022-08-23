@@ -8,18 +8,7 @@ import {
     ReactNode,
 } from 'react';
 
-import { PositionType, MinMaxType, DragEvent } from '../types';
-
-
-const createLocalDraggable: DragEvent = (e, leaf, leafView) => {
-    setDraggableProps({
-        text: leaf.innerText,
-        style: { background: 'lightgrey' },
-        offset: { x: -15, y: -15 },
-        isDragging: true,
-        mouseUp: () => setDraggableProps(null),
-    } as DraggableProps);
-};
+import { PositionT, MinMaxT, DragEvent } from '../types';
 
 
 const clamp = (num: number, min: number, max: number): number => Math.min(max, Math.max(min, num));
@@ -27,7 +16,7 @@ const clamp = (num: number, min: number, max: number): number => Math.min(max, M
 
 export interface Props {
     text: string,
-    offset: PositionType
+    offset: PositionT
     isDragging?: boolean,
     style?: CSSProperties,
     // TODO : Move to context
@@ -42,11 +31,11 @@ const Draggable = ({
     style = {},
     mouseUp = () => {}
 }: Props) => {
-    const [position, setPosition] = useState<PositionType>();
+    const [position, setPosition] = useState<PositionT>();
     const draggableRef = useRef<HTMLDivElement>();
     const [parent, setParent] = useState<HTMLElement | null>();
-    const [xBounds, setXBounds] = useState<MinMaxType>({ min: 0, max: 0});
-    const [yBounds, setYBounds] = useState<MinMaxType>({ min: 0, max: 0});
+    const [xBounds, setXBounds] = useState<MinMaxT>({ min: 0, max: 0});
+    const [yBounds, setYBounds] = useState<MinMaxT>({ min: 0, max: 0});
 
     const startDragging = () => {
         parent?.addEventListener( 'mousemove', mouseMoveHandler );
@@ -137,6 +126,7 @@ const _styles = {
         padding: '2px',
         border: '1px solid black',
         borderRadius: '5px',
+        background: 'yellow',
     },
 };
 

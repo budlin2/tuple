@@ -1,4 +1,5 @@
 import TabBar from '../components/Viewport/TabBar';
+import { TupleContext } from '../components/Tuple';
 
 export default {
     title: 'Components/TabBar',
@@ -6,11 +7,23 @@ export default {
     argTypes: { handleClick: { action: "handleClick" } },
 }
 
-const Template = (args: any) => (
-    <div style={{ width: '600px' }}>
-        <TabBar {...args} />
-    </div>
-);
+const Template = (args: any) => {
+
+    const context = {
+        styles: {
+            tabBar: { background: 'yellow' },
+            tab: { background: 'red' },
+            tabClose: { background: 'green' },
+        }
+    };
+    return (
+        <TupleContext.Provider value={context}>
+            <div style={{ width: '600px' }}>
+                <TabBar {...args} />
+            </div>
+        </TupleContext.Provider>
+    );
+};
 
 const hello = <div>hello</div>;
 const world = <div>world</div>;
@@ -21,9 +34,4 @@ Basic.args = {
         { id: '1', label: 'hello', view: hello },
         { id: '2', label: 'world', view: world },
     ],
-    styles: {
-        tabBar: { background: 'yellow' },
-        tab: { background: 'red' },
-        tabClose: { background: 'green' },
-    }
 };

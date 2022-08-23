@@ -1,4 +1,4 @@
-import Tree from '../components/Tree/Tree';
+import Tree from '../components/Tree';
 
 export default {
     title: 'Components/Tree',

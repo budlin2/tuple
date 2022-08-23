@@ -1,6 +1,6 @@
 import { CSSProperties, useContext, useState, useRef, MutableRefObject, useEffect } from 'react';
 
-import { ID, PageT, PagesT } from '../../types';
+import { ID, PageT, PagesT, TupleStylesT } from '../../types';
 import TabBar, { TabProps, StyleProps } from './TabBar';
 import { DragEvent } from '../../types';
 import { TupleContext } from '../Tuple';
@@ -33,25 +33,25 @@ interface Props {
 
 
 const View = ({
-    id,
+    id, // TODO : Does View need an ID?
     pageIds,
     activePageId,
-    styles,
     createDraggable,
 }: Props) => {
-    const {pages}: {pages: PagesT} = useContext(TupleContext);
+    const {pages, styles}: {pages: PagesT, styles: TupleStylesT} = useContext(TupleContext);
     const activePage: PageT = pages[activePageId];
 
     const viewRef = useRef<HTMLDivElement>();
     const tabs = createTabs(pages, pageIds);
 
+    const viewStyle = {..._styles.view, ...styles.view}
+
     return (
         <div
             ref={viewRef as MutableRefObject<HTMLDivElement>}
-            style={_styles.container}>
+            style={viewStyle}>
             <TabBar
                 tabs={tabs}
-                styles={styles as StyleProps}
                 createDraggable={createDraggable}
             />
             <activePage.component {...activePage.props} />
@@ -61,7 +61,7 @@ const View = ({
 
 
 const _styles = {
-    container: {
+    view: {
         height: '100%',
         width: '100%',
         background: 'green',

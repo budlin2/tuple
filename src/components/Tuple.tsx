@@ -1,19 +1,16 @@
 import { CSSProperties, ReactNode, useState, createContext } from 'react';
 
-import Tree from './Tree/Tree';
+import Tree from './Tree';
 import SplitPane from './SplitPane';
 import Draggable, { Props as DraggableProps } from './Draggable';
 import TabBar from './Viewport/TabBar';
-import { SplitViewT, PagesT, TreeT, DragEvent } from '../types';
+import { SplitViewT, PagesT, TreeT, DragEvent, TupleContextT } from '../types';
 
 
-interface TupleContextT {
-    pages: PagesT,
-}
-
-// TODO : This should move elsewhere
+// TODO : Should this move to TupleProvider?
 export const TupleContext = createContext({
     pages: {},
+    styles: {},
 } as TupleContextT);
 
 
