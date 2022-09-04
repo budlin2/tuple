@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-
 import View from '../components/Viewport/View';
-import { TupleContext } from '../components/Tuple';
-import { PagesT, DragEvent } from '../types';
-import Draggable, { Props as DraggableProps } from '../components/Draggable';
+import { TupleContext } from '../components/Tuple/TupleProvider';
+import { PagesT } from '../types';
+
+import classes from './view.stories.module.css';
 
 
 export default {
@@ -26,51 +25,23 @@ const pages: PagesT = {
     'd': { name: 'pox', component: () => pox },
 };
 
-// TODO : Styles need to be added to Context
-const styles={
-    tabBar: { background: 'yellow' },
-    tab: { background: 'blue', color: 'white' },
-    tabClose: { background: 'green' },
-}
-
 
 const Template = (args: any) => {
-    const [draggableProps, setDraggableProps] = useState<DraggableProps | null>();
-
-    let context = {
-        pages: pages,
-        // styles: style,
-        // events:
-    };
-
-    useEffect(() => {
-        context = {
-            pages: pages,
-            // styles: style,
-            // events:
-        };
-    });
-
-    const createDraggable: DragEvent = (e, leaf, leafView) => {
-        setDraggableProps({
-            text: leaf.innerText,
-            style: { background: 'lightgrey' },
-            offset: { x: -15, y: -15 },
-            isDragging: true,
-            mouseUp: () => setDraggableProps(null),
-        } as DraggableProps);
+    const context = {
+        pages,
+        views: null,
+        styles: {},
+        classes,
+        events: {}
     };
 
     return (
         <TupleContext.Provider value={context}>
-            <div id='test'>
-                <div style={{ height: '500px', background: 'pink' }}>
-                    <View {...args.top} disableDraggable createDraggable={createDraggable}/>
-                </div>
-                <div style={{ height: '500px', background: 'pink' }}>
-                    <View {...args.bottom} disableDraggable createDraggable={createDraggable}/>
-                </div>
-                { draggableProps && <Draggable {...draggableProps} /> }
+            <div style={{ height: '500px' }}>
+                <View {...args.top} />
+            </div>
+            <div style={{ height: '500px' }}>
+                <View {...args.bottom} />
             </div>
         </TupleContext.Provider>
     );
@@ -83,12 +54,10 @@ Basic.args = {
         id: 1,
         pageIds: ['a', 'b', 'c'],
         activePageId: 'b',
-        styles,
     },
     bottom: {
         id: 2,
         pageIds: ['d'],
         activePageId: 'd',
-        styles,
     }
 };

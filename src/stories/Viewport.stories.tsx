@@ -1,6 +1,6 @@
 import Viewport from '../components/Viewport';
-import { PagesT, SplitViewT, ViewT, TupleStylesT } from '../types';
-import { TupleContext } from '../components/Tuple';
+import { PagesT, SplitViewT, ViewT } from '../types';
+import { TupleContext } from '../components/Tuple/TupleProvider';
 
 
 export default {
@@ -27,7 +27,8 @@ const pages: PagesT = {
     'world003': { name: 'worLd', component: page, props: { text: 'worLd' } },
     'world004': { name: 'worLD', component: page, props: { text: 'worLD' } },
     'world005': { name: 'woRld', component: page, props: { text: 'woRld' } },
-    'world006': { name: 'woRlD', component: page, props: { text: 'woRlD' } },
+    'world006': { name: 'worlddddddd', component: page, props: { text: 'worlddddddd' } },
+    'world007': { name: 'worlddddddddddddddddd', component: page, props: { text: 'worlddddddddddddddddd' } },
     'carpe001': { name: 'carpe', component: page, props: { text: 'carpe' } },
     'diem001': { name: 'diem', component: page, props: { text: 'diem' } },
     'monkey001': { name: 'monkey', component: page, props: { text: 'monkey' } },
@@ -55,7 +56,7 @@ const topLeft: ViewT = {
 
 const topRightUpper: ViewT = {
     id: 1,
-    pageIds: ['world001', 'world002', 'world003', 'world004', 'world005', 'world006'],
+    pageIds: ['world001', 'world002', 'world003', 'world004', 'world005', 'world006', 'world007'],
     activePageId: 'world002',
 };
 
@@ -86,7 +87,6 @@ const Template = (args: any) => {
     const styles = {
         view: {
             backgroundColor: 'lightgrey',
-            boxShadow: '-10px 0px 3px 0px #aaa',
             borderLeft: '1px solid black',
             borderTop: '1px solid black',
         },
@@ -104,8 +104,10 @@ const Template = (args: any) => {
 
     const context = {
         pages,
+        views: null,
         styles,
-        // events
+        classes: {},
+        events: {},
     };
     
     return (
@@ -120,4 +122,5 @@ const Template = (args: any) => {
 export const Basic = Template.bind({});
 Basic.args = {
     views: views,
+    defaultView: <>No Views. SAD!</>
 };

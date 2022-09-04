@@ -1,4 +1,6 @@
 import Tree from '../components/Tree';
+import { PagesT } from '../types';
+import { TupleContext } from '../components/Tuple/TupleProvider';
 
 export default {
     title: 'Components/Tree',
@@ -6,45 +8,68 @@ export default {
     argTypes: { handleClick: { action: "handleClick" } },
 }
 
-const Template = (args: any) => <Tree {...args} />;
-
 
 const hello = <div>hello</div>;
 const world = <div>world</div>;
 
-const tree = {
-    hello: hello,
-    world: world,
-    hello_div: {
-        '1': hello,
-        '2': hello,
-        '3': hello,
-        '4': hello,
-        '5': world,
-        yolo_div: {
-            yolo: {
-                '1': hello,
-                '2': world,
-                '3': world,
-                carpe: {
-                    diem: {
-                        'a': hello,
-                        'b': hello
-                    }
-                },
-                diem: hello,
-                diem2: world
-            }
-        }
-    },
-    world_div: {
-        '1': hello,
-        '2': world,
-        '3': world,
-        '4': world,
-        '5': world,
-    }
-};
+
+const pages: PagesT = {
+    'hello': { name: 'hello', component: () => hello },
+    'world': { name: 'world', component: () => world },
+}
+
+
+const tree = [
+    'hello',
+    'world',
+    { label: 'hello_div', branches: [
+        'hello',
+        'hello',
+        'hello',
+        'hello',
+        'world',
+        { label: 'yolo_div', branches: [
+            { label: 'yolo', branches: [
+                'hello',
+                'world',
+                'world',
+                { label: 'carpe', branches: [
+                    { label: 'diem', branches: [
+                        'hello',
+                        'hello',
+                    ]},
+                ]},
+                'hello',
+                'world',
+            ]},
+        ]},
+    ]},
+    { label: 'world_div', branches: [
+        'world',
+        'world',
+        'world',
+        'world',
+        'world',
+    ]},
+];
+
+
+const Template = (args: any) => {
+
+    const context = {
+        pages,
+        views: null,
+        styles: {},
+        classes: {},
+        events: {},
+    };
+
+    return (
+        <TupleContext.Provider value={context}>
+            <Tree {...args} />
+        </TupleContext.Provider>
+    );
+}
 
 
 export const Basic = Template.bind({});

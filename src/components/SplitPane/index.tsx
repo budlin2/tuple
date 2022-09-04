@@ -9,10 +9,16 @@ import {
     MutableRefObject,
 } from 'react'
 
-import '../index.css';
+import _classes from './splitpane.module.css';
 
 
+// TODO: Remove
 type Direction = 'horizontal' | 'vertical' | 'none';
+
+
+const validateProps = (props: Props) => {
+
+}
 
 
 interface Props {
@@ -39,6 +45,7 @@ const SplitPane = ({
 }: Props) => {
     const childrenArr = Children.toArray(children);
     if (childrenArr.length > 2) throw 'SplitPane can only take a maximum of two children';
+    if (childrenArr.length < 1) throw 'SplitPane needs at least one child';
 
     const containerRef = useRef<HTMLDivElement>();
     const headRef = useRef<HTMLDivElement>();
@@ -133,8 +140,8 @@ const SplitPane = ({
             onMouseLeave={mouseUpHandler}>
             <div
                 ref={ headRef as MutableRefObject<HTMLDivElement> }
-                className='noScrollbar'
-                style={headStyle}>
+                className={_classes.noScrollbar}
+                style={{...headStyle, overflow: 'hidden'}}>
                 { childrenArr && childrenArr[0] }
                 { resizable &&
                     <div
@@ -145,7 +152,7 @@ const SplitPane = ({
             </div>
             <div
                 ref={ tailRef  as MutableRefObject<HTMLDivElement> }
-                className='noScrollbar'
+                className={_classes.noScrollbar}
                 style={tailStyle}>
                 { dir !== 'none' && childrenArr && childrenArr[1] }
             </div>

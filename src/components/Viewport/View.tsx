@@ -1,25 +1,11 @@
-import { CSSProperties, useContext, useState, useRef, MutableRefObject, useEffect } from 'react';
+import { CSSProperties, useContext, useRef, MutableRefObject } from 'react';
 
-import { ID, PageT, PagesT, TupleStylesT } from '../../types';
-import TabBar, { TabProps, StyleProps } from './TabBar';
-import { DragEvent } from '../../types';
-import { TupleContext } from '../Tuple';
+import { ID, PageT, PagesT, TupleStylesT, TupleClassesT } from '../../types';
+import TabBar from '../TabBar';
+import { TabProps } from '../TabBar/Tab';
+import { TupleContext } from '../Tuple/TupleProvider';
 
-
-// TODO : Typing could be better here
-const createTabs = (pages: PagesT, pageIds: ID[]) => Object.entries<any>(pages).reduce<any>(
-    (acc, [key, value]) => {
-        if (pageIds.includes(key)) {
-            acc.push({
-                id: key,
-                label: value.name,
-                view: value.component,
-            } as TabProps);
-        }
-        return acc;
-    }
-    , [] as TabProps[]
-);
+import _classes from './views.module.css';
 
 
 interface Props {
@@ -28,7 +14,6 @@ interface Props {
     activePageId: ID,
     // TODO : Move Styles to Context
     styles?: CSSProperties,
-    createDraggable: DragEvent,
 }
 
 
@@ -36,37 +21,37 @@ const View = ({
     id, // TODO : Does View need an ID?
     pageIds,
     activePageId,
-    createDraggable,
 }: Props) => {
-    const {pages, styles}: {pages: PagesT, styles: TupleStylesT} = useContext(TupleContext);
+    const viewRef = useRef<HTMLDivElement>();
+    const {pages, styles, classes}: {
+        pages: PagesT,
+        styles: TupleStylesT,
+        classes: TupleClassesT,
+    } = useContext(TupleContext);
+
     const activePage: PageT = pages[activePageId];
 
-    const viewRef = useRef<HTMLDivElement>();
-    const tabs = createTabs(pages, pageIds);
+    // TODO : Probably want to memoize buildXxxx() functions
+    const buildTabs = (pageIds: ID[]) => pageIds.map(
+        (pid: ID) => ({
+            pageId: pid,
+            removeTab: (id: ID) => {},
+        })
+    );
 
-    const viewStyle = {..._styles.view, ...styles.view}
+    const tabs = buildTabs(pageIds);
+    const viewClassName = `${_classes?.view} ${classes?.view}`;
 
     return (
         <div
             ref={viewRef as MutableRefObject<HTMLDivElement>}
-            style={viewStyle}>
-            <TabBar
-                tabs={tabs}
-                createDraggable={createDraggable}
-            />
+            className={viewClassName}
+            style={styles?.view}>
+            <TabBar tabs={tabs} />
             <activePage.component {...activePage.props} />
         </div>
     );
 }
-
-
-const _styles = {
-    view: {
-        height: '100%',
-        width: '100%',
-        background: 'green',
-    }
-};
 
 
 export default View;

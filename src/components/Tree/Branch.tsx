@@ -1,4 +1,9 @@
-import { ReactNode, FC, CSSProperties, MouseEvent, useState } from 'react'
+import {
+    ReactNode,
+    CSSProperties,
+    MouseEvent,
+    useState
+} from 'react'
 
 
 export interface StyleProps {

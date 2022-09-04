@@ -1,9 +1,9 @@
-import { CSSProperties, MouseEvent as rMouseEvent, ReactNode } from 'react';
+import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
 
 //----------------------------------------------------------------------------------------------------------------------
 // Types
 //----------------------------------------------------------------------------------------------------------------------
-export type DragEvent = (e: MouseEvent | rMouseEvent, leaf: HTMLElement, leafView: ReactNode) => void;
+export type DragEvent = (e: MouseEvent | rMouseEvent, page: PageT) => void;  // TODO: Remove if unused
 export type ID = number | string;
 export type DirectionT = 'horizontal' | 'vertical' | 'none';
 
@@ -22,17 +22,18 @@ export interface MinMaxT {
 }
 
 //----------------------------------------------------------------------
+export type ComponentRendererT = (props: any) => JSX.Element;  // TODO: Will I need this for Leaf component?
 export interface PageT {
     name: string,
     // TODO: Better typing thany any? Probz not tbh...
-    component: (props: any) => JSX.Element,
+    component: ComponentRendererT,
     props?: object,
 }
 export type PagesT = { [key: ID]: PageT }
 //----------------------------------------------------------------------
 export interface BranchT {
     label: string,
-    pageIds: (ID | BranchT)[],
+    branches: (ID | BranchT)[],
 }
 export type TreeT = (ID | BranchT)[];
 //----------------------------------------------------------------------
@@ -55,56 +56,69 @@ export interface SplitViewT {
 //----------------------------------------------------------------------------------------------------------------------
 export const isViewT = (v: any) => (v as ViewT).pageIds !== undefined;
 export const isSplitViewT = (v: any) => (v as SplitViewT).head !== undefined;
+// [DEPR] const isReactComponent = (comp: any) => !!comp?.prototype?.isReactComponent || isValidElement(comp);
+export const isID = (id: any) => typeof(id) === 'string' || typeof(id) === 'number';
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // Tuple Context
 //----------------------------------------------------------------------------------------------------------------------
 
-// Should always have same fields as TupleStylesT
+// Should always have same fields as TupleClassesT
 export interface TupleStylesT {
     tuple?: CSSProperties,
+    // TODO : draggable style?
+    draggable?: CSSProperties,
+    splitpane?: CSSProperties,
+
     tree?: CSSProperties,
     branch?: CSSProperties,
     branches?: CSSProperties,
     leaf?: CSSProperties,
-    tab?: CSSProperties,
+
     tabBar?: CSSProperties,
+    tab?: CSSProperties,
+    // TODO: active, hover, etc. should propably be nested styles
+    // i.e. tab: { default: {}, active: {}, hover: {} }
+    tabActive?: CSSProperties,
+    tabLabel?: CSSProperties,
     tabClose?: CSSProperties,
 
-
+    viewport?: CSSProperties,
     port?: CSSProperties, // TODO : Do I need this?
     view?: CSSProperties,
-    viewport?: CSSProperties,
-    draggable?: CSSProperties,
-    splitpane?: CSSProperties,
 }
 
 
-export interface TupleClassnamesT {
-    tuple?: CSSProperties,
-    tree?: CSSProperties,
-    branch?: CSSProperties,
-    branches?: CSSProperties,
-    leaf?: CSSProperties,
-    tab?: CSSProperties,
-    tabBar?: CSSProperties,
-    tabClose?: CSSProperties,
+export interface TupleClassesT {
+    tuple?: string,
+    draggable?: string,
+    splitpane?: string,
 
-    port?: CSSProperties, // TODO : Do I need this?
-    view?: CSSProperties,
-    viewport?: CSSProperties,
-    draggable?: CSSProperties,
-    splitpane?: CSSProperties,
+    tree?: string,
+    branch?: string,
+    branches?: string,
+    leaf?: string,
+
+    tabBar?: string,
+    tab?: string,
+    tabActive?: string,
+    tabLabel?: string,
+    tabClose?: string,
+
+    viewport?: string,
+    port?: string, // TODO : Do I need this?
+    view?: string,
 }
 
 
-export interface events {
-
-}
+export interface EventsT {}
 
 
 export interface TupleContextT {
     pages: PagesT,
+    views: SplitViewT | null,
     styles: TupleStylesT,
+    classes: TupleClassesT,
+    events: EventsT,
 }

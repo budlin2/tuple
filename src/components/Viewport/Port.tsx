@@ -7,7 +7,6 @@ import {
     SplitViewT,
     isViewT,
     isSplitViewT,
-    DragEvent
 } from "../../types"
 import SplitPane from "../SplitPane";
 import View from "./View";
@@ -34,13 +33,11 @@ const validateSplitView = (splitView: SplitViewT) => {
 
 interface PortProps {
     view: SplitViewT | ViewT,
-    createDraggable: DragEvent,
 }
 
 
 const Port = ({
     view,
-    createDraggable,
 }: PortProps): JSX.Element => {
     if (isViewT(view)) {
         view = view as ViewT;
@@ -49,7 +46,6 @@ const Port = ({
                 id={view.id}
                 pageIds={view.pageIds}
                 activePageId={view.activePageId}
-                createDraggable={createDraggable}
             />
         );
     } else if (isSplitViewT(view)) {
@@ -60,8 +56,8 @@ const Port = ({
                 dir={view.direction}
                 resizerPos='50%'>
                 {/* TODO: add resizerPos to SplitViewT */}
-                { view.head && <Port view={view.head} createDraggable={createDraggable} /> }
-                { view.tail && <Port view={view.tail} createDraggable={createDraggable} /> }
+                { view.head && <Port view={view.head} /> }
+                { view.tail && <Port view={view.tail} /> }
             </SplitPane>
         );
     }

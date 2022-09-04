@@ -1,5 +1,6 @@
-import TabBar from '../components/Viewport/TabBar';
-import { TupleContext } from '../components/Tuple';
+import TabBar from '../components/TabBar';
+import { TupleContext } from '../components/Tuple/TupleProvider';
+import { PagesT } from '../types';
 
 export default {
     title: 'Components/TabBar',
@@ -7,14 +8,26 @@ export default {
     argTypes: { handleClick: { action: "handleClick" } },
 }
 
-const Template = (args: any) => {
 
+const hello = <div>hello</div>;
+const world = <div>world</div>;
+
+const pages: PagesT = {
+    'hello': { name: 'hello', component: () => hello },
+    'world': { name: 'world', component: () => world },
+};
+
+const Template = (args: any) => {
     const context = {
+        pages,
+        views: null,
         styles: {
             tabBar: { background: 'yellow' },
             tab: { background: 'red' },
             tabClose: { background: 'green' },
-        }
+        },
+        classes: {},
+        events: {},
     };
     return (
         <TupleContext.Provider value={context}>
@@ -25,13 +38,11 @@ const Template = (args: any) => {
     );
 };
 
-const hello = <div>hello</div>;
-const world = <div>world</div>;
 
 export const Basic = Template.bind({});
 Basic.args = {
     tabs: [
-        { id: '1', label: 'hello', view: hello },
-        { id: '2', label: 'world', view: world },
+        { id: '1', pageId: 'hello' },
+        { id: '2', pageId: 'world' },
     ],
 };

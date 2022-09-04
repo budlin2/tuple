@@ -1,56 +1,32 @@
 import {
-    ReactNode,
     CSSProperties,
-    MouseEvent as rMouseEvent,
     useRef,
     MutableRefObject,
 } from 'react'
 
-import { DragEvent } from '../../types';
+import { ID } from '../../types';
 
 
 interface Props {
     text: string,
-    children: ReactNode,
+    pageId: ID,
     style?: CSSProperties,
-    mouseDown?: DragEvent,
-    mouseMove?: DragEvent,
-    mouseUp?: DragEvent,
 }
 
 
 const Leaf = ({
     text,
-    children,
+    pageId,
     style,
-    mouseDown,
-    mouseMove,
-    mouseUp,
 }: Props) => {
     const leafRef = useRef<HTMLDivElement>();
     const leafStyle: CSSProperties = {..._styles.leaf, ...style };
 
-    const mouseDownHandler = (e: rMouseEvent) => {
-        leafRef.current?.addEventListener('mousemove', mouseMoveHandler);
-        mouseDown && mouseDown(e, leafRef.current as HTMLElement, children);
-    };
-
-    const mouseMoveHandler = (e: MouseEvent) => {
-        leafRef.current?.removeEventListener('mousemove', mouseMoveHandler);
-        mouseMove && mouseMove(e, leafRef.current as HTMLElement, children);
-    };
-
-    const mouseUpHandler = (e: rMouseEvent) => {
-        leafRef.current?.removeEventListener('mousemove', mouseMoveHandler);
-        mouseUp && mouseUp(e, leafRef.current as HTMLElement, children);
-    };
-
     return (
         <div
+            draggable
             ref = { leafRef as MutableRefObject<HTMLDivElement> }
-            style={ leafStyle }
-            onMouseDown={ mouseDownHandler }
-            onMouseUp={ mouseUpHandler }>
+            style={ leafStyle }>
             { text }
         </div>
     );

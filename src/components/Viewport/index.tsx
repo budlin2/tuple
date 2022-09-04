@@ -1,44 +1,29 @@
-import { useState } from 'react';
+import { ReactNode } from 'react';
 
-import {
-    SplitViewT,
-    DragEvent
-} from '../../types';
+import { SplitViewT } from '../../types';
 import Port from './Port';
-import Draggable, { Props as DraggableProps } from '../Draggable';
-
 
 export interface Props {
-    views: SplitViewT,
-    createDraggable?: DragEvent,
+    views: SplitViewT | null,
+    defaultView: ReactNode,  // TODO: Also allow ViewT
 }
 
 
 const Viewport = ({
     views,
-    createDraggable,
+    defaultView,
 }: Props) => {
-    // if parent passes in createDraggable, it is responsible
-    // for the draggable, otherwise this component is
-    const [draggableProps, setDraggableProps] = createDraggable
-        ? [null, null]
-        : useState<DraggableProps | null>();
-
-    const createLocalDraggable: DragEvent = (e, leaf, leafView) => {
-        setDraggableProps && setDraggableProps({
-            text: leaf.innerText,
-            offset: { x: -15, y: -15 },
-            isDragging: true,
-            mouseUp: () => setDraggableProps(null),
-        } as DraggableProps);
-    };
+    // TODO : Show defaultView
+    if (!views)
+        return (
+            <>No Views. SAD!</>
+        );
 
     return (
         <div style = {_styles.root}>
-            <Port view={views} createDraggable={createDraggable || createLocalDraggable} />
-            { draggableProps && <Draggable {...draggableProps} /> }
+            <Port view={views as SplitViewT} />
         </div>
-    )
+    );
 };
 
 

@@ -1,12 +1,15 @@
+/* TODO: Convert these to SplitPane CSS Modules */
 .noScrollbar {
-    overflow-y: auto;
-    
-    /* hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  /* overflow: hidden; */
+  overflow-y: auto;
+  
+  /* hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
   
   /* hide scrollbar for chrome, safari and opera */
 .noScrollbar::-webkit-scrollbar {
-    display: none;
+  /* overflow: hidden; */
+  display: none;
 }
