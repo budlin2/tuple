@@ -1,7 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 
-import { SplitViewT } from '../../types';
+import { SplitViewT, TupleClassesT, TupleStylesT } from '../../types';
+import { TupleContext } from '../Tuple/TupleProvider';
 import Port from './Port';
+
+import _classes from './views.module.css';
 
 export interface Props {
     views: SplitViewT | null,
@@ -13,6 +16,13 @@ const Viewport = ({
     views,
     defaultView,
 }: Props) => {
+    const {styles, classes}: {
+        styles: TupleStylesT,
+        classes: TupleClassesT,
+    } = useContext(TupleContext);
+
+    const viewportClassName = `${_classes.viewport} ${classes.viewport}`;
+
     // TODO : Show defaultView
     if (!views)
         return (
@@ -20,19 +30,11 @@ const Viewport = ({
         );
 
     return (
-        <div style = {_styles.root}>
+        <div className={viewportClassName} style={styles.viewport}>
             <Port view={views as SplitViewT} />
         </div>
     );
 };
-
-
-const _styles = {
-    root: {
-        height: '100%',
-        width: '100%',
-    }
-}
 
 
 export default Viewport;

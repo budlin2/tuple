@@ -2,9 +2,11 @@ import {
     CSSProperties,
     useRef,
     MutableRefObject,
+    useContext,
 } from 'react'
 
-import { ID } from '../../types';
+import { ID, TupleClassesT, TupleStylesT } from '../../types';
+import { TupleContext } from '../Tuple/TupleProvider';
 
 
 interface Props {
@@ -17,25 +19,24 @@ interface Props {
 const Leaf = ({
     text,
     pageId,
-    style,
 }: Props) => {
     const leafRef = useRef<HTMLDivElement>();
-    const leafStyle: CSSProperties = {..._styles.leaf, ...style };
+
+    const { classes, styles }: {
+        classes: TupleClassesT,
+        styles: TupleStylesT,
+    } = useContext(TupleContext);
+
+    // TODO: onDrag... use pageId
 
     return (
-        <div
+        <div ref={leafRef as MutableRefObject<HTMLDivElement>}
             draggable
-            ref = { leafRef as MutableRefObject<HTMLDivElement> }
-            style={ leafStyle }>
+            style={styles.leaf}
+            className={classes.leaf}>
             { text }
         </div>
     );
-};
-
-
-const _styles = {
-    leaf: {
-    }
 };
 
 

@@ -2,7 +2,6 @@ import { CSSProperties, useContext, useRef, MutableRefObject } from 'react';
 
 import { ID, PageT, PagesT, TupleStylesT, TupleClassesT } from '../../types';
 import TabBar from '../TabBar';
-import { TabProps } from '../TabBar/Tab';
 import { TupleContext } from '../Tuple/TupleProvider';
 
 import _classes from './views.module.css';

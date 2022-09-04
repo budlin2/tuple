@@ -1,22 +1,19 @@
 import {
     ReactNode,
-    CSSProperties,
     MouseEvent,
-    useState
+    useState,
+    useContext
 } from 'react'
+import { TupleClassesT, TupleStylesT } from '../../types';
+import { TupleContext } from '../Tuple/TupleProvider';
 
-
-export interface StyleProps {
-    base?: CSSProperties,
-    branches?: CSSProperties,
-}
+import _classes from './tree.module.css';
 
 
 interface Props {
     text: string,
     children: ReactNode,
     open?: boolean,
-    styles?: StyleProps,
 }
 
 
@@ -24,39 +21,34 @@ const Branch = ({
     text,
     children,
     open=false,
-    styles={},
 }: Props) => {
-    const [expanded, setExpanded] = useState(open);
-    const baseStyle = {..._styles.base, ...styles.base }
-    const branchesStyle = {..._styles.branches, ...styles.branches }
+    const onClick = (e: MouseEvent) => setExpanded(cur => !cur);
 
-    const onClick = (e: MouseEvent) => {
-        setExpanded(cur => !cur);
-    }
+    const [expanded, setExpanded] = useState(open);
+    const { classes, styles }: {
+        classes: TupleClassesT,
+        styles: TupleStylesT,
+    } = useContext(TupleContext);
+
+    const branchClassName = `${_classes.branch} ${classes.branch}`;
+    const branchesClassName = `${_classes.branches} ${classes.branches}`;
     
     return (
         <div>
-            <div style={baseStyle} onClick={onClick}>
+            <div
+                className={branchClassName}
+                style={styles.branch}
+                onClick={onClick}>
                 { text }
             </div>
-            { expanded && <div style={branchesStyle}>
+            { expanded && <div
+                className={branchesClassName}
+                style={styles.branches}>
                 { children }
             </div> }
         </div>
     );
 }
-
-
-const _styles = {
-    base: {
-        borderBottom: '1px solid black',
-    },
-    branches: {
-        marginLeft: '0.3rem',
-        borderLeft: '1px dashed black',
-        paddingLeft: '0.3rem',
-    },
-};
 
 
 export default Branch;

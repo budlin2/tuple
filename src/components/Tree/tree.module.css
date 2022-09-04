@@ -1,0 +1,9 @@
+.branch {
+    border-bottom: 1px solid black;
+}
+
+.branches {
+    margin-left: 0.3rem;
+    border-left: 1px dashed black;
+    padding-left: 0.3rem;
+}
