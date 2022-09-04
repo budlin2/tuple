@@ -1,7 +1,9 @@
 import Tuple from '../components/Tuple';
+import TupleProvider from '../components/Tuple/TupleProvider';
 import { TreeT, PagesT, SplitViewT, ViewT } from '../types';
 import { TupleContext } from '../components/Tuple/TupleProvider';
 
+import classes from './view.stories.module.css';
 
 
 export default {
@@ -111,20 +113,11 @@ const bottom: SplitViewT = { head: bottomLeft, tail: bottomRight, direction: 'ho
 const views: SplitViewT = { head: top, tail: bottom, direction: 'vertical' };
 
 
-
 const Template = (args: any) => {
-    const context = {
-        pages,
-        views: null,
-        styles: {},
-        classes: {},
-        events: {},
-    };
-
     return (
-        <TupleContext.Provider value={context}>
+        <TupleProvider pages={pages} classes={classes}>
             <Tuple {...args} />
-        </TupleContext.Provider>
+        </TupleProvider>
     );
 }
 
@@ -132,7 +125,4 @@ export const Basic = Template.bind({});
 Basic.args = {
     pages: pages,
     tree: tree,
-    views: views,
-    events: {},
-    styles: {},
 };

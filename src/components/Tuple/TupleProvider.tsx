@@ -12,6 +12,7 @@ import {
     TupleContextT,
     TupleStylesT
 } from '../../types';
+import classes from './tuple.module.css';
 
 
 // On second thought, this should live in Tuple...
@@ -26,9 +27,9 @@ export const TupleContext = createContext({
 
 interface TupleProviderProps {
     pages: PagesT,
-    styles: TupleStylesT,
-    classes: TupleClassesT,
-    events: EventsT,
+    styles?: TupleStylesT,
+    classes?: TupleClassesT,
+    events?: EventsT,
     
     children: ReactNode,
 };
@@ -51,9 +52,9 @@ const TupleProvider = ({
     const context = {
         pages,
         views,
-        styles,
-        classes,
-        events,
+        styles: styles || {},
+        classes: classes || {},
+        events: events || {},
     };
 
 

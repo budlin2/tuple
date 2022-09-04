@@ -10,22 +10,13 @@ import {
 } from 'react'
 
 import _classes from './splitpane.module.css';
-
-
-// TODO: Remove
-type Direction = 'horizontal' | 'vertical' | 'none';
-
-
-const validateProps = (props: Props) => {
-
-}
+import {DirectionT} from '../../types';
 
 
 interface Props {
-    dir?: Direction,
+    dir?: DirectionT,
     width?: number | string,
     height?: number | string,
-    style?: CSSProperties
     resizerPos?: number | string,
     resizable?: boolean,
     children: ReactNode,
@@ -37,7 +28,6 @@ const SplitPane = ({
     dir='horizontal',
     width='100%',
     height='100%',
-    style={},
     resizerPos='50%',
     resizable=true,
     children,
@@ -114,111 +104,57 @@ const SplitPane = ({
         e.preventDefault();
     };
 
-    let containerStyle: CSSProperties;
-    let headStyle: CSSProperties;
-    let resizerStyle: CSSProperties;
-    let tailStyle: CSSProperties;
-    
-    if (dir === 'horizontal') {
-        containerStyle = { ..._styles.containerHorizontal, ...style };
-        headStyle = { ..._styles.left, width: headLength } as CSSProperties;
-        resizerStyle = _styles.resizerHorizontal as CSSProperties;
-        tailStyle = _styles.right;
-    } else {
-        containerStyle = { ..._styles.containerVertical, ...style } as CSSProperties;
-        headStyle = { ..._styles.top, height: headLength } as CSSProperties;
-        resizerStyle = _styles.resizerVertical as CSSProperties; 
-        tailStyle = _styles.bottom;
+    const containerStyle: CSSProperties = { width, height };
+    let headStyle: CSSProperties = {};
+
+    let containerClassName: string = _classes.container;
+    const headClassName: string = `${_classes.noScrollbar} ${_classes.pane} ${_classes.paneHead}`;
+    let resizerClassName: string = _classes.resizer;
+    const tailClassName: string = `${_classes.noScrollbar} ${_classes.pane} ${_classes.paneTail}`;
+
+    switch(dir) {
+        case 'horizontal':
+            headStyle = { ...headStyle, width: headLength };
+            resizerClassName = `${resizerClassName} ${_classes.resizerHorizontal}`;
+            break;
+        case 'vertical':
+            containerClassName = `${_classes.container} ${_classes.containerVertical}`;
+            headStyle = { ...headStyle, height: headLength };
+            resizerClassName = `${resizerClassName} ${_classes.resizerVertical}`;
+            break;
+        case 'none':
+        default:
+            if (childrenArr.length != 1)
+                throw 'Only one child allowed unless dir paramater is set to "horizontal" or "vertical"';
     }
-    
+
     return (
-        <div
-            ref={ containerRef as MutableRefObject<HTMLDivElement> }
-            style={{...containerStyle, width, height}}
+        <div ref={containerRef as MutableRefObject<HTMLDivElement>}
+            style={containerStyle}
+            className={containerClassName}
             onMouseMove={mouseMoveHandler}
             onMouseUp={mouseUpHandler}
-            onMouseLeave={mouseUpHandler}>
-            <div
-                ref={ headRef as MutableRefObject<HTMLDivElement> }
-                className={_classes.noScrollbar}
-                style={{...headStyle, overflow: 'hidden'}}>
+            onMouseLeave={mouseUpHandler}
+        >
+            <div ref={headRef as MutableRefObject<HTMLDivElement>}
+                className={headClassName}
+                style={headStyle}
+            >
                 { childrenArr && childrenArr[0] }
                 { resizable &&
-                    <div
-                        ref={ resizerRef as MutableRefObject<HTMLDivElement> }
-                        style={resizerStyle}
+                    <div ref={ resizerRef as MutableRefObject<HTMLDivElement> }
+                        className={resizerClassName}
                         onMouseDown={mouseDownHandler}/>
                 }
             </div>
-            <div
-                ref={ tailRef  as MutableRefObject<HTMLDivElement> }
-                className={_classes.noScrollbar}
-                style={tailStyle}>
+            <div ref={ tailRef  as MutableRefObject<HTMLDivElement> }
+                className={tailClassName}
+            >
                 { dir !== 'none' && childrenArr && childrenArr[1] }
             </div>
         </div>
     );
 }
-
-
-const _styles = {
-    // Horizontal
-    containerHorizontal: {
-        display: 'flex',
-        height: '100%',
-        width: '100%',
-    },
-    left: {
-        height: '100%',
-        position: 'relative',
-        overflow: 'scroll',
-        minWidth: '1px',
-    },
-    right: {
-        flex: 1,
-        overflow: 'scroll',
-        height: '100%',
-        minWidth: '1px',
-    },
-    resizerHorizontal: {
-        position: 'absolute',
-        top: 0,
-        right: '-4px',
-        width: '8px',
-        cursor: 'w-resize',
-        height: '100%',
-        opacity: 0
-    },
-
-    // VERTICAL
-    containerVertical: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        width: '100%',
-    },
-    top: {
-        width: '100%',
-        position: 'relative',
-        overflow: 'scroll',
-        minHeight: '1px',
-    },
-    bottom: {
-        flex: 1,
-        overflow: 'scroll',
-        width: '100%',
-        minHeight: '1px',
-    },
-    resizerVertical: {
-        position: 'absolute',
-        left: 0,
-        bottom: '-4px',
-        height: '8px',
-        cursor: 'n-resize',
-        width: '100%',
-        opacity: 0,
-    },
-};
 
 
 export default SplitPane;
