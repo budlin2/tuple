@@ -3,7 +3,28 @@
     width: 100%;
 }
 
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-.tabDock {
-    
+    padding-left: 4px;
+    padding-right: 4px;
+    min-width: 60px;
+    height: 30px;
+    position: relative;
+    border-right: 1px solid black;
+}
+
+.tabLabel {
+    display: flex;
+}
+
+.tabClose {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-radius: 5px;
+    right: 0;
 }

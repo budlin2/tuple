@@ -7,16 +7,8 @@ import Tab, { TabProps } from './Tab';
 import _classes from './tabs.module.css';
 
 
-export interface StyleProps {
-    tabBar?: CSSProperties,
-    tab?: CSSProperties,
-    tabClose?: CSSProperties,
-}
-
-
 interface Props {
     tabs: TabProps[],
-    styles?: StyleProps,
 }
 
 
@@ -25,13 +17,9 @@ const TabBar = ({
 }: Props) => {
     const [_tabs, setTabs] = useState(tabs);
     const {classes, styles}: {classes: TupleClassesT, styles: TupleStylesT} = useContext(TupleContext);
-    const tabBarClassName = `${_classes?.tabBar} ${classes?. tabBar}`;
-    const {pages}: {
-        pages: PagesT,
-        views: SplitViewT | null,
-    } = useContext(TupleContext);
+    const tabBarClassName = `${_classes?.tabBar} ${classes?.tabBar}`;
 
-    const removeTab = (id: ID) => setTabs(tbs => tbs.filter(tab => tab.id !== id ));
+    const removeTab = (pid: ID) => setTabs(tbs => tbs.filter(tab => tab.pageId !== pid ));
 
     return (
         <div className={tabBarClassName} style={styles?.tabBar}>

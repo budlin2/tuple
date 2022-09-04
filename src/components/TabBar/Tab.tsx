@@ -1,5 +1,4 @@
 import {
-    CSSProperties,
     useState,
     useRef,
     MutableRefObject,
@@ -7,8 +6,9 @@ import {
     MouseEvent as rMouseEvent,
 } from 'react';
 
-import { ID, TupleStylesT, PagesT } from '../../types';
+import { ID, TupleStylesT, PagesT, TupleClassesT } from '../../types';
 import { TupleContext } from '../Tuple/TupleProvider';
+import _classes from './tabs.module.css';
 
 
 export interface TabProps {
@@ -23,12 +23,16 @@ export const Tab = ({
 }: TabProps) => {
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
-    const {styles}: {styles: TupleStylesT} = useContext(TupleContext);
-    const {pages}: { pages: PagesT } = useContext(TupleContext);
+    const { pages, classes, styles }: {
+        pages: PagesT,
+        classes: TupleClassesT,
+        styles: TupleStylesT,
+    } = useContext(TupleContext);
 
-    const tabStyle = { ..._styles?.tab, ...styles?.tab } as CSSProperties;
-    const tabLabelStyle = { ..._styles?.tabLabel, ...styles?.tabLabel } as CSSProperties;
-    const tabCloseStyle = { ..._styles?.tabClose, ...styles?.tabClose } as CSSProperties;
+    const tabClassName: string = `${_classes.tab} ${classes.tab}`;
+    const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel}`;
+    const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose}`;
+
     // TODO : May need this to mask text that's flowing too far to right
     // const tabRightFadeStyle = {
     //     background: `linear-gradient(0.25turn, transparent, ${ tabLabelStyle.backgroundColor || tabLabelStyle.background })`},
@@ -42,52 +46,29 @@ export const Tab = ({
     const mouseMoveHandler = (e: MouseEvent) => {};
 
     return (
-        <div
+        <div ref={tabRef as MutableRefObject<HTMLDivElement> }
+            style={styles.tab}
             draggable
-            ref={tabRef as MutableRefObject<HTMLDivElement> }
-            style={tabStyle}
+            className={tabClassName}
             onMouseEnter={ mouseEnterHandler }
-            onMouseLeave={ mouseLeaveHandler }>
-
-            <div style={tabLabelStyle}> { pages[pageId].name } </div>
+            onMouseLeave={ mouseLeaveHandler }
+        >
+            <div
+                style={styles.tabLabel}
+                className={tabLabelClassName}>
+                { pages[pageId].name }
+            </div>
 
             { closeVisible &&
                 <div
-                    style={tabCloseStyle}
+                    style={styles.tabClose}
+                    className={tabCloseClassName}
                     onClick={ removeTab && (() => removeTab(pageId)) }>
                     { "\u2716" }
                 </div>
             }
         </div>
     );
-};
-
-
-// TODO : Working here.. need to move these to tabs.module.css
-const _styles = {
-    tab: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'spaceBetween',
-
-        paddingLeft: '4px',
-        paddingRight: '4px',
-        minWidth: '60px',  // TODO: rem or em
-        height: '30px',
-        position: 'relative',
-        borderRight: '1px solid black',
-    },
-    tabLabel: {
-        display: 'flex',
-    },
-    tabClose: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        borderRadius: '5px',
-        right: 0,
-    },
 };
 
 

@@ -78,9 +78,6 @@ export interface TupleStylesT {
 
     tabBar?: CSSProperties,
     tab?: CSSProperties,
-    // TODO: active, hover, etc. should propably be nested styles
-    // i.e. tab: { default: {}, active: {}, hover: {} }
-    tabActive?: CSSProperties,
     tabLabel?: CSSProperties,
     tabClose?: CSSProperties,
 
@@ -102,7 +99,6 @@ export interface TupleClassesT {
 
     tabBar?: string,
     tab?: string,
-    tabActive?: string,
     tabLabel?: string,
     tabClose?: string,
 
