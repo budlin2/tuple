@@ -1,6 +1,6 @@
-import TabBar from '../components/TabBar';
-import { TupleContext } from '../components/Tuple/TupleProvider';
-import { PagesT } from '../types';
+import TabBar from '.';
+import { TupleContext } from '../Tuple/TupleProvider';
+import { PagesT } from '../../types';
 
 export default {
     title: 'Components/TabBar',

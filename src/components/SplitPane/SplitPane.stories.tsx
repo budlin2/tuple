@@ -1,4 +1,4 @@
-import SplitPane from '../components/SplitPane';
+import SplitPane from '.';
 
 export default {
     title: 'Components/SplitPane',

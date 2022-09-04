@@ -1,6 +1,6 @@
-import View from '../components/Viewport/View';
-import { TupleContext } from '../components/Tuple/TupleProvider';
-import { PagesT } from '../types';
+import View from './View';
+import { TupleContext } from '../Tuple/TupleProvider';
+import { PagesT } from '../../types';
 
 import classes from './view.stories.module.css';
 

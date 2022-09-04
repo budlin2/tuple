@@ -1,9 +1,8 @@
-import Tuple from '../components/Tuple';
-import TupleProvider from '../components/Tuple/TupleProvider';
-import { TreeT, PagesT, SplitViewT, ViewT } from '../types';
-import { TupleContext } from '../components/Tuple/TupleProvider';
+import Tuple from '.';
+import TupleProvider from './TupleProvider';
+import { TreeT, PagesT, SplitViewT, ViewT } from '../../types';
 
-import classes from './view.stories.module.css';
+import classes from './tuple.stories.module.css';
 
 
 export default {

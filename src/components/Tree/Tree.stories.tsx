@@ -1,6 +1,6 @@
-import Tree from '../components/Tree';
-import { PagesT } from '../types';
-import { TupleContext } from '../components/Tuple/TupleProvider';
+import Tree from '.';
+import { PagesT } from '../../types';
+import { TupleContext } from '../Tuple/TupleProvider';
 
 export default {
     title: 'Components/Tree',

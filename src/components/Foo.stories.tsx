@@ -1,4 +1,4 @@
-import Foo from '../components/Foo';
+import Foo from './Foo';
 
 export default {
     title: 'Components/Foo',

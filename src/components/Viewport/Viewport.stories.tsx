@@ -1,6 +1,6 @@
-import Viewport from '../components/Viewport';
-import { PagesT, SplitViewT, ViewT } from '../types';
-import { TupleContext } from '../components/Tuple/TupleProvider';
+import Viewport from '.';
+import { PagesT, SplitViewT, ViewT } from '../../types';
+import { TupleContext } from '../Tuple/TupleProvider';
 
 
 export default {
