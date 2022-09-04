@@ -5,26 +5,43 @@
 
 .tab {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: space-between;
+    overflow: hidden;
 
     padding-left: 4px;
     padding-right: 4px;
-    min-width: 60px;
+    min-width: 80px;
+    max-width: 120px;
+    flex-shrink: 0;
     height: 30px;
-    position: relative;
     border-right: 1px solid black;
 }
 
 .tabLabel {
+    flex: 1;
+    overflow: hidden;
+}
+
+.tabCloseContainer {
+    width: 30px;
+
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .tabClose {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    
     border-radius: 5px;
-    right: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.tabClose:hover {
+    color: red;
 }

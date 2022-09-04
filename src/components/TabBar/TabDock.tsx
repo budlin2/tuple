@@ -44,9 +44,4 @@ export const TabDock = ({}) => {
 };
 
 
-// TODO : Working here.. need to move these to tabs.module.css
-const _styles = {
-};
-
-
 export default TabDock;

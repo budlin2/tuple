@@ -29,9 +29,9 @@ export const Tab = ({
         styles: TupleStylesT,
     } = useContext(TupleContext);
 
-    const tabClassName: string = `${_classes.tab} ${classes.tab}`;
-    const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel}`;
-    const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose}`;
+    const tabClassName: string = `${_classes.tab} ${classes.tab || ''}`;
+    const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
+    const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
 
     // TODO : May need this to mask text that's flowing too far to right
     // const tabRightFadeStyle = {
@@ -58,15 +58,14 @@ export const Tab = ({
                 className={tabLabelClassName}>
                 { pages[pageId].name }
             </div>
-
-            { closeVisible &&
-                <div
+            <div className={_classes.tabCloseContainer}>
+                { closeVisible && <div
                     style={styles.tabClose}
                     className={tabCloseClassName}
                     onClick={ removeTab && (() => removeTab(pageId)) }>
                     { "\u2716" }
-                </div>
-            }
+                </div>}
+            </div>
         </div>
     );
 };

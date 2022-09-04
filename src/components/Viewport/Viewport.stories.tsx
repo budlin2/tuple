@@ -96,9 +96,10 @@ const Template = (args: any) => {
         tab: {
             backgroundColor: 'midnightblue',
             color: 'white',
+            borderRight: '1px solid darkgrey',
         },
         tabClose: {
-            backgroundColor: 'darkgrey',
+            backgroundColor: 'rgba(150,150,250,0.8)'
         }
     }
 
