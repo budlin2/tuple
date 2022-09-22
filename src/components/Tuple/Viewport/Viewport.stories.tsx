@@ -1,6 +1,6 @@
 import Viewport from '.';
 import { PagesT, SplitViewT, ViewT } from '../../../types';
-import { TupleContext } from '../../Tuple/TupleProvider';
+import { TupleContext } from '../TupleProvider';
 
 import classes from './viewport.stories.module.css';
 

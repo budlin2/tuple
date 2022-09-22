@@ -1,5 +1,5 @@
 import View from '.';
-import { TupleContext } from '../../../Tuple/TupleProvider';
+import { TupleContext } from '../../TupleProvider';
 import { PagesT } from '../../../../types';
 
 import classes from '../viewport.stories.module.css';

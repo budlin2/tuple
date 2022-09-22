@@ -10,7 +10,7 @@ import {
     ViewT,
 } from '../../../../types';
 import TabBar from './TabBar';
-import { TupleContext } from '../../../Tuple/TupleProvider';
+import { TupleContext } from '../../TupleProvider';
 import { ViewportActionT } from '../ViewportTypes';
 
 import _classes from '../viewport.module.css';

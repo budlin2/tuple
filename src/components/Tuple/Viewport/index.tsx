@@ -1,7 +1,7 @@
 import { ReactNode, useContext } from 'react';
 
 import { SplitViewT, TupleClassesT, TupleStylesT, ViewportT } from '../../../types';
-import { TupleContext } from '../../Tuple/TupleProvider';
+import { TupleContext } from '../TupleProvider';
 import Port from './Port';
 
 import _classes from './viewport.module.css';

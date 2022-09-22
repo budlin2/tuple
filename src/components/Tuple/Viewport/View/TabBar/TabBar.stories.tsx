@@ -1,5 +1,5 @@
 import TabBar from '.';
-import { TupleContext } from '../../../../Tuple/TupleProvider';
+import { TupleContext } from '../../../TupleProvider';
 import { PagesT } from '../../../../../types';
 
 export default {

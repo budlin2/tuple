@@ -14,7 +14,7 @@ import {
     PagesT,
     TupleClassesT,
 } from '../../../../../../types';
-import { TupleContext } from '../../../../../Tuple/TupleProvider';
+import { TupleContext } from '../../../../TupleProvider';
 import { ViewActionKind, ViewportActionT } from '../../../ViewportTypes';
 import _classes from '../tabbar.module.css';
 
