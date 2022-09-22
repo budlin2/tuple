@@ -8,9 +8,9 @@ import {
     TupleClassesT,
     ViewportT,
     ViewT,
-} from '../../../types';
+} from '../../../../types';
 import TabBar from './TabBar';
-import { TupleContext } from '../../Tuple/TupleProvider';
+import { TupleContext } from '../../../Tuple/TupleProvider';
 import { ViewportActionT } from '../ViewportTypes';
 
 import _classes from '../viewport.module.css';

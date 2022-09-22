@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext, Dispatch } from 'react';
 
-import { ID, TupleStylesT, TupleClassesT, PagesT, SplitViewT } from '../../../../types';
-import { TupleContext } from '../../../Tuple/TupleProvider';
+import { ID, TupleStylesT, TupleClassesT, PagesT } from '../../../../../types';
+import { TupleContext } from '../../../../Tuple/TupleProvider';
 import { ViewportActionT } from '../../ViewportTypes';
-import Tab, { TabProps } from './Tab';
+import Tab from './Tab';
 
 import _classes from './tabbar.module.css';
 

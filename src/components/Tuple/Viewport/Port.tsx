@@ -9,8 +9,8 @@ import {
     isViewT,
     isSplitViewT,
     ViewportT,
-} from "../../types"
-import SplitPane from "../SplitPane";
+} from "../../../types";
+import SplitPane from "../../SplitPane";
 import View from "./View";
 import { AddTabPayloadT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
 
