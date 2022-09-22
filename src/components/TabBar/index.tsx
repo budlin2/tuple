@@ -5,7 +5,7 @@ import { TupleContext } from '../Tuple/TupleProvider';
 import { ViewportActionT } from '../Viewport/ViewportTypes';
 import Tab, { TabProps } from './Tab';
 
-import _classes from './tabs.module.css';
+import _classes from './tabbar.module.css';
 
 
 // TODO: Move TabBar inside of Viewport directory..

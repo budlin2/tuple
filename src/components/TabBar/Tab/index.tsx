@@ -13,10 +13,10 @@ import {
     TupleStylesT,
     PagesT,
     TupleClassesT,
-} from '../../types';
-import { TupleContext } from '../Tuple/TupleProvider';
-import { ViewActionKind, ViewportActionT } from '../Viewport/ViewportTypes';
-import _classes from './tabs.module.css';
+} from '../../../types';
+import { TupleContext } from '../../Tuple/TupleProvider';
+import { ViewActionKind, ViewportActionT } from '../../Viewport/ViewportTypes';
+import _classes from '../tabbar.module.css';
 
 
 export interface TabProps {
