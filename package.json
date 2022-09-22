@@ -10,6 +10,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "chromatic": "^6.9.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },

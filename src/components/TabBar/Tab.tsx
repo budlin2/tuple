@@ -4,22 +4,34 @@ import {
     MutableRefObject,
     useContext,
     MouseEvent as rMouseEvent,
+    useEffect,
+    Dispatch,
 } from 'react';
 
-import { ID, TupleStylesT, PagesT, TupleClassesT } from '../../types';
+import {
+    ID,
+    TupleStylesT,
+    PagesT,
+    TupleClassesT,
+} from '../../types';
 import { TupleContext } from '../Tuple/TupleProvider';
+import { ViewActionKind, ViewportActionT } from '../Viewport/ViewportTypes';
 import _classes from './tabs.module.css';
 
 
 export interface TabProps {
-    pageId: ID,     // This may serve as a unique identifier for tab as well
-    removeTab?: (id: ID) => void,
+    index: number,
+    pageId: ID,     // This may serve as a unique identifier for tab as well,
+    viewPath: string
+    dispatch: Dispatch<ViewportActionT>,
 }
 
 
 export const Tab = ({
+    index,
     pageId,
-    removeTab,
+    viewPath,
+    dispatch,
 }: TabProps) => {
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
@@ -29,14 +41,9 @@ export const Tab = ({
         styles: TupleStylesT,
     } = useContext(TupleContext);
 
-    const tabClassName: string = `${_classes.tab} ${classes.tab || ''}`;
+    const tabClassName = `${_classes.tab} ${classes.tab || ''}`;
     const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
     const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
-
-    // TODO : May need this to mask text that's flowing too far to right
-    // const tabRightFadeStyle = {
-    //     background: `linear-gradient(0.25turn, transparent, ${ tabLabelStyle.backgroundColor || tabLabelStyle.background })`},
-    // }
 
     // TODO: Mouse Events?
     const mouseEnterHandler = () => setCloseVisible(true);
@@ -45,13 +52,56 @@ export const Tab = ({
     const mouseUpHandler = (e: MouseEvent) => {};
     const mouseMoveHandler = (e: MouseEvent) => {};
 
+    // TODO : better typing
+    const dragStartHandler = (e: any) => {
+        console.log('Drag start!');
+        console.log(e.target);
+
+        setCloseVisible(false);
+        e.dataTransfer.setData('pid', pageId);
+        // setTimeout(() => { e.target.style.display = "none" }, 0);
+    };
+
+    const dropHandler = e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // console.log(pages[pageId].name, e);
+        if (tabRef.current)
+            tabRef.current.style.opacity = '1';
+
+        const pid = e.dataTransfer.getData('pid');
+        dispatch({
+            type: ViewActionKind.ADD_TAB,
+            payload: { pid, path: viewPath, index: index+1 }
+        });
+    }
+
+    const dragOverHandler = (e: any) => {
+        e.preventDefault();
+        // e.stopPropagation();
+
+        tabRef.current.style.opacity = '0.5';
+    }
+
+    const dragLeaveHandler = e => {
+        e.preventDefault();
+        // e.stopPropagation();
+        tabRef.current.style.opacity = '1';
+    }
+
     return (
         <div ref={tabRef as MutableRefObject<HTMLDivElement> }
+            draggable 
             style={styles.tab}
-            draggable
             className={tabClassName}
-            onMouseEnter={ mouseEnterHandler }
-            onMouseLeave={ mouseLeaveHandler }
+            onDragStart={dragStartHandler}
+            onDragEnter={dragOverHandler}
+            onDragOver={dragOverHandler}
+            onDragLeave={dragLeaveHandler}
+            onDrop={dropHandler}
+            onMouseOver={mouseEnterHandler}
+            onMouseLeave={mouseLeaveHandler}
         >
             <div
                 style={styles.tabLabel}
@@ -62,7 +112,8 @@ export const Tab = ({
                 { closeVisible && <div
                     style={styles.tabClose}
                     className={tabCloseClassName}
-                    onClick={ removeTab && (() => removeTab(pageId)) }>
+                    // TODO : Remove Tab
+                    onClick={ () => {} }>
                     { "\u2716" }
                 </div>}
             </div>

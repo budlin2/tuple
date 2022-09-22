@@ -14,5 +14,11 @@
 }
 
 .tabClose {
-    background-color: darkgrey;
+    background-color: rgba(200,200,220, 0.5);
+    color: rgba(0,0,0,0.8)
+}
+
+.tabClose:hover {
+    background-color: rgba(200,200,220, 0.9);
+    color: rgba(0,0,0,1)
 }

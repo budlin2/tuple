@@ -18,5 +18,33 @@
 }
 
 .tree {
-    border-right: 1px solid black;
+    background: darkgrey;
+}
+
+.branch {
+    background: midnightblue;
+    color: white;
+    padding-left: 10px;
+}
+
+.branch:hover {
+    background: aquamarine;
+    color: midnightblue;
+}
+
+.branches:hover {
+    border-left: 1px solid aquamarine;
+}
+
+.tab:hover {
+    background: aquamarine;
+    color: midnightblue;
+}
+
+.tabClose {
+    background: aquamarine;
+}
+
+.tabClose:hover {
+    background: rgba(20,20,20, 0.2);
 }

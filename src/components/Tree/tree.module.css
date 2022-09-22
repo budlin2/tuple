@@ -1,9 +1,34 @@
+.tree {
+    height: 100%;
+}
+
 .branch {
     border-bottom: 1px solid black;
+}
+
+.branch:hover {
+    cursor: pointer;
 }
 
 .branches {
     margin-left: 0.3rem;
     border-left: 1px dashed black;
     padding-left: 0.3rem;
+}
+
+.leafContainer {
+    display: flex;
+}
+
+.leaf {
+    margin-top: 2px;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+}
+
+.leaf:hover {
+    background: rgba(0,0,0,0.2);
+    cursor: pointer;
 }

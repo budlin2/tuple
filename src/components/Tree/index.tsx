@@ -17,6 +17,7 @@ import {
 } from '../../types';
 import { TupleContext } from '../Tuple/TupleProvider';
 
+import _classes from './tree.module.css';
 
 
 interface Props {
@@ -31,6 +32,7 @@ const Tree = ({ tree=[] }: Props) => {
         classes: TupleClassesT,
         styles: TupleStylesT,
     } = useContext(TupleContext);
+    const treeClassName = `${_classes.tree} ${classes.tree}`;
 
     const buildBranch = (bid: BranchT | ID): ReactNode => {
         if (isID(bid)) {
@@ -53,7 +55,7 @@ const Tree = ({ tree=[] }: Props) => {
     const buildTree = (_tree: TreeT): ReactNode => _tree.map( bid => buildBranch(bid));
 
     return (
-        <div className={classes.tree} style={styles.tree}>
+        <div className={treeClassName} style={styles.tree}>
             {buildTree(tree)}
         </div>
     );

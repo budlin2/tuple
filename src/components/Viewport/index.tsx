@@ -1,14 +1,15 @@
 import { ReactNode, useContext } from 'react';
 
-import { SplitViewT, TupleClassesT, TupleStylesT } from '../../types';
+import { SplitViewT, TupleClassesT, TupleStylesT, ViewportT } from '../../types';
 import { TupleContext } from '../Tuple/TupleProvider';
 import Port from './Port';
 
 import _classes from './views.module.css';
 
 export interface Props {
-    views: SplitViewT | null,
+    views: ViewportT | null,
     defaultView: ReactNode,  // TODO: Also allow ViewT
+    // noDuplicates: boolean // TODO: Specify whether duplicates are allowed in viewport
 }
 
 
@@ -31,7 +32,7 @@ const Viewport = ({
 
     return (
         <div className={viewportClassName} style={styles.viewport}>
-            <Port view={views as SplitViewT} />
+            <Port view={views as SplitViewT} path='' />
         </div>
     );
 };

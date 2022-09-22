@@ -9,6 +9,7 @@ import {
     TreeT,
     TupleStylesT,
     TupleClassesT,
+    ViewportT,
 } from '../../types';
 import { TupleContext } from './TupleProvider';
 import _classes from './tuple.module.css';
@@ -21,7 +22,7 @@ interface Props {
 
 const Tuple = ({ tree }: Props) => {
     const {views, styles, classes}: {
-        views: SplitViewT | null,
+        views: ViewportT | null,
         styles: TupleStylesT,
         classes: TupleClassesT,
     } = useContext(TupleContext);

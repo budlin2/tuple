@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
+import { CSSProperties, Dispatch, MouseEvent as rMouseEvent } from 'react';
 
 //----------------------------------------------------------------------------------------------------------------------
 // Types
@@ -6,7 +6,6 @@ import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
 export type DragEvent = (e: MouseEvent | rMouseEvent, page: PageT) => void;  // TODO: Remove if unused
 export type ID = number | string;
 export type DirectionT = 'horizontal' | 'vertical' | 'none';
-
 
 //----------------------------------------------------------------------------------------------------------------------
 // Interfaces
@@ -39,7 +38,6 @@ export type TreeT = (ID | BranchT)[];
 //----------------------------------------------------------------------
 
 export interface ViewT {
-    id: ID,
     pageIds: ID[],
     activePageId: ID
 }
@@ -50,6 +48,7 @@ export interface SplitViewT {
     direction: DirectionT,
 }
 
+export type ViewportT = SplitViewT | ViewT;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Type Checkers
@@ -59,11 +58,9 @@ export const isSplitViewT = (v: any) => (v as SplitViewT).head !== undefined;
 // [DEPR] const isReactComponent = (comp: any) => !!comp?.prototype?.isReactComponent || isValidElement(comp);
 export const isID = (id: any) => typeof(id) === 'string' || typeof(id) === 'number';
 
-
 //----------------------------------------------------------------------------------------------------------------------
 // Tuple Context
 //----------------------------------------------------------------------------------------------------------------------
-
 // Should always have same fields as TupleClassesT
 export interface TupleStylesT {
     tuple?: CSSProperties,
@@ -74,6 +71,7 @@ export interface TupleStylesT {
     tree?: CSSProperties,
     branch?: CSSProperties,
     branches?: CSSProperties,
+    leafContainer?: CSSProperties,
     leaf?: CSSProperties,
 
     tabBar?: CSSProperties,
@@ -95,6 +93,7 @@ export interface TupleClassesT {
     tree?: string,
     branch?: string,
     branches?: string,
+    leafContainer?: string,
     leaf?: string,
 
     tabBar?: string,
@@ -113,7 +112,7 @@ export interface EventsT {}
 
 export interface TupleContextT {
     pages: PagesT,
-    views: SplitViewT | null,
+    views: ViewportT | null,
     styles: TupleStylesT,
     classes: TupleClassesT,
     events: EventsT,

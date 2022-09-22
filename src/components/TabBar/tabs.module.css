@@ -11,12 +11,20 @@
     overflow: hidden;
 
     padding-left: 4px;
-    padding-right: 4px;
+    padding-right: 1px;
     min-width: 80px;
     max-width: 120px;
     flex-shrink: 0;
     height: 30px;
     border-right: 1px solid black;
+
+    cursor: move;
+}
+
+/* TODO: Using this? */
+.tab.dragging {
+    background: yellow;
+    opacity: 0.1;
 }
 
 .tabLabel {
@@ -25,7 +33,7 @@
 }
 
 .tabCloseContainer {
-    width: 30px;
+    width: 28px;
 
     display: flex;
     justify-content: center;
@@ -40,8 +48,6 @@
     border-radius: 5px;
     width: 20px;
     height: 20px;
-}
 
-.tabClose:hover {
-    color: red;
+    cursor: pointer;
 }

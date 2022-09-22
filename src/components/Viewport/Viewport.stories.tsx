@@ -2,6 +2,7 @@ import Viewport from '.';
 import { PagesT, SplitViewT, ViewT } from '../../types';
 import { TupleContext } from '../Tuple/TupleProvider';
 
+import classes from './view.stories.module.css';
 
 export default {
     title: 'Components/Viewport',
@@ -84,30 +85,11 @@ const bottom: SplitViewT = { head: bottomLeft, tail: bottomRight, direction: 'ho
 const views: SplitViewT = { head: top, tail: bottom, direction: 'vertical' };
 
 const Template = (args: any) => {
-    const styles = {
-        view: {
-            backgroundColor: 'lightgrey',
-            borderLeft: '1px solid black',
-            borderTop: '1px solid black',
-        },
-        tabBar: {
-            backgroundColor: 'darkgrey',
-        },
-        tab: {
-            backgroundColor: 'midnightblue',
-            color: 'white',
-            borderRight: '1px solid darkgrey',
-        },
-        tabClose: {
-            backgroundColor: 'rgba(150,150,250,0.8)'
-        }
-    }
-
     const context = {
         pages,
         views: null,
-        styles,
-        classes: {},
+        styles: {},
+        classes,
         events: {},
     };
     

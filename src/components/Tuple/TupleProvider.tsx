@@ -2,23 +2,27 @@ import {
     createContext,
     Children,
     ReactNode,
+    useReducer,
+    Dispatch
 } from 'react';
 
 
 import {
     EventsT,
     PagesT,
+    SplitViewT,
     TupleClassesT,
     TupleContextT,
-    TupleStylesT
+    TupleStylesT,
+    ViewportT
 } from '../../types';
-import classes from './tuple.module.css';
+import { getViewsFromStorage } from './TupleState';
 
 
 // On second thought, this should live in Tuple...
 export const TupleContext = createContext({
     pages: {},
-    views: null,
+    views: null,  // initial views.. Will overwrite with localStorage first
     styles: {},
     classes: {},
     events: {},
@@ -27,6 +31,8 @@ export const TupleContext = createContext({
 
 interface TupleProviderProps {
     pages: PagesT,
+    views: ViewportT,
+
     styles?: TupleStylesT,
     classes?: TupleClassesT,
     events?: EventsT,
@@ -40,18 +46,18 @@ const TupleProvider = ({
     styles,
     classes,
     events,
+    views,
     children,
 }: TupleProviderProps) => {
     const childrenArr = Children.toArray(children);
     if (childrenArr.length != 1) throw 'TupleProvider takes only one child: a Tuple component';
     // TODO : Check type of Child. Make sure it is Tuple
 
-    // TODO : Save views in local storage
-    const views = null;
+    const initViews = getViewsFromStorage() || views || null;
 
     const context = {
         pages,
-        views,
+        views: initViews,
         styles: styles || {},
         classes: classes || {},
         events: events || {},
