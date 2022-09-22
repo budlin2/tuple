@@ -11,7 +11,7 @@ import {
     ViewportT,
 } from "../../types"
 import SplitPane from "../SplitPane";
-import View from "./View";
+import View from "./View/View";
 import { AddTabPayloadT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
 
 

@@ -2,7 +2,7 @@ import Viewport from '.';
 import { PagesT, SplitViewT, ViewT } from '../../types';
 import { TupleContext } from '../Tuple/TupleProvider';
 
-import classes from './view.stories.module.css';
+import classes from './viewport.stories.module.css';
 
 export default {
     title: 'Components/Viewport',
@@ -56,25 +56,21 @@ const topLeft: ViewT = {
 };
 
 const topRightUpper: ViewT = {
-    id: 1,
     pageIds: ['world001', 'world002', 'world003', 'world004', 'world005', 'world006', 'world007'],
     activePageId: 'world002',
 };
 
 const topRightLower: ViewT = {
-    id: 2,
     pageIds: ['carpe001'],
     activePageId: 'carpe001',
 };
 
 const bottomLeft: ViewT = {
-    id: 3,
     pageIds: ['diem001'],
     activePageId: 'diem001',
 };
 
 const bottomRight: ViewT = {
-    id: 4,
     pageIds: ['monkey001', 'pox001'],
     activePageId: 'monkey001',
 };

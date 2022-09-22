@@ -8,12 +8,12 @@ import {
     TupleClassesT,
     ViewportT,
     ViewT,
-} from '../../types';
-import TabBar from '../TabBar';
-import { TupleContext } from '../Tuple/TupleProvider';
-import { ViewportActionT } from './ViewportTypes';
+} from '../../../types';
+import TabBar from '../../TabBar';
+import { TupleContext } from '../../Tuple/TupleProvider';
+import { ViewportActionT } from '../ViewportTypes';
 
-import _classes from './views.module.css';
+import _classes from '../viewport.module.css';
 
 
 interface Props {

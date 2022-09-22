@@ -4,7 +4,7 @@ import { SplitViewT, TupleClassesT, TupleStylesT, ViewportT } from '../../types'
 import { TupleContext } from '../Tuple/TupleProvider';
 import Port from './Port';
 
-import _classes from './views.module.css';
+import _classes from './viewport.module.css';
 
 export interface Props {
     views: ViewportT | null,
