@@ -50,7 +50,6 @@ const pages: PagesT = {
 
 *******************************/
 const topLeft: ViewT = {
-    id: 0,
     pageIds: ['hello001', 'hello002'],
     activePageId: 'hello001',
 };

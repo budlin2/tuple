@@ -1,4 +1,4 @@
-import View from './View';
+import View from '.';
 import { TupleContext } from '../../Tuple/TupleProvider';
 import { PagesT } from '../../../types';
 

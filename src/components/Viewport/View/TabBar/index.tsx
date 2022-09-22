@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext, Dispatch } from 'react';
 
-import { ID, TupleStylesT, TupleClassesT, PagesT, SplitViewT } from '../../types';
-import { TupleContext } from '../Tuple/TupleProvider';
-import { ViewportActionT } from '../Viewport/ViewportTypes';
+import { ID, TupleStylesT, TupleClassesT, PagesT, SplitViewT } from '../../../../types';
+import { TupleContext } from '../../../Tuple/TupleProvider';
+import { ViewportActionT } from '../../ViewportTypes';
 import Tab, { TabProps } from './Tab';
 
 import _classes from './tabbar.module.css';
@@ -34,9 +34,8 @@ Tuple/
         index.tsx
         etc...
     Viewport/
-        TabBar/
-                etc...
         View/
+            TabBar/
             etc...
         ViewLanding/    <--- New component to act aw landing area for views
             etc...
