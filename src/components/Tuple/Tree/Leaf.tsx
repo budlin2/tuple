@@ -5,8 +5,8 @@ import {
     useContext,
 } from 'react'
 
-import { ID, TupleClassesT, TupleStylesT } from '../../types';
-import { TupleContext } from '../Tuple/TupleProvider';
+import { ID, TupleClassesT, TupleStylesT } from '../../../types';
+import { TupleContext } from '../TupleProvider';
 
 import _classes from './tree.module.css';
 

@@ -14,8 +14,8 @@ import {
     BranchT,
     TupleClassesT,
     TupleStylesT
-} from '../../types';
-import { TupleContext } from '../Tuple/TupleProvider';
+} from '../../../types';
+import { TupleContext } from '../TupleProvider';
 
 import _classes from './tree.module.css';
 
