@@ -4,25 +4,26 @@ import {
     MutableRefObject,
     useContext,
     MouseEvent as rMouseEvent,
-    useEffect,
     Dispatch,
+    DragEvent,
 } from 'react';
+import ReactDOM from 'react-dom';
 
 import {
     ID,
     TupleStylesT,
     PagesT,
     TupleClassesT,
-} from '../../../../../../types';
-import { TupleContext } from '../../../../TupleProvider';
-import { ViewActionKind, ViewportActionT } from '../../../ViewportTypes';
-import _classes from '../tabbar.module.css';
+} from '../../../../../types';
+import { TupleContext } from '../../../TupleProvider';
+import { AddTabActionT, AddTabPayloadT, RemoveTabActionT, ViewActionKind, ViewportActionT } from '../../ViewportTypes';
+import _classes from './tabbar.module.css';
 
 
 export interface TabProps {
     index: number,
     pageId: ID,     // This may serve as a unique identifier for tab as well,
-    viewPath: string
+    path: string
     dispatch: Dispatch<ViewportActionT>,
 }
 
@@ -30,7 +31,7 @@ export interface TabProps {
 export const Tab = ({
     index,
     pageId,
-    viewPath,
+    path,
     dispatch,
 }: TabProps) => {
     const tabRef = useRef<HTMLDivElement>();
@@ -40,7 +41,6 @@ export const Tab = ({
         classes: TupleClassesT,
         styles: TupleStylesT,
     } = useContext(TupleContext);
-
     const tabClassName = `${_classes.tab} ${classes.tab || ''}`;
     const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
     const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
@@ -52,43 +52,64 @@ export const Tab = ({
     const mouseUpHandler = (e: MouseEvent) => {};
     const mouseMoveHandler = (e: MouseEvent) => {};
 
-    // TODO : better typing
-    const dragStartHandler = (e: any) => {
-        console.log('Drag start!');
-        console.log(e.target);
-
+    const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
-        e.dataTransfer.setData('pid', pageId);
-        // setTimeout(() => { e.target.style.display = "none" }, 0);
+        // TODO: Local storage events somewhere else... and/or send as JSON...
+        // [ e.dataTransfer.setData("text/plain", JSON.stringify(data)); ]
+        // ...so I can create a typed data object
+        e.dataTransfer && e.dataTransfer.setData('pid', pageId.toString());
+        e.dataTransfer && e.dataTransfer.setData('index', index.toString());
     };
 
-    const dropHandler = e => {
+    const dropHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
-        // console.log(pages[pageId].name, e);
-        if (tabRef.current)
+        console.log(e.target);
+
+        if (tabRef.current) {
             tabRef.current.style.opacity = '1';
+        }
 
-        const pid = e.dataTransfer.getData('pid');
-        dispatch({
+        const dragPid = e.dataTransfer && e.dataTransfer.getData('pid');
+
+        const addTabAction: AddTabActionT = {
             type: ViewActionKind.ADD_TAB,
-            payload: { pid, path: viewPath, index: index+1 }
-        });
+            payload: { pid: dragPid as ID, index: index+1 },
+        };
+
+        // TODO : update local storage
+
+        dispatch(addTabAction);
     }
 
-    const dragOverHandler = (e: any) => {
+    const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        // e.stopPropagation();
+        e.stopPropagation();
 
-        tabRef.current.style.opacity = '0.5';
+        // TODO: Better solution for this
+        if (tabRef.current) tabRef.current.style.opacity = '0.5';
     }
 
-    const dragLeaveHandler = e => {
+    const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        // e.stopPropagation();
-        tabRef.current.style.opacity = '1';
+        e.stopPropagation();
+
+        // TODO: Better solution for this
+        if (tabRef.current) tabRef.current.style.opacity = '1';
     }
+
+    const removeTabHandler = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const removeTabAction: RemoveTabActionT = {
+            type: ViewActionKind.REMOVE_TAB,
+            payload: { index }
+        };
+
+        dispatch(removeTabAction);
+    };
 
     return (
         <div ref={tabRef as MutableRefObject<HTMLDivElement> }
@@ -96,6 +117,7 @@ export const Tab = ({
             style={styles.tab}
             className={tabClassName}
             onDragStart={dragStartHandler}
+            onDragEnd={removeTabHandler}
             onDragEnter={dragOverHandler}
             onDragOver={dragOverHandler}
             onDragLeave={dragLeaveHandler}
@@ -109,13 +131,14 @@ export const Tab = ({
                 { pages[pageId].name }
             </div>
             <div className={_classes.tabCloseContainer}>
-                { closeVisible && <div
-                    style={styles.tabClose}
-                    className={tabCloseClassName}
-                    // TODO : Remove Tab
-                    onClick={ () => {} }>
-                    { "\u2716" }
-                </div>}
+                { closeVisible &&
+                    <div
+                        style={styles.tabClose}
+                        className={tabCloseClassName}
+                        onClick={removeTabHandler}>
+                        { "\u2716" }
+                    </div>
+                }
             </div>
         </div>
     );

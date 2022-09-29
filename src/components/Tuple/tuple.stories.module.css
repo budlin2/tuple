@@ -41,6 +41,11 @@
     color: midnightblue;
 }
 
+.tab:active {
+    background: aqua;
+    opacity: 0.9;
+}
+
 .tabClose {
     background: aquamarine;
 }

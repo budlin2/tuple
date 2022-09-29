@@ -35,9 +35,6 @@ const Leaf = ({
     const leafContainerClassName = `${_classes.leafContainer} ${classes.leafContainer}`;
 
     const dragStartHandler = (e: any) => {
-        console.log('Tree Drag start!');
-        console.log(e.target);
-
         e.dataTransfer.setData('pid', pageId);
         // setTimeout(() => { e.target.style.display = "none" }, 0);
     };

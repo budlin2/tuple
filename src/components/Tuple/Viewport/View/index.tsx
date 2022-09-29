@@ -46,7 +46,7 @@ const View = ({
             ref={viewRef as MutableRefObject<HTMLDivElement>}
             className={viewClassName}
             style={styles?.view}>
-            <TabBar pids={pageIds} viewPath={path} dispatch={dispatch}/>
+            <TabBar pids={pageIds} path={path} dispatch={dispatch}/>
             <activePage.component {...activePage.props } />
         </div>
     );

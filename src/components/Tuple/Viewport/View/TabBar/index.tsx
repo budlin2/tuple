@@ -54,39 +54,35 @@ FourCorners/        <--- Easy win. Finish Tuple first... This is just another go
 
 interface Props {
     pids: ID[],
-    viewPath: string,
+    path: string,
     dispatch: Dispatch<ViewportActionT>
 }
 
 
 const TabBar = ({
     pids,
-    viewPath,
+    path,
     dispatch,
 }: Props) => {
-    const [pageIds, setPageIds] = useState(pids);
-    const {pages, classes, styles}: {
-        pages: PagesT,
+    const {classes, styles}: {
         classes: TupleClassesT,
         styles: TupleStylesT
     } = useContext(TupleContext);
 
     const tabBarClassName = `${_classes?.tabBar} ${classes?.tabBar}`;
 
-    useEffect(() => {
-        console.log(pageIds);
-    }, [pageIds])
+    // TODO : Dispatch action to remove view
 
     return (
         <div
             className={tabBarClassName}
             style={styles?.tabBar}
         >
-            { pageIds.map(
+            { pids.map(
                 (pid, i) => <Tab
                     index={i}
                     pageId={pid}
-                    viewPath={viewPath}
+                    path={path}
                     dispatch={dispatch}
                 />
             )}
