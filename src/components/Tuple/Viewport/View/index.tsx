@@ -19,7 +19,6 @@ import _classes from '../viewport.module.css';
 interface Props {
     pageIds: ID[],
     activePageId: ID,
-    path: string,
     dispatch: Dispatch<ViewportActionT>
 }
 
@@ -27,7 +26,6 @@ interface Props {
 const View = ({
     pageIds,
     activePageId,
-    path,
     dispatch,
 }: Props) => {
     const viewRef = useRef<HTMLDivElement>();
@@ -46,7 +44,7 @@ const View = ({
             ref={viewRef as MutableRefObject<HTMLDivElement>}
             className={viewClassName}
             style={styles?.view}>
-            <TabBar pids={pageIds} path={path} dispatch={dispatch}/>
+            <TabBar pids={pageIds} dispatch={dispatch}/>
             <activePage.component {...activePage.props } />
         </div>
     );

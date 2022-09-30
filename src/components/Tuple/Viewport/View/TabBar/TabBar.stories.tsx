@@ -41,8 +41,5 @@ const Template = (args: any) => {
 
 export const Basic = Template.bind({});
 Basic.args = {
-    tabs: [
-        { id: '1', pageId: 'hello' },
-        { id: '2', pageId: 'world' },
-    ],
+    pids: ['hello', 'world']
 };

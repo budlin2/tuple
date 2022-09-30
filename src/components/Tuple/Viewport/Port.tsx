@@ -99,11 +99,10 @@ const validateSplitView = (splitView: SplitViewT) => {
 
 interface PortProps {
     viewport: SplitViewT | ViewT,
-    path: string,
 }
 
 
-const Port = ({ viewport, path='' }: PortProps): JSX.Element => {
+const Port = ({ viewport }: PortProps): JSX.Element => {
     const [_viewport, dispatch] = useReducer(reducer, viewport);
 
     // VIEW
@@ -114,7 +113,6 @@ const Port = ({ viewport, path='' }: PortProps): JSX.Element => {
             <View
                 pageIds={view.pageIds}
                 activePageId={view.activePageId}
-                path={path}
                 dispatch={dispatch}
             />
         );
@@ -125,16 +123,13 @@ const Port = ({ viewport, path='' }: PortProps): JSX.Element => {
         const splitview = _viewport as SplitViewT;
         validateSplitView(splitview);
 
-        const HEAD_PATH = `${path}h`;
-        const TAIL_PATH = `${path}t`;
-
         return (
             <SplitPane
                 dir={splitview.direction}
                 resizerPos='50%'>
                 {/* TODO: add resizerPos to SplitViewT */}
-                { splitview.head && <Port viewport={splitview.head} path={HEAD_PATH}/> }
-                { splitview.tail && <Port viewport={splitview.tail} path={TAIL_PATH}/> }
+                { splitview.head && <Port viewport={splitview.head} /> }
+                { splitview.tail && <Port viewport={splitview.tail} /> }
             </SplitPane>
         );
     }

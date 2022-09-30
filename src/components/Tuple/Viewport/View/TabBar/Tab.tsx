@@ -23,7 +23,6 @@ import _classes from './tabbar.module.css';
 export interface TabProps {
     index: number,
     pageId: ID,     // This may serve as a unique identifier for tab as well,
-    path: string
     dispatch: Dispatch<ViewportActionT>,
 }
 
@@ -31,7 +30,6 @@ export interface TabProps {
 export const Tab = ({
     index,
     pageId,
-    path,
     dispatch,
 }: TabProps) => {
     const tabRef = useRef<HTMLDivElement>();

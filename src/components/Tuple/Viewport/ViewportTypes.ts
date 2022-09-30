@@ -13,17 +13,19 @@ export enum ViewActionKind {
 }
 
 
+type SideT = "head" | "tail";
+
+
 export interface AddTabPayloadT { pid: ID, index: number };
 export interface AddTabActionT { type: ViewActionKind.ADD_TAB, payload: AddTabPayloadT };
 
 export interface RemoveTabPayloadT { index: number };
 export interface RemoveTabActionT { type: ViewActionKind.REMOVE_TAB, payload: RemoveTabPayloadT };
 
-export interface AddViewPayloadT { index: number };
+export interface AddViewPayloadT { pid: ID, side: SideT, direction: DirectionT };
 export interface AddViewActionT { type: ViewActionKind.ADD_VIEW, payload: AddViewPayloadT };
 
-type Side = "head" | "tail";
-export interface RemoveViewPayloadT { side: Side };
+export interface RemoveViewPayloadT { side: SideT };
 export interface RemoveViewActionT { type: ViewActionKind.REMOVE_VIEW, payload: RemoveViewPayloadT };
 
 

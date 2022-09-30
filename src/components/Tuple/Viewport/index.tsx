@@ -32,7 +32,7 @@ const Viewport = ({
 
     return (
         <div className={viewportClassName} style={styles.viewport}>
-            <Port viewport={views as SplitViewT} path='' />
+            <Port viewport={views as SplitViewT} />
         </div>
     );
 };
