@@ -12,7 +12,7 @@ import {
 } from "../../../types";
 import SplitPane from "../../SplitPane";
 import View from "./View";
-import { AddTabPayloadT, AddViewPayloadT, RemoveTabPayloadT, RemoveViewPayloadT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
+import { AddTabPayloadT, AddViewPayloadT, RemoveTabPayloadT, RemoveViewPayloadT, SideT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -32,11 +32,7 @@ const _add_tab = (state: ViewT, payload: AddTabPayloadT): ViewT => {
 // TODO : Working for all but alst element... hmmm. weird...
 //---------------------------------------------------------------------------------------------------------------------
 const _remove_tab = (state: ViewT, payload: RemoveTabPayloadT): ViewT => {
-    console.log("state.pageIds.length", state.pageIds.length, "payload.index", payload.index)
-    console.log(state.pageIds);
     const newPageIds = state.pageIds.filter((_, i) => i !== payload.index);
-
-    console.log("newPageIds", newPageIds);
 
     return {
         ...state,
@@ -47,25 +43,30 @@ const _remove_tab = (state: ViewT, payload: RemoveTabPayloadT): ViewT => {
 
 //---------------------------------------------------------------------------------------------------------------------
 const _add_view = (state: ViewT, payload: AddViewPayloadT): SplitViewT => {
-    return {} as SplitViewT;
+    const newView: ViewT = {
+        pageIds: [payload.pid],
+        activePageId: payload.pid,
+    };
+
+    return {
+        head: payload.side == SideT.HEAD ? newView : state,
+        tail: payload.side == SideT.TAIL ? newView: state,
+        direction: payload.direction,
+    } as SplitViewT;
 }
 
 
 //---------------------------------------------------------------------------------------------------------------------
 const _remove_view = (state: SplitViewT, payload: RemoveViewPayloadT): ViewportT => {
-    return payload.side == "head"
-        ? state.tail
-        : state.head
-    }
+    return payload.side == SideT.HEAD ? state.tail : state.head
+}
 
 
 
 //---------------------------------------------------------------------------------------------------------------------
-// TODO : I don't think I need path at all actually
 const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
     switch(action.type) {
         case ViewActionKind.ADD_TAB:
-            // TODO: state.push was working
             return _add_tab(state as ViewT, action.payload as AddTabPayloadT);
         case ViewActionKind.REMOVE_TAB:
             return _remove_tab(state as ViewT, action.payload as RemoveTabPayloadT);
@@ -76,7 +77,6 @@ const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
         default:
             return state;
     }
-    return state;
 }
 
 

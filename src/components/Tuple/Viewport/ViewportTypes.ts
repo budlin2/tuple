@@ -13,7 +13,10 @@ export enum ViewActionKind {
 }
 
 
-type SideT = "head" | "tail";
+export enum SideT {
+    HEAD = "head",
+    TAIL = "tail",
+}
 
 
 export interface AddTabPayloadT { pid: ID, index: number };

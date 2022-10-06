@@ -7,7 +7,6 @@ import {
     Dispatch,
     DragEvent,
 } from 'react';
-import ReactDOM from 'react-dom';
 
 import {
     ID,
@@ -62,8 +61,6 @@ export const Tab = ({
     const dropHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
-        console.log(e.target);
 
         if (tabRef.current) {
             tabRef.current.style.opacity = '1';
