@@ -20,11 +20,40 @@ import { TupleContext } from '../TupleProvider';
 import _classes from './tree.module.css';
 
 
-interface Props {
-    tree: TreeT,
-    // maxDepth: number,
+interface BranchesProps {
+    branchOrLeafId: BranchT | ID,
+    bid?: ID,
 }
 
+// Recursive tree component
+const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
+    const {pages}: {pages: PagesT} = useContext(TupleContext);
+
+    if (isID(branchOrLeafId)) {
+        const id: ID = branchOrLeafId as ID;
+        const page: PageT = pages[id];
+
+        if (!page)
+            throw `Page ID not found within "pages": [${page}]`;
+        
+        return <Leaf text={page.name} pageId={id} />;
+    }
+
+    const branch: BranchT = branchOrLeafId as BranchT;
+    return (
+        <Branch text={branch.label}>
+            { branch.branches.map((b, i) => (
+                <Branches key={`${bid}${i}`} branchOrLeafId={b}/>
+            ))}
+        </Branch>
+    );
+};
+
+
+interface Props {
+    tree: TreeT,
+    // maxDepth: number,  // TODO:?
+}
 
 const Tree = ({ tree=[] }: Props) => {
     const {pages, classes, styles }: {
@@ -34,29 +63,13 @@ const Tree = ({ tree=[] }: Props) => {
     } = useContext(TupleContext);
     const treeClassName = `${_classes.tree} ${classes.tree}`;
 
-    const buildBranch = (bid: BranchT | ID): ReactNode => {
-        if (isID(bid)) {
-            const id: ID = bid as ID;
-            const page: PageT = pages[id];
-
-            if (!page) throw `Page ID not found within "pages": [${page}]`;
-            
-            return <Leaf text={page.name} pageId={id} />;
-        }
-
-        const branch: BranchT = bid as BranchT;
-        return (
-            <Branch text={branch.label}>
-                { branch.branches.map( b => buildBranch(b)) }
-            </Branch>
-        );
-    }
-    
-    const buildTree = (_tree: TreeT): ReactNode => _tree.map( bid => buildBranch(bid));
-
+    // TODO: Need better key than index
+    // https://reactjs.org/docs/lists-and-keys.html#:~:text=We%20don%E2%80%99t%20recommend%20using%20indexes%20for%20keys%20if%20the%20order%20of%20items%20may%20change.
     return (
         <div className={treeClassName} style={styles.tree}>
-            {buildTree(tree)}
+            { tree.map( (bid, index) => (
+                <Branches key={index} branchOrLeafId ={bid}/>
+            ))}
         </div>
     );
 }

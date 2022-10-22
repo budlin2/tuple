@@ -19,7 +19,7 @@ import _classes from '../viewport.module.css';
 interface Props {
     pageIds: ID[],
     activePageId: ID,
-    dispatch: Dispatch<ViewportActionT>
+    dispatch: Dispatch<ViewportActionT>,
 }
 
 
@@ -28,13 +28,14 @@ const View = ({
     activePageId,
     dispatch,
 }: Props) => {
+    if (pageIds.length <= 0) return null;
+
     const viewRef = useRef<HTMLDivElement>();
     const {pages, styles, classes}: {
         pages: PagesT,
         styles: TupleStylesT,
         classes: TupleClassesT,
     } = useContext(TupleContext);
-    
 
     const activePage: PageT = pages[activePageId];
     const viewClassName = `${_classes?.view} ${classes?.view}`;

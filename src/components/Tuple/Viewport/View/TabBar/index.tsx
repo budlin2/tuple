@@ -32,13 +32,13 @@ const TabBar = ({
             className={tabBarClassName}
             style={styles?.tabBar}
         >
-            { pids.map(
-                (pid, i) => <Tab
+            { pids.map((pid, i) => (
+                <Tab
+                    key={pid}
                     index={i}
                     pageId={pid}
-                    dispatch={dispatch}
-                />
-            )}
+                    dispatch={dispatch}/>
+            ))}
         </div>
     );
 };

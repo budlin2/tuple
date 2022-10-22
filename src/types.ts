@@ -1,4 +1,4 @@
-import { CSSProperties, Dispatch, MouseEvent as rMouseEvent } from 'react';
+import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
 
 //----------------------------------------------------------------------------------------------------------------------
 // Types
@@ -31,6 +31,7 @@ export interface PageT {
 export type PagesT = { [key: ID]: PageT }
 //----------------------------------------------------------------------
 export interface BranchT {
+    id: ID,
     label: string,
     branches: (ID | BranchT)[],
 }

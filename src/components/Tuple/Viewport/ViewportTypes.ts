@@ -10,6 +10,7 @@ export enum ViewActionKind {
     REMOVE_TAB = "REMOVE_TAB",
     ADD_VIEW = "ADD_VIEW",
     REMOVE_VIEW = "REMOVE_VIEW",
+    CHANGE_ACTIVE_VIEW = "CHANGE_ACTIVE_VIEW",
 }
 
 
@@ -31,5 +32,12 @@ export interface AddViewActionT { type: ViewActionKind.ADD_VIEW, payload: AddVie
 export interface RemoveViewPayloadT { side: SideT };
 export interface RemoveViewActionT { type: ViewActionKind.REMOVE_VIEW, payload: RemoveViewPayloadT };
 
+export interface ChangeActiveViewPayloadT { pid: ID };
+export interface ChangeActiveViewActionT { type: ViewActionKind.CHANGE_ACTIVE_VIEW, payload: ChangeActiveViewPayloadT };
 
-export type ViewportActionT = AddTabActionT | RemoveTabActionT | AddViewActionT | RemoveViewActionT;
+
+export type ViewportActionT = AddTabActionT
+                            | RemoveTabActionT
+                            | AddViewActionT
+                            | RemoveViewActionT
+                            | ChangeActiveViewActionT;

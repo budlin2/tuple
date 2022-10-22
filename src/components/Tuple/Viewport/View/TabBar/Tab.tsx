@@ -15,7 +15,7 @@ import {
     TupleClassesT,
 } from '../../../../../types';
 import { TupleContext } from '../../../TupleProvider';
-import { AddTabActionT, AddTabPayloadT, RemoveTabActionT, ViewActionKind, ViewportActionT } from '../../ViewportTypes';
+import { AddTabActionT, AddTabPayloadT, ChangeActiveViewActionT, RemoveTabActionT, ViewActionKind, ViewportActionT } from '../../ViewportTypes';
 import _classes from './tabbar.module.css';
 
 
@@ -42,12 +42,17 @@ export const Tab = ({
     const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
     const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
 
-    // TODO: Mouse Events?
     const mouseEnterHandler = () => setCloseVisible(true);
     const mouseLeaveHandler = () => setCloseVisible(false);
-    const mouseDownHandler = (e: rMouseEvent) => {};
-    const mouseUpHandler = (e: MouseEvent) => {};
-    const mouseMoveHandler = (e: MouseEvent) => {};
+
+    const clickHandler = () => {
+        const changeActiveViewAction: ChangeActiveViewActionT = {
+            type: ViewActionKind.CHANGE_ACTIVE_VIEW,
+            payload: { pid: pageId }
+        };
+
+        dispatch(changeActiveViewAction);
+    };
 
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
@@ -111,14 +116,17 @@ export const Tab = ({
             draggable 
             style={styles.tab}
             className={tabClassName}
+
             onDragStart={dragStartHandler}
             onDragEnd={removeTabHandler}
             onDragEnter={dragOverHandler}
             onDragOver={dragOverHandler}
             onDragLeave={dragLeaveHandler}
             onDrop={dropHandler}
+
             onMouseOver={mouseEnterHandler}
             onMouseLeave={mouseLeaveHandler}
+            onClick={clickHandler}
         >
             <div
                 style={styles.tabLabel}

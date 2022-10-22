@@ -19,7 +19,8 @@ interface Props {
     tree: TreeT,
 }
 
-
+// TODO: Prop for 'deleteDuplicateView' where if true, DFS or BFS searches
+// and removes element if already in tree
 const Tuple = ({ tree }: Props) => {
     const {views, styles, classes}: {
         views: ViewportT | null,
