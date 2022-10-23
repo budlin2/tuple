@@ -2,7 +2,7 @@
 // Recursive component tree of Views and SplitPanes that make up a Viewport
 //----------------------------------------------------------------------------------------------------------------------
 
-import { useEffect, useReducer } from "react";
+import { Dispatch, useEffect, useReducer, useState } from "react";
 import {
     ViewT,
     SplitViewT,
@@ -12,7 +12,7 @@ import {
 } from "../../../types";
 import SplitPane from "../../SplitPane";
 import View from "./View";
-import { AddTabPayloadT, AddViewPayloadT, ChangeActiveViewPayloadT, RemoveTabPayloadT, RemoveViewActionT, RemoveViewPayloadT, SideT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
+import { AddTabPayloadT, AddViewPayloadT, ChangeActiveViewPayloadT, RemoveTabPayloadT, RemoveViewActionT, RemoveViewPayloadT, ReplaceWithViewPayloadT, ReplaceWithViewT, SideT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -45,6 +45,15 @@ const _remove_tab = (state: ViewT, payload: RemoveTabPayloadT): ViewT => {
         // ...state,
         pageIds: newPageIds,
         activePageId: newActivePageId,
+    } as ViewT;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+const _replace_with_view = (state: SplitViewT, payload: ReplaceWithViewPayloadT): ViewT => {
+    return {
+        pageIds: payload.pageIds,
+        activePageId: payload.activePageId,
     } as ViewT;
 }
 
@@ -90,6 +99,8 @@ const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
             return _add_tab(state as ViewT, action.payload as AddTabPayloadT);
         case ViewActionKind.REMOVE_TAB:
             return _remove_tab(state as ViewT, action.payload as RemoveTabPayloadT);
+        case ViewActionKind.REPLACE_WITH_VIEW:
+            return _replace_with_view(state as SplitViewT, action.payload as ReplaceWithViewPayloadT)
         case ViewActionKind.ADD_VIEW:
             return _add_view(state as ViewT, action.payload as AddViewPayloadT);
         case ViewActionKind.REMOVE_VIEW:
@@ -103,43 +114,47 @@ const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-const validateSplitView = (splitView: SplitViewT) => {
-    if (splitView.direction == 'none') {
-        if (!!splitView.tail) {
-            console.warn('Views with diection "none" should have only one child.');
-        }
-    } else {
-        if (!splitView.tail) {
-            throw new Error(`"${splitView.direction}" views require two children`);
-        }
-    }
-};
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
 interface PortProps {
     viewport: SplitViewT | ViewT,
-    removeView?: () => void,
+    propogateUp?: boolean,  // Replace parent with self
+    onTabListEmptyCb?: () => void
+    dispatchParent: Dispatch<ViewportActionT>
 }
 
 
-const Port = ({ viewport, removeView=()=>{} }: PortProps): JSX.Element => {
+const Port = ({
+    viewport,
+    propogateUp = false,
+    onTabListEmptyCb=()=>{},
+    dispatchParent=()=>{},
+}: PortProps): JSX.Element => {
     const [_viewport, dispatch] = useReducer(reducer, viewport);
+    const [replaceWithHead, setReplaceWithHead] = useState(false);
+    const [replaceWithTail, setReplaceWithTail] = useState(false);
 
     useEffect(() => {
         if (isViewT(_viewport)) {
             const view = _viewport as ViewT;
             if (view.pageIds.length == 0) {
-                removeView();
+                onTabListEmptyCb();
             }
         }
-    }, [_viewport]);
+    }, [_viewport, onTabListEmptyCb]);
 
+    //------------------------------------------------------------------------------------------------------------------
     // VIEW
+    //------------------------------------------------------------------------------------------------------------------
     if (isViewT(_viewport)) {
         const view = _viewport as ViewT;
+
+        if (propogateUp) {
+            const replaceParentWithSelfAction: ReplaceWithViewT = {
+                type: ViewActionKind.REPLACE_WITH_VIEW,
+                payload: { pageIds: view.pageIds, activePageId: view.activePageId },
+            };
+            // TODO : update local storage
+            dispatchParent(replaceParentWithSelfAction);
+        }
         
         return (
             <View
@@ -150,21 +165,11 @@ const Port = ({ viewport, removeView=()=>{} }: PortProps): JSX.Element => {
         );
     }
     
+    //------------------------------------------------------------------------------------------------------------------
     // SPLIT-VIEW
+    //------------------------------------------------------------------------------------------------------------------
     if (isSplitViewT(_viewport)) {
         const splitview = _viewport as SplitViewT;
-        validateSplitView(splitview);
-
-        const removeSide = (side: SideT) => {
-            const removeSideAction: RemoveViewActionT = {
-                type: ViewActionKind.REMOVE_VIEW,
-                payload: { side },
-            };
-    
-            // TODO : update local storage
-    
-            dispatch(removeSideAction);
-        }
 
         return (
             <SplitPane
@@ -174,12 +179,18 @@ const Port = ({ viewport, removeView=()=>{} }: PortProps): JSX.Element => {
                 { splitview.head &&
                     <Port
                         viewport={splitview.head}
-                        removeView={ ()=>removeSide(SideT.HEAD) } />
+                        propogateUp={replaceWithHead}
+                        onTabListEmptyCb={() => setReplaceWithTail(true)}
+                        dispatchParent={dispatch}
+                    />
                 }
                 { splitview.tail &&
                     <Port
                         viewport={splitview.tail}
-                        removeView={ ()=>removeSide(SideT.TAIL) } />
+                        propogateUp={replaceWithTail}
+                        onTabListEmptyCb={() => setReplaceWithHead(true)}
+                        dispatchParent={dispatch}
+                    />
                 }
             </SplitPane>
         );

@@ -1,4 +1,5 @@
 import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
+import ViewStories from './components/Tuple/Viewport/View/View.stories';
 
 //----------------------------------------------------------------------------------------------------------------------
 // Types
@@ -50,6 +51,15 @@ export interface SplitViewT {
 }
 
 export type ViewportT = SplitViewT | ViewT;
+
+//-----------------------------------------------
+export type ViewStateT = ViewT;
+
+export interface SplitViewStateT {
+    direction: DirectionT,
+}
+
+export type ViewportStateT = SplitViewStateT | ViewStateT;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Type Checkers

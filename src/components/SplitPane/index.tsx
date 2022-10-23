@@ -13,6 +13,18 @@ import _classes from './splitpane.module.css';
 import {DirectionT} from '../../types';
 
 
+const validateSplitPane = (direction: DirectionT, children: Array<ReactNode>) => {
+    if (children.length > 2) throw new Error('SplitPane can only take a maximum of two children');
+    if (children.length < 1) throw new Error('SplitPane needs at least one child');
+
+    if (direction == 'none' && children.length !== 1)
+        console.warn('Views with diection "none" should have one and only one child.');
+    
+    if ((direction == 'horizontal' || direction == 'vertical') && children.length !== 2)
+        throw new Error(`"${direction}" views require two children`);
+};
+
+
 interface Props {
     dir?: DirectionT,
     width?: number | string,
@@ -34,8 +46,7 @@ const SplitPane = ({
     onResize=null,
 }: Props) => {
     const childrenArr = Children.toArray(children);
-    if (childrenArr.length > 2) throw 'SplitPane can only take a maximum of two children';
-    if (childrenArr.length < 1) throw 'SplitPane needs at least one child';
+    validateSplitPane(dir, childrenArr);
 
     const containerRef = useRef<HTMLDivElement>();
     const headRef = useRef<HTMLDivElement>();
