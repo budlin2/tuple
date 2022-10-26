@@ -50,8 +50,8 @@ const TupleProvider = ({
     children,
 }: TupleProviderProps) => {
     const childrenArr = Children.toArray(children);
-    if (childrenArr.length != 1) throw 'TupleProvider takes only one child: a Tuple component';
-    // TODO : Check type of Child. Make sure it is Tuple
+    if (childrenArr.length != 1)
+        throw 'TupleProvider takes only one child: a Tuple component';
 
     const initViews = getViewsFromStorage() || views || null;
 

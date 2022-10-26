@@ -29,14 +29,11 @@ const Leaf = ({
         styles: TupleStylesT,
     } = useContext(TupleContext);
 
-    // TODO: onDrag... use pageId
-
     const leafClassName = `${_classes.leaf} ${classes.leaf}`;
     const leafContainerClassName = `${_classes.leafContainer} ${classes.leafContainer}`;
 
     const dragStartHandler = (e: any) => {
         e.dataTransfer.setData('pid', pageId);
-        // setTimeout(() => { e.target.style.display = "none" }, 0);
     };
 
     return (

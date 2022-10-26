@@ -24,9 +24,7 @@ const TabBar = ({
     } = useContext(TupleContext);
 
     const tabBarClassName = `${_classes?.tabBar} ${classes?.tabBar}`;
-
-    // TODO : Dispatch action to remove view
-
+    
     return (
         <div
             className={tabBarClassName}

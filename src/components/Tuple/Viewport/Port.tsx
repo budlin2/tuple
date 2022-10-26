@@ -110,7 +110,7 @@ const _change_active_view = (state: ViewT, payload: ChangeActiveViewPayloadT): V
 }
 
 
-// TODO: Move this and actions to PortState.tsx
+// TODO: Move this and actions to PortState.tsx?
 //---------------------------------------------------------------------------------------------------------------------
 const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
     switch(action.type) {
@@ -137,7 +137,7 @@ interface PortProps {
     viewport: SplitViewT | ViewT,
     propogateUp?: boolean,  // Replace parent with self
     onTabListEmptyCb?: () => void
-    dispatchParent: Dispatch<ViewportActionT>
+    dispatchParent?: Dispatch<ViewportActionT>
 }
 
 
@@ -170,7 +170,7 @@ const Port = ({
                     type: ViewActionKind.REPLACE_WITH_VIEW,
                     payload: { pageIds: view.pageIds, activePageId: view.activePageId },
                 };
-                // TODO : update local storage
+                // TODO: update local storage
                 dispatchParent(replaceParentWithViewAction);
             }
 
@@ -180,12 +180,11 @@ const Port = ({
                     type: ViewActionKind.REPLACE_WITH_SPLITVIEW,
                     payload: {
                         head: splitview.head,
-                        tail: splitview.tail,  // TODO: this is outdated... and probably the issue...
-                        // perhaps I need to propgate all the way down and then back up?
+                        tail: splitview.tail,
                         direction: splitview.direction,
                     },
                 };
-                // TODO : update local storage
+                // TODO: update local storage
                 dispatchParent(replaceParentWithSplitviewAction);
             }
         }

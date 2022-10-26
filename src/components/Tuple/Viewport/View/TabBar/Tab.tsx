@@ -60,7 +60,7 @@ export const Tab = ({
             payload: { pid, index: index+1 },
         };
 
-        // TODO : update local storage
+        // TODO: update local storage
 
         dispatch(addTabAction);
     }
@@ -84,9 +84,8 @@ export const Tab = ({
 
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
-        // TODO: Local storage events somewhere else... and/or send as JSON...
+        // TODO: Local storage events somewhere else... and send as JSON...
         // [ e.dataTransfer.setData("text/plain", JSON.stringify(data)); ]
-        // ...so I can create a typed data object
         e.dataTransfer && e.dataTransfer.setData('pid', pageId.toString());
         e.dataTransfer && e.dataTransfer.setData('index', index.toString());
     };
@@ -106,7 +105,6 @@ export const Tab = ({
         e.preventDefault();
         e.stopPropagation();
 
-        // TODO: Better solution for this
         if (tabRef.current)
             tabRef.current.style.opacity = '1';
     }
@@ -115,7 +113,6 @@ export const Tab = ({
         e.preventDefault();
         e.stopPropagation();
 
-        // TODO: Better solution for this
         if (tabRef.current)
             tabRef.current.style.opacity = '1';
     }

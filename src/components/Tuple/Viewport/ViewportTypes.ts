@@ -1,6 +1,3 @@
-// TODO: Each component should have its own types file.
-// Can also have a types file at root, but that is currently getting too bloated;
-
 import { ID, DirectionT, ViewT, SplitViewT } from "../../../types";
 
 
@@ -33,7 +30,7 @@ export interface ReplaceWithViewT { type: ViewActionKind.REPLACE_WITH_VIEW, payl
 export type ReplaceWithSplitviewPayloadT = SplitViewT;
 export interface ReplaceWithSplitviewT { type: ViewActionKind.REPLACE_WITH_SPLITVIEW, payload: ReplaceWithSplitviewPayloadT };
 
-// TODO : Do I need this?
+// TODO: Do I need this?
 export interface AddViewPayloadT { pid: ID, side: SideT, direction: DirectionT };
 export interface AddViewActionT { type: ViewActionKind.ADD_VIEW, payload: AddViewPayloadT };
 

@@ -22,10 +22,9 @@ export interface MinMaxT {
 }
 
 //----------------------------------------------------------------------
-export type ComponentRendererT = (props: any) => JSX.Element;  // TODO: Will I need this for Leaf component?
+export type ComponentRendererT = (props: any) => JSX.Element;
 export interface PageT {
     name: string,
-    // TODO: Better typing thany any? Probz not tbh...
     component: ComponentRendererT,
     props?: object,
 }
@@ -75,7 +74,6 @@ export const isID = (id: any) => typeof(id) === 'string' || typeof(id) === 'numb
 // Should always have same fields as TupleClassesT
 export interface TupleStylesT {
     tuple?: CSSProperties,
-    // TODO : draggable style?
     draggable?: CSSProperties,
     splitpane?: CSSProperties,
 
@@ -91,7 +89,6 @@ export interface TupleStylesT {
     tabClose?: CSSProperties,
 
     viewport?: CSSProperties,
-    port?: CSSProperties, // TODO : Do I need this?
     view?: CSSProperties,
 }
 
@@ -113,7 +110,6 @@ export interface TupleClassesT {
     tabClose?: string,
 
     viewport?: string,
-    port?: string, // TODO : Do I need this?
     view?: string,
 }
 
