@@ -1,12 +1,14 @@
+import { Meta, Story } from "@storybook/react";
+
 import TabBar from '.';
-import { TupleContext } from '../../../TupleProvider';
+import TupleProvider, { TupleProviderProps } from '../../../TupleProvider';
 import { PagesT } from '../../../../../types';
 
 export default {
     title: 'Components/TabBar',
     component: TabBar,
     argTypes: { handleClick: { action: "handleClick" } },
-}
+} as Meta;
 
 
 const hello = <div>hello</div>;
@@ -17,29 +19,31 @@ const pages: PagesT = {
     'world': { name: 'world', component: () => world },
 };
 
-const Template = (args: any) => {
-    const context = {
-        pages,
-        views: null,
-        styles: {
-            tabBar: { background: 'yellow' },
-            tab: { background: 'red' },
-            tabClose: { background: 'green' },
-        },
-        classes: {},
-        events: {},
-    };
+
+//----------------------------------------------------------------------------------------------------------------------
+// Template
+//----------------------------------------------------------------------------------------------------------------------
+const Template: Story<TupleProviderProps> = (args: any) => {
+    const pids = ['hello', 'world'];
+    
     return (
-        <TupleContext.Provider value={context}>
+        <TupleProvider {...args}>
             <div style={{ width: '600px' }}>
-                <TabBar {...args} />
+                <TabBar pids={pids} />
             </div>
-        </TupleContext.Provider>
+        </TupleProvider>
     );
 };
 
 
 export const Basic = Template.bind({});
 Basic.args = {
-    pids: ['hello', 'world']
+    pages,
+    styles: {
+        tabBar: { background: 'yellow' },
+        tab: { background: 'red' },
+        tabClose: { background: 'green' },
+    },
+    classes: {},
+    events: {},
 };

@@ -1,4 +1,4 @@
-import {Meta, Story} from "@storybook/react";
+import { Meta, Story } from "@storybook/react";
 
 import Tuple from '.';
 import TupleProvider, { TupleProviderProps } from './TupleProvider';

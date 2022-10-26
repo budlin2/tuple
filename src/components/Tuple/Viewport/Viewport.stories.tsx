@@ -1,6 +1,8 @@
+import { Meta, Story } from "@storybook/react";
+
 import Viewport from '.';
 import { PagesT, SplitViewT, ViewT } from '../../../types';
-import { TupleContext } from '../TupleProvider';
+import TupleProvider, { TupleContext, TupleProviderProps } from '../TupleProvider';
 
 import classes from './viewport.stories.module.css';
 
@@ -8,11 +10,11 @@ export default {
     title: 'Components/Viewport',
     component: Viewport,
     argTypes: { handleClick: { action: "handleClick" } },
-}
+} as Meta;
 
-//--------
+//----------------------------------------------------------------------------------------------------------------------
 // PAGES
-//--------
+//----------------------------------------------------------------------------------------------------------------------
 interface pageProps { text: string }
 const page = ({text}: pageProps): JSX.Element => {
     return ( 
@@ -36,9 +38,9 @@ const pages: PagesT = {
     'pox001': { name: 'pox', component: page, props: { text: 'pox' } },
 };
 
-//--------
+//----------------------------------------------------------------------------------------------------------------------
 // Views
-//--------
+//----------------------------------------------------------------------------------------------------------------------
 
 /******************************
     Views for this structure:
@@ -74,31 +76,31 @@ const bottomRight: ViewT = {
     activePageId: 'monkey001',
 };
 
+
 const topRight: SplitViewT = { head: topRightUpper, tail: topRightLower, direction: 'vertical' };
 const top: SplitViewT = { head: topLeft, tail: topRight, direction: 'horizontal'};
 const bottom: SplitViewT = { head: bottomLeft, tail: bottomRight, direction: 'horizontal' };
 const views: SplitViewT = { head: top, tail: bottom, direction: 'vertical' };
 
-const Template = (args: any) => {
-    const context = {
-        pages,
-        views: null,
-        styles: {},
-        classes,
-        events: {},
-    };
-    
+
+//----------------------------------------------------------------------------------------------------------------------
+// Template
+//----------------------------------------------------------------------------------------------------------------------
+const Template: Story<TupleProviderProps> = (args: any) => {
     return (
-        <TupleContext.Provider value={context}>
+        <TupleProvider {...args}>
             <div style={{ height: '700px' }}>
-                <Viewport {...args} />
+                <Viewport views={views} />
             </div>
-        </TupleContext.Provider>
+        </TupleProvider>
     );
 }
 
+
 export const Basic = Template.bind({});
 Basic.args = {
-    views: views,
-    defaultView: <>No Views. SAD!</>
+    pages,
+    styles: {},
+    classes,
+    events: {},
 };

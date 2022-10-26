@@ -1,7 +1,4 @@
-import {
-    ReactNode,
-    useContext,
-} from 'react';
+import { useContext } from 'react';
 
 import Leaf from './Leaf'
 import Branch from './Branch';
@@ -50,7 +47,7 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
 };
 
 
-interface Props {
+export interface Props {
     tree: TreeT,
     // maxDepth: number,  // TODO:?
 }

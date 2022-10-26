@@ -25,7 +25,7 @@ const validateSplitPane = (direction: DirectionT, children: Array<ReactNode>) =>
 };
 
 
-interface Props {
+export interface Props {
     dir?: DirectionT,
     width?: number | string,
     height?: number | string,

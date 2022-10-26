@@ -1,11 +1,17 @@
-import SplitPane from '.';
+import { Meta, Story } from "@storybook/react";
+
+import SplitPane, { Props as SplitPaneProps } from '.';
 
 export default {
     title: 'Components/SplitPane',
     component: SplitPane,
-}
+} as Meta;
 
-const Template = (args: any) => (
+
+//----------------------------------------------------------------------------------------------------------------------
+// Template
+//----------------------------------------------------------------------------------------------------------------------
+const Template: Story<SplitPaneProps> = (args: any) => (
     <div style = {{ height: '700px', width: '1000px' }}>
         <SplitPane {...args}>
             <div style={{ background: 'red', width: '100%', height: '100%' }}>HEAD</div>
@@ -13,6 +19,7 @@ const Template = (args: any) => (
         </SplitPane>
     </div>
 );
+
 
 export const Horizontal = Template.bind({});
 Horizontal.args = {

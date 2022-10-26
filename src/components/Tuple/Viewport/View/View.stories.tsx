@@ -1,5 +1,7 @@
+import { Meta, Story } from "@storybook/react";
+
 import View from '.';
-import { TupleContext } from '../../TupleProvider';
+import TupleProvider, { TupleProviderProps } from '../../TupleProvider';
 import { PagesT } from '../../../../types';
 
 import classes from '../viewport.stories.module.css';
@@ -9,7 +11,7 @@ export default {
     title: 'Components/View',
     component: View,
     argTypes: { handleClick: { action: "handleClick" } }
-};
+} as Meta;
 
 
 const hello = <div>hello</div>;
@@ -26,38 +28,33 @@ const pages: PagesT = {
 };
 
 
-const Template = (args: any) => {
-    const context = {
-        pages,
-        views: null,
-        styles: {},
-        classes,
-        events: {}
-    };
+//----------------------------------------------------------------------------------------------------------------------
+// Template
+//----------------------------------------------------------------------------------------------------------------------
+const Template: Story<TupleProviderProps> = (args: any) => {
 
     return (
-        <TupleContext.Provider value={context}>
+        <TupleProvider {...args}>
             <div style={{ height: '500px' }}>
-                <View {...args.top} />
+                <View
+                    pageIds={['a', 'b', 'c']}
+                    activePageId={'b'}
+                    dispatch={ ()=>{} }/>
             </div>
             <div style={{ height: '500px' }}>
-                <View {...args.bottom} />
+                <View
+                    pageIds={['a', 'b', 'c']}
+                    activePageId={'b'}
+                    dispatch={ ()=>{} }/>
             </div>
-        </TupleContext.Provider>
+        </TupleProvider>
     );
 };
 
 export const Basic = Template.bind({});
-
 Basic.args = {
-    top: {
-        id: 1,
-        pageIds: ['a', 'b', 'c'],
-        activePageId: 'b',
-    },
-    bottom: {
-        id: 2,
-        pageIds: ['d'],
-        activePageId: 'd',
-    }
+    pages,
+    styles: {},
+    classes,
+    events: {}
 };

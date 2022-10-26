@@ -8,7 +8,7 @@ import _classes from './viewport.module.css';
 
 export interface Props {
     views: ViewportT | null,
-    defaultView: ReactNode
+    defaultView?: ReactNode
     // noDuplicates: boolean // TODO: Specify whether duplicates are allowed in viewport
 }
 

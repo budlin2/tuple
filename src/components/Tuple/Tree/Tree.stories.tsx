@@ -1,12 +1,14 @@
+import { Meta, Story } from "@storybook/react";
+
 import Tree from '.';
 import { PagesT } from '../../../types';
-import { TupleContext } from '../TupleProvider';
+import TupleProvider, { TupleProviderProps } from '../TupleProvider';
 
 export default {
     title: 'Components/Tree',
     component: Tree,
     argTypes: { handleClick: { action: "handleClick" } },
-}
+} as Meta;
 
 
 const hello = <div>hello</div>;
@@ -19,22 +21,23 @@ const pages: PagesT = {
 }
 
 
+// TODO: generate IDs for branches for user
 const tree = [
     'hello',
     'world',
-    { label: 'hello_div', branches: [
+    { id: 1, label: 'hello_div', branches: [
         'hello',
         'hello',
         'hello',
         'hello',
         'world',
-        { label: 'yolo_div', branches: [
-            { label: 'yolo', branches: [
+        { id: 2, label: 'yolo_div', branches: [
+            { id: 3, label: 'yolo', branches: [
                 'hello',
                 'world',
                 'world',
-                { label: 'carpe', branches: [
-                    { label: 'diem', branches: [
+                { id: 4, label: 'carpe', branches: [
+                    { id: 5, label: 'diem', branches: [
                         'hello',
                         'hello',
                     ]},
@@ -44,7 +47,7 @@ const tree = [
             ]},
         ]},
     ]},
-    { label: 'world_div', branches: [
+    { id: 6, label: 'world_div', branches: [
         'world',
         'world',
         'world',
@@ -54,25 +57,22 @@ const tree = [
 ];
 
 
-const Template = (args: any) => {
-
-    const context = {
-        pages,
-        views: null,
-        styles: {},
-        classes: {},
-        events: {},
-    };
-
+//----------------------------------------------------------------------------------------------------------------------
+// Template
+//----------------------------------------------------------------------------------------------------------------------
+const Template: Story<TupleProviderProps> = (args: any) => {
     return (
-        <TupleContext.Provider value={context}>
-            <Tree {...args} />
-        </TupleContext.Provider>
+        <TupleProvider {...args}>
+            <Tree tree={tree} />
+        </TupleProvider>
     );
 }
 
 
 export const Basic = Template.bind({});
 Basic.args = {
-    tree: tree,
+    pages,
+    styles: {},
+    classes: {},
+    events: {},
 };

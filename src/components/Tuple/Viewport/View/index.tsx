@@ -1,4 +1,4 @@
-import { useContext, useRef, MutableRefObject, useReducer, Dispatch } from 'react';
+import { useContext, useRef, MutableRefObject, Dispatch } from 'react';
 
 import {
     ID,
@@ -6,8 +6,6 @@ import {
     PagesT,
     TupleStylesT,
     TupleClassesT,
-    ViewportT,
-    ViewT,
 } from '../../../../types';
 import TabBar from './TabBar';
 import { TupleContext } from '../../TupleProvider';
