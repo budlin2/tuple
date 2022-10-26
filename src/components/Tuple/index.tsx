@@ -15,7 +15,7 @@ import { TupleContext } from './TupleProvider';
 import _classes from './tuple.module.css';
 
 
-interface Props {
+export interface Props {
     tree: TreeT,
 }
 

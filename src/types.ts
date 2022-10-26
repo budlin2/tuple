@@ -46,7 +46,7 @@ export interface ViewT {
 
 export interface SplitViewT {
     head: ViewT | SplitViewT,
-    tail: ViewT | SplitViewT,
+    tail: ViewT | SplitViewT | null,
     direction: DirectionT,
 }
 

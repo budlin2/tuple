@@ -29,7 +29,7 @@ export const TupleContext = createContext({
 } as TupleContextT);
 
 
-interface TupleProviderProps {
+export interface TupleProviderProps {
     pages: PagesT,
     views: ViewportT,
 

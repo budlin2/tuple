@@ -12,7 +12,19 @@ import {
 } from "../../../types";
 import SplitPane from "../../SplitPane";
 import View from "./View";
-import { AddTabPayloadT, AddViewPayloadT, ChangeActiveViewPayloadT, RemoveTabPayloadT, RemoveViewActionT, RemoveViewPayloadT, ReplaceWithViewPayloadT, ReplaceWithViewT, SideT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
+import {
+    AddTabPayloadT,
+    AddViewPayloadT,
+    ChangeActiveViewPayloadT,
+    RemoveTabPayloadT,
+    ReplaceWithSplitviewPayloadT,
+    ReplaceWithSplitviewT,
+    ReplaceWithViewPayloadT,
+    ReplaceWithViewT,
+    SideT,
+    ViewActionKind,
+    ViewportActionT
+} from "./ViewportTypes";
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,10 +63,26 @@ const _remove_tab = (state: ViewT, payload: RemoveTabPayloadT): ViewT => {
 
 //---------------------------------------------------------------------------------------------------------------------
 const _replace_with_view = (state: SplitViewT, payload: ReplaceWithViewPayloadT): ViewT => {
+    console.log('_replace_with_view')
+    console.log(state)
+    console.log(payload)
     return {
         pageIds: payload.pageIds,
         activePageId: payload.activePageId,
     } as ViewT;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+const _replace_with_splitview = (state: SplitViewT, payload: ReplaceWithSplitviewPayloadT): SplitViewT => {
+    console.log('_replace_with_splitview')
+    console.log(state)
+    console.log(payload)
+    return {
+        head: payload.head,
+        tail: payload.tail,
+        direction: payload.direction,
+    } as SplitViewT;
 }
 
 
@@ -70,15 +98,6 @@ const _add_view = (state: ViewT, payload: AddViewPayloadT): SplitViewT => {
         tail: payload.side == SideT.TAIL ? newView: state,
         direction: payload.direction,
     } as SplitViewT;
-}
-
-// TODO : Throwing console errors and tabs dissapearing after removeView called
-//---------------------------------------------------------------------------------------------------------------------
-const _remove_view = (state: SplitViewT, payload: RemoveViewPayloadT): ViewportT => {
-    console.log('--- Remove Tab ---')
-    console.log('state', state)
-    console.log('payload', payload)
-    return payload.side == SideT.HEAD ? state.tail : state.head
 }
 
 
@@ -101,10 +120,10 @@ const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
             return _remove_tab(state as ViewT, action.payload as RemoveTabPayloadT);
         case ViewActionKind.REPLACE_WITH_VIEW:
             return _replace_with_view(state as SplitViewT, action.payload as ReplaceWithViewPayloadT)
+        case ViewActionKind.REPLACE_WITH_SPLITVIEW:
+            return _replace_with_splitview(state as SplitViewT, action.payload as ReplaceWithSplitviewPayloadT)
         case ViewActionKind.ADD_VIEW:
             return _add_view(state as ViewT, action.payload as AddViewPayloadT);
-        case ViewActionKind.REMOVE_VIEW:
-            return _remove_view(state as SplitViewT, action.payload as RemoveViewPayloadT);
         case ViewActionKind.CHANGE_ACTIVE_VIEW:
             return _change_active_view(state as ViewT, action.payload as ChangeActiveViewPayloadT);
         default:
@@ -132,6 +151,7 @@ const Port = ({
     const [replaceWithHead, setReplaceWithHead] = useState(false);
     const [replaceWithTail, setReplaceWithTail] = useState(false);
 
+    // When list becomes empty
     useEffect(() => {
         if (isViewT(_viewport)) {
             const view = _viewport as ViewT;
@@ -139,7 +159,37 @@ const Port = ({
                 onTabListEmptyCb();
             }
         }
-    }, [_viewport, onTabListEmptyCb]);
+    }, [_viewport, isViewT, onTabListEmptyCb]);
+
+    // When other side of parent (which is a splitview) is being removed
+    useEffect(() => {
+        if (propogateUp) {
+            if (isViewT(_viewport)) {
+                const view = _viewport as ViewT;
+                const replaceParentWithViewAction: ReplaceWithViewT = {
+                    type: ViewActionKind.REPLACE_WITH_VIEW,
+                    payload: { pageIds: view.pageIds, activePageId: view.activePageId },
+                };
+                // TODO : update local storage
+                dispatchParent(replaceParentWithViewAction);
+            }
+
+            if (isSplitViewT(_viewport)) {
+                const splitview = _viewport as SplitViewT;
+                const replaceParentWithSplitviewAction: ReplaceWithSplitviewT = {
+                    type: ViewActionKind.REPLACE_WITH_SPLITVIEW,
+                    payload: {
+                        head: splitview.head,
+                        tail: splitview.tail,  // TODO: this is outdated... and probably the issue...
+                        // perhaps I need to propgate all the way down and then back up?
+                        direction: splitview.direction,
+                    },
+                };
+                // TODO : update local storage
+                dispatchParent(replaceParentWithSplitviewAction);
+            }
+        }
+    }, [propogateUp, _viewport, isViewT, isSplitViewT, dispatchParent]);
 
     //------------------------------------------------------------------------------------------------------------------
     // VIEW
@@ -147,21 +197,12 @@ const Port = ({
     if (isViewT(_viewport)) {
         const view = _viewport as ViewT;
 
-        if (propogateUp) {
-            const replaceParentWithSelfAction: ReplaceWithViewT = {
-                type: ViewActionKind.REPLACE_WITH_VIEW,
-                payload: { pageIds: view.pageIds, activePageId: view.activePageId },
-            };
-            // TODO : update local storage
-            dispatchParent(replaceParentWithSelfAction);
-        }
-        
         return (
             <View
                 pageIds={view.pageIds}
                 activePageId={view.activePageId}
                 dispatch={dispatch}
-            />
+            />  
         );
     }
     
@@ -171,27 +212,27 @@ const Port = ({
     if (isSplitViewT(_viewport)) {
         const splitview = _viewport as SplitViewT;
 
+        const head = <Port
+            viewport={splitview.head as SplitViewT | ViewT}
+            propogateUp={replaceWithHead}
+            onTabListEmptyCb={() => setReplaceWithTail(true)}
+            dispatchParent={dispatch}
+        />
+
+        const tail = <Port
+            viewport={splitview.tail as SplitViewT | ViewT}
+            propogateUp={replaceWithTail}
+            onTabListEmptyCb={() => setReplaceWithHead(true)}
+            dispatchParent={dispatch}
+        />
+
         return (
             <SplitPane
                 dir={splitview.direction}
                 resizerPos='50%'>
                 {/* TODO: add resizerPos to SplitViewT */}
-                { splitview.head &&
-                    <Port
-                        viewport={splitview.head}
-                        propogateUp={replaceWithHead}
-                        onTabListEmptyCb={() => setReplaceWithTail(true)}
-                        dispatchParent={dispatch}
-                    />
-                }
-                { splitview.tail &&
-                    <Port
-                        viewport={splitview.tail}
-                        propogateUp={replaceWithTail}
-                        onTabListEmptyCb={() => setReplaceWithHead(true)}
-                        dispatchParent={dispatch}
-                    />
-                }
+                { splitview.head && head }
+                { splitview.tail && tail }
             </SplitPane>
         );
     }

@@ -26,9 +26,7 @@ const Viewport = ({
 
     // TODO : Show defaultView
     if (!views)
-        return (
-            <>No Views. SAD!</>
-        );
+        return <>No Views. SAD!</>
 
     return (
         <div className={viewportClassName} style={styles.viewport}>
