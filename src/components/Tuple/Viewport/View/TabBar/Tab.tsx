@@ -42,17 +42,45 @@ export const Tab = ({
     const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
     const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
 
-    const mouseEnterHandler = () => setCloseVisible(true);
-    const mouseLeaveHandler = () => setCloseVisible(false);
-
-    const clickHandler = () => {
+    //------------------------------------------------------------------------------------------------------------------
+    // Actions Dispatchers
+    //------------------------------------------------------------------------------------------------------------------
+    const changeView = () => {
         const changeActiveViewAction: ChangeActiveViewActionT = {
             type: ViewActionKind.CHANGE_ACTIVE_VIEW,
             payload: { pid: pageId }
         };
 
-        dispatch(changeActiveViewAction);
-    };
+        dispatch(changeActiveViewAction); 
+    }
+
+    const addTab = (pid: ID) => {
+        const addTabAction: AddTabActionT = {
+            type: ViewActionKind.ADD_TAB,
+            payload: { pid, index: index+1 },
+        };
+
+        // TODO : update local storage
+
+        dispatch(addTabAction);
+    }
+
+    const removeTab = () => {
+        const removeTabAction: RemoveTabActionT = {
+            type: ViewActionKind.REMOVE_TAB,
+            payload: { index }
+        };
+
+        dispatch(removeTabAction);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const mouseEnterHandler = () => setCloseVisible(true);
+    const mouseLeaveHandler = () => setCloseVisible(false);
+
+    const clickHandler = () => changeView();
 
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
@@ -67,20 +95,11 @@ export const Tab = ({
         e.preventDefault();
         e.stopPropagation();
 
-        if (tabRef.current) {
+        if (tabRef.current)
             tabRef.current.style.opacity = '1';
-        }
 
         const dragPid = e.dataTransfer && e.dataTransfer.getData('pid');
-
-        const addTabAction: AddTabActionT = {
-            type: ViewActionKind.ADD_TAB,
-            payload: { pid: dragPid as ID, index: index+1 },
-        };
-
-        // TODO : update local storage
-
-        dispatch(addTabAction);
+        addTab(dragPid);
     }
 
     const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -88,7 +107,8 @@ export const Tab = ({
         e.stopPropagation();
 
         // TODO: Better solution for this
-        if (tabRef.current) tabRef.current.style.opacity = '0.5';
+        if (tabRef.current)
+            tabRef.current.style.opacity = '1';
     }
 
     const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -96,19 +116,14 @@ export const Tab = ({
         e.stopPropagation();
 
         // TODO: Better solution for this
-        if (tabRef.current) tabRef.current.style.opacity = '1';
+        if (tabRef.current)
+            tabRef.current.style.opacity = '1';
     }
 
     const removeTabHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const removeTabAction: RemoveTabActionT = {
-            type: ViewActionKind.REMOVE_TAB,
-            payload: { index }
-        };
-
-        dispatch(removeTabAction);
+        removeTab();
     };
 
     return (

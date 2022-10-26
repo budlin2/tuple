@@ -202,7 +202,7 @@ const Port = ({
                 pageIds={view.pageIds}
                 activePageId={view.activePageId}
                 dispatch={dispatch}
-            />  
+            />
         );
     }
     
