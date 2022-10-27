@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 
-import TabBar from '.';
+import TabBar from './TabBar';
 import TupleProvider, { TupleProviderProps } from '../../../TupleProvider';
 import { PagesT } from '../../../../../types';
 

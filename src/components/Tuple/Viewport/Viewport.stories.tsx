@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 
-import Viewport from '.';
+import Viewport from './Viewport';
 import { PagesT, SplitViewT, ViewT } from '../../../types';
 import TupleProvider, { TupleContext, TupleProviderProps } from '../TupleProvider';
 

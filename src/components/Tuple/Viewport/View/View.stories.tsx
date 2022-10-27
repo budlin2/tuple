@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 
-import View from '.';
+import View from './View';
 import TupleProvider, { TupleProviderProps } from '../../TupleProvider';
 import { PagesT } from '../../../../types';
 
@@ -35,17 +35,19 @@ const Template: Story<TupleProviderProps> = (args: any) => {
 
     return (
         <TupleProvider {...args}>
-            <div style={{ height: '500px' }}>
-                <View
-                    pageIds={['a', 'b', 'c']}
-                    activePageId={'b'}
-                    dispatch={ ()=>{} }/>
-            </div>
-            <div style={{ height: '500px' }}>
-                <View
-                    pageIds={['a', 'b', 'c']}
-                    activePageId={'b'}
-                    dispatch={ ()=>{} }/>
+            <div>
+                <div style={{ height: '500px' }}>
+                    <View
+                        pageIds={['a', 'b', 'c']}
+                        activePageId={'b'}
+                        dispatch={ ()=>{} }/>
+                </div>
+                <div style={{ height: '500px' }}>
+                    <View
+                        pageIds={['a', 'b', 'c']}
+                        activePageId={'b'}
+                        dispatch={ ()=>{} }/>
+                </div>
             </div>
         </TupleProvider>
     );

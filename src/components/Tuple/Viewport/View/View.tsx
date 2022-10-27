@@ -7,7 +7,7 @@ import {
     TupleStylesT,
     TupleClassesT,
 } from '../../../../types';
-import TabBar from './TabBar';
+import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../../TupleProvider';
 import { ViewportActionT } from '../ViewportTypes';
 

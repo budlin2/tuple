@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 
-import Tree from '.';
+import Tree from './Tree';
 import { PagesT } from '../../../types';
 import TupleProvider, { TupleProviderProps } from '../TupleProvider';
 

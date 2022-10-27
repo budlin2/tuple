@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 
-import Tree from './Tree';
-import Viewport from './Viewport';
+import Tree from './Tree/Tree';
+import Viewport from './Viewport/Viewport';
 import SplitPane from '../SplitPane';
 import {
     SplitViewT,

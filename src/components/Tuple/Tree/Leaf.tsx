@@ -5,10 +5,10 @@ import {
     useContext,
 } from 'react'
 
-import { ID, TupleClassesT, TupleStylesT } from '../../../../types';
-import { TupleContext } from '../../TupleProvider';
+import { ID, TupleClassesT, TupleStylesT } from '../../../types';
+import { TupleContext } from '../TupleProvider';
 
-import _classes from '../tree.module.css';
+import _classes from './tree.module.css';
 
 
 interface Props {

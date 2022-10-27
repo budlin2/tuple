@@ -1,5 +1,5 @@
 import { Meta, Story } from "@storybook/react";
-import Foo from './Foo';
+import Foo from '.';
 
 export default {
     title: 'Components/Foo',
