@@ -1,10 +1,12 @@
 import { ReactNode, useContext } from 'react';
 
-import { SplitViewT, TupleClassesT, TupleStylesT, ViewportT, ViewT } from '../../../types';
 import { TupleContext } from '../TupleProvider';
+import { TupleClassesT, TupleStylesT } from '../TupleTypes';
 import Port from './Port';
 
 import _classes from './viewport.module.css';
+import { SplitViewT, ViewportT } from './ViewportTypes';
+
 
 export interface Props {
     views: ViewportT | null,

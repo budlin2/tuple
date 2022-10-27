@@ -3,19 +3,19 @@ import {
     useRef,
     MutableRefObject,
     useContext,
-    MouseEvent as rMouseEvent,
     Dispatch,
     DragEvent,
 } from 'react';
 
-import {
-    ID,
-    TupleStylesT,
-    PagesT,
-    TupleClassesT,
-} from '../../../../../types';
 import { TupleContext } from '../../../TupleProvider';
-import { AddTabActionT, AddTabPayloadT, ChangeActiveViewActionT, RemoveTabActionT, ViewActionKind, ViewportActionT } from '../../ViewportTypes';
+import { ID, PagesT, TupleClassesT, TupleStylesT } from '../../../TupleTypes';
+import {
+    AddTabActionT,
+    ChangeActiveViewActionT,
+    RemoveTabActionT,
+    ViewActionKind,
+    ViewportActionT
+} from '../../ViewportTypes';
 import _classes from './tabbar.module.css';
 
 

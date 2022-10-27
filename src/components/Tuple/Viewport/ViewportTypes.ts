@@ -1,7 +1,29 @@
-import { ID, ViewT, SplitViewT } from "../../../types";
 import { DirectionT } from "../../SplitPane/SplitPaneTypes";
+import { ID } from "../TupleTypes";
 
 
+//----------------------------------------------------------------------------------------------------------------------
+// Data Types
+//----------------------------------------------------------------------------------------------------------------------
+export interface ViewT {
+    pageIds: ID[],
+    activePageId: ID
+}
+
+export interface SplitViewT {
+    head: ViewT | SplitViewT,
+    tail: ViewT | SplitViewT | null,
+    direction: DirectionT,
+}
+
+export type ViewportT = SplitViewT | ViewT;
+
+export const isViewT = (v: any) => (v as ViewT).pageIds !== undefined;
+export const isSplitViewT = (v: any) => (v as SplitViewT).head !== undefined;
+
+//----------------------------------------------------------------------------------------------------------------------
+// State Types
+//----------------------------------------------------------------------------------------------------------------------
 export enum ViewActionKind {
     ADD_TAB = "ADD_TAB",
     REMOVE_TAB = "REMOVE_TAB",

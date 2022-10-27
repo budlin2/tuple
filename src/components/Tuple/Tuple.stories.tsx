@@ -2,10 +2,11 @@ import { Meta, Story } from "@storybook/react";
 
 import Tuple from '.';
 import TupleProvider, { TupleProviderProps } from './TupleProvider';
-import { PagesT, SplitViewT, ViewT } from '../../types';
 
 import classes from './tuple.stories.module.css';
 import { TreeT } from "./Tree/TreeTypes";
+import { SplitViewT, ViewT } from "./Viewport/ViewportTypes";
+import { PagesT } from "./TupleTypes";
 
 
 export default {

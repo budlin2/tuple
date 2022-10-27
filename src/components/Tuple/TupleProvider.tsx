@@ -2,21 +2,11 @@ import {
     createContext,
     Children,
     ReactNode,
-    useReducer,
-    Dispatch
 } from 'react';
 
-
-import {
-    EventsT,
-    PagesT,
-    SplitViewT,
-    TupleClassesT,
-    TupleContextT,
-    TupleStylesT,
-    ViewportT
-} from '../../types';
 import { getViewsFromStorage } from './TupleState';
+import { EventsT, PagesT, TupleClassesT, TupleContextT, TupleStylesT } from './TupleTypes';
+import { ViewportT } from './Viewport/ViewportTypes';
 
 
 // On second thought, this should live in Tuple...

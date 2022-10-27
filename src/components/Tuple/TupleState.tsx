@@ -1,8 +1,4 @@
-import {
-    SplitViewT,
-    ViewportT,
-    ViewT,
-} from '../../types';
+import { SplitViewT, ViewportT, ViewT } from "./Viewport/ViewportTypes";
 
 
 export const getViewsFromStorage = (): ViewportT | null => {

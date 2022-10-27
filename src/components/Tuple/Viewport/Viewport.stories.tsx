@@ -1,10 +1,11 @@
 import { Meta, Story } from "@storybook/react";
 
 import Viewport from './Viewport';
-import { PagesT, SplitViewT, ViewT } from '../../../types';
-import TupleProvider, { TupleContext, TupleProviderProps } from '../TupleProvider';
+import TupleProvider, { TupleProviderProps } from '../TupleProvider';
 
 import classes from './viewport.stories.module.css';
+import { SplitViewT, ViewT } from "./ViewportTypes";
+import { PagesT } from "../TupleTypes";
 
 export default {
     title: 'Components/Viewport',

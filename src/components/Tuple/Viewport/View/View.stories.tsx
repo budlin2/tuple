@@ -2,9 +2,9 @@ import { Meta, Story } from "@storybook/react";
 
 import View from './View';
 import TupleProvider, { TupleProviderProps } from '../../TupleProvider';
-import { PagesT } from '../../../../types';
 
 import classes from '../viewport.stories.module.css';
+import { PagesT } from "../../TupleTypes";
 
 
 export default {

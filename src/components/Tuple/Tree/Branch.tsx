@@ -4,8 +4,8 @@ import {
     useState,
     useContext
 } from 'react'
-import { TupleClassesT, TupleStylesT } from '../../../types';
 import { TupleContext } from '../TupleProvider';
+import { TupleClassesT, TupleStylesT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 

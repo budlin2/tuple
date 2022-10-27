@@ -3,14 +3,11 @@ import { useState, useContext } from 'react';
 import Tree from './Tree/Tree';
 import Viewport from './Viewport/Viewport';
 import SplitPane from '../SplitPane';
-import {
-    TupleStylesT,
-    TupleClassesT,
-    ViewportT,
-} from '../../types';
 import { TupleContext } from './TupleProvider';
 import _classes from './tuple.module.css';
 import { TreeT } from './Tree/TreeTypes';
+import { ViewportT } from './Viewport/ViewportTypes';
+import { TupleClassesT, TupleStylesT } from './TupleTypes';
 
 
 export interface Props {

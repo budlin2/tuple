@@ -3,17 +3,10 @@ import { useContext } from 'react';
 import Leaf from './Leaf'
 import Branch from './Branch';
 import { TupleContext } from '../TupleProvider';
-import {
-    isID,
-    PagesT,
-    ID,
-    PageT,
-    TupleClassesT,
-    TupleStylesT
-} from '../../../types';
+import { BranchT, TreeT } from './TreeTypes';
+import { ID, isID, PagesT, PageT, TupleClassesT, TupleStylesT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
-import { BranchT, TreeT } from './TreeTypes';
 
 
 interface BranchesProps {

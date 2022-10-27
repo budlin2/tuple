@@ -3,27 +3,25 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 import { Dispatch, useEffect, useReducer, useState } from "react";
-import {
-    ViewT,
-    SplitViewT,
-    isViewT,
-    isSplitViewT,
-    ViewportT,
-} from "../../../types";
 import SplitPane from "../../SplitPane";
 import View from "./View/View";
 import {
     AddTabPayloadT,
     AddViewPayloadT,
     ChangeActiveViewPayloadT,
+    isSplitViewT,
+    isViewT,
     RemoveTabPayloadT,
     ReplaceWithSplitviewPayloadT,
     ReplaceWithSplitviewT,
     ReplaceWithViewPayloadT,
     ReplaceWithViewT,
     SideT,
+    SplitViewT,
     ViewActionKind,
-    ViewportActionT
+    ViewportActionT,
+    ViewportT,
+    ViewT
 } from "./ViewportTypes";
 
 

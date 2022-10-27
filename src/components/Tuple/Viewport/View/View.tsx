@@ -1,17 +1,11 @@
 import { useContext, useRef, MutableRefObject, Dispatch } from 'react';
 
-import {
-    ID,
-    PageT,
-    PagesT,
-    TupleStylesT,
-    TupleClassesT,
-} from '../../../../types';
 import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../../TupleProvider';
 import { ViewportActionT } from '../ViewportTypes';
 
 import _classes from '../viewport.module.css';
+import { ID, PagesT, PageT, TupleClassesT, TupleStylesT } from '../../TupleTypes';
 
 
 interface Props {

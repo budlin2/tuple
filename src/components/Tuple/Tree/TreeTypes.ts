@@ -1,4 +1,4 @@
-import { ID } from "../../../types";
+import { ID } from "../TupleTypes";
 
 
 export interface BranchT {
