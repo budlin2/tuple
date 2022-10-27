@@ -1,17 +1,16 @@
 import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
+import { DirectionT } from './components/SplitPane/SplitPaneTypes';
 import ViewStories from './components/Tuple/Viewport/View/View.stories';
 
 //----------------------------------------------------------------------------------------------------------------------
 // Types
 //----------------------------------------------------------------------------------------------------------------------
-export type DragEvent = (e: MouseEvent | rMouseEvent, page: PageT) => void;  // TODO: Remove if unused
 export type ID = number | string;
-export type DirectionT = 'horizontal' | 'vertical' | 'none';
 
 //----------------------------------------------------------------------------------------------------------------------
 // Interfaces
 //----------------------------------------------------------------------------------------------------------------------
-export interface PositionT {  // todo should this be PositionI?
+export interface PositionT {
     x: number,
     y: number,
 }
@@ -38,6 +37,7 @@ export interface BranchT {
 export type TreeT = (ID | BranchT)[];
 //----------------------------------------------------------------------
 
+
 export interface ViewT {
     pageIds: ID[],
     activePageId: ID
@@ -51,14 +51,6 @@ export interface SplitViewT {
 
 export type ViewportT = SplitViewT | ViewT;
 
-//-----------------------------------------------
-export type ViewStateT = ViewT;
-
-export interface SplitViewStateT {
-    direction: DirectionT,
-}
-
-export type ViewportStateT = SplitViewStateT | ViewStateT;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Type Checkers

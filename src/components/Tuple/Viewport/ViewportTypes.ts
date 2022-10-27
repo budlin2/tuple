@@ -1,4 +1,5 @@
-import { ID, DirectionT, ViewT, SplitViewT } from "../../../types";
+import { ID, ViewT, SplitViewT } from "../../../types";
+import { DirectionT } from "../../SplitPane/SplitPaneTypes";
 
 
 export enum ViewActionKind {

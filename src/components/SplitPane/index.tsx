@@ -10,7 +10,7 @@ import {
 } from 'react'
 
 import _classes from './splitpane.module.css';
-import {DirectionT} from '../../types';
+import { DirectionT } from './SplitPaneTypes';
 
 
 const validateSplitPane = (direction: DirectionT, children: Array<ReactNode>) => {
