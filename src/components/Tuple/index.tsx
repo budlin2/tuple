@@ -4,15 +4,13 @@ import Tree from './Tree/Tree';
 import Viewport from './Viewport/Viewport';
 import SplitPane from '../SplitPane';
 import {
-    SplitViewT,
-    PagesT,
-    TreeT,
     TupleStylesT,
     TupleClassesT,
     ViewportT,
 } from '../../types';
 import { TupleContext } from './TupleProvider';
 import _classes from './tuple.module.css';
+import { TreeT } from './Tree/TreeTypes';
 
 
 export interface Props {

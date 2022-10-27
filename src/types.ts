@@ -1,41 +1,18 @@
 import { CSSProperties, MouseEvent as rMouseEvent } from 'react';
 import { DirectionT } from './components/SplitPane/SplitPaneTypes';
-import ViewStories from './components/Tuple/Viewport/View/View.stories';
 
-//----------------------------------------------------------------------------------------------------------------------
-// Types
-//----------------------------------------------------------------------------------------------------------------------
+
 export type ID = number | string;
 
-//----------------------------------------------------------------------------------------------------------------------
-// Interfaces
-//----------------------------------------------------------------------------------------------------------------------
-export interface PositionT {
-    x: number,
-    y: number,
-}
-
-export interface MinMaxT {
-    min: number,
-    max: number,
-}
-
-//----------------------------------------------------------------------
 export type ComponentRendererT = (props: any) => JSX.Element;
+
 export interface PageT {
     name: string,
     component: ComponentRendererT,
     props?: object,
 }
+
 export type PagesT = { [key: ID]: PageT }
-//----------------------------------------------------------------------
-export interface BranchT {
-    id: ID,
-    label: string,
-    branches: (ID | BranchT)[],
-}
-export type TreeT = (ID | BranchT)[];
-//----------------------------------------------------------------------
 
 
 export interface ViewT {

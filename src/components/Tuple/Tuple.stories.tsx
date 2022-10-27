@@ -2,9 +2,10 @@ import { Meta, Story } from "@storybook/react";
 
 import Tuple from '.';
 import TupleProvider, { TupleProviderProps } from './TupleProvider';
-import { TreeT, PagesT, SplitViewT, ViewT } from '../../types';
+import { PagesT, SplitViewT, ViewT } from '../../types';
 
 import classes from './tuple.stories.module.css';
+import { TreeT } from "./Tree/TreeTypes";
 
 
 export default {
@@ -61,7 +62,6 @@ const pages: PagesT = {
 //----------------------------------------------------------------------------------------------------------------------
 // TREE
 //----------------------------------------------------------------------------------------------------------------------
-
 const tree: TreeT = [
     'hello',
     'world',
