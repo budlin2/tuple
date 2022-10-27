@@ -21,6 +21,18 @@ export type ViewportT = SplitViewT | ViewT;
 export const isViewT = (v: any) => (v as ViewT).pageIds !== undefined;
 export const isSplitViewT = (v: any) => (v as SplitViewT).head !== undefined;
 
+export interface PortT {
+    parentId: ID,
+    isSplitView: boolean,
+    pageIds: ID[],
+    activePageId: ID,
+    direction: DirectionT,
+    headId: ID,
+    tailId: ID,
+}
+
+export type PortsT = { [key: ID]: PortT }
+
 //----------------------------------------------------------------------------------------------------------------------
 // State Types
 //----------------------------------------------------------------------------------------------------------------------
