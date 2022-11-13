@@ -7,7 +7,7 @@ import {
     DragEvent,
 } from 'react';
 
-import { TupleContext } from '../../../TupleProvider';
+import { TupleContext } from '../../..';
 import { ID, PagesT, TupleClassesT, TupleStylesT } from '../../../TupleTypes';
 import {
     AddTabActionT,

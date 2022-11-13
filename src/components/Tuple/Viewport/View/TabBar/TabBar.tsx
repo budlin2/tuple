@@ -1,6 +1,6 @@
 import { useContext, Dispatch } from 'react';
 
-import { TupleContext } from '../../../TupleProvider';
+import { TupleContext } from '../../..';
 import { ID, TupleClassesT, TupleStylesT } from '../../../TupleTypes';
 import { ViewportActionT } from '../../ViewportTypes';
 import Tab from './Tab';

@@ -1,7 +1,7 @@
 import { useContext, useRef, MutableRefObject, Dispatch } from 'react';
 
 import TabBar from './TabBar/TabBar';
-import { TupleContext } from '../../TupleProvider';
+import { TupleContext } from '../..';
 import { ViewportActionT } from '../ViewportTypes';
 
 import _classes from '../viewport.module.css';

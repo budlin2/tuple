@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import Leaf from './Leaf'
 import Branch from './Branch';
-import { TupleContext } from '../TupleProvider';
+import { TupleContext } from '..';
 import { BranchT, TreeT } from './TreeTypes';
 import { ID, isID, PagesT, PageT, TupleClassesT, TupleStylesT } from '../TupleTypes';
 

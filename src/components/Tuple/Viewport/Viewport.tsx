@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useReducer, useMemo } from 'react';
 
 import { getUniqueId } from '../../../utils';
-import { TupleContext } from '../TupleProvider';
+import { TupleContext } from '..';
 import { ID, TupleClassesT, TupleStylesT } from '../TupleTypes';
 import Port from './Port';
 import {
@@ -309,12 +309,6 @@ const Viewport = ({
         return id;
     };
 
-    // TODO: portMap should look like this:
-    // {
-    //      root: string,
-    //      ports: {....} 
-    // }
-    // Update code to accomodate this structure
     const portMap: PortsT = {};
     const rootId = useMemo(() => buildPortMap(views as ViewportT, portMap), []);
     const portState: PortStateT = {

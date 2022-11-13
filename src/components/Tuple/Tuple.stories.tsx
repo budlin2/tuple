@@ -1,7 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 
-import Tuple from '.';
-import TupleProvider, { TupleProviderProps } from './TupleProvider';
+import Tuple, { TupleProps } from '.';
 
 import classes from './tuple.stories.module.css';
 import { TreeT } from "./Tree/TreeTypes";
@@ -90,11 +89,9 @@ const tree: TreeT = [
 //----------------------------------------------------------------------------------------------------------------------
 // Template
 //----------------------------------------------------------------------------------------------------------------------
-const Template: Story<TupleProviderProps> = (args: any) => {
+const Template: Story<TupleProps> = (args: any) => {
     return (
-        <TupleProvider {...args}>
-            <Tuple tree={tree} />
-        </TupleProvider>
+        <Tuple {...args} />
     );
 }
 
@@ -163,6 +160,7 @@ export const SingleView = Template.bind({});
 SingleView.args = {
     pages,
     views: MonkeyPox,
+    tree,
     classes,
 };
 
@@ -175,6 +173,7 @@ export const HorizontalSplitView = Template.bind({});
 HorizontalSplitView.args = {
     pages,
     views: HorizontalSplitViews,
+    tree,
     classes,
 };
 
@@ -186,6 +185,7 @@ export const VerticalSplitView = Template.bind({});
 VerticalSplitView.args = {
     pages,
     views: VerticalSplitViews,
+    tree,
     classes,
 };
 
@@ -198,6 +198,7 @@ export const ThreeViews = Template.bind({});
 ThreeViews.args = {
     pages,
     views: _ThreeViews,
+    tree,
     classes,
 };
 
@@ -212,6 +213,7 @@ export const FourViews = Template.bind({});
 FourViews.args = {
     pages,
     views: _FourViews,
+    tree,
     classes,
 };
 
@@ -227,6 +229,7 @@ export const FiveViews = Template.bind({});
 FiveViews.args = {
     pages,
     views: _FiveViews,
+    tree,
     classes,
 };
 
@@ -243,5 +246,6 @@ export const SixViews = Template.bind({});
 SixViews.args = {
     pages,
     views: _SixViews,
+    tree,
     classes,
 };

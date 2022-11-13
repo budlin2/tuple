@@ -4,7 +4,7 @@ import {
     useState,
     useContext
 } from 'react'
-import { TupleContext } from '../TupleProvider';
+import { TupleContext } from '..';
 import { TupleClassesT, TupleStylesT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
@@ -30,7 +30,7 @@ const Branch = ({
         styles: TupleStylesT,
     } = useContext(TupleContext);
 
-    const branchClassName = `${_classes.branch} ${classes.branch}`;
+    const branchClassName = `${_classes.branch} ${classes.branch} `;
     const branchesClassName = `${_classes.branches} ${classes.branches}`;
     
     return (

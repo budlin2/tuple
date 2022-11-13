@@ -1,39 +1,62 @@
-import { useState, useContext } from 'react';
-
-import Tree from './Tree/Tree';
-import Viewport from './Viewport/Viewport';
-import SplitPane from '../SplitPane';
-import { TupleContext } from './TupleProvider';
-import _classes from './tuple.module.css';
+import {
+    createContext,
+    ReactNode,
+} from 'react';
 import { TreeT } from './Tree/TreeTypes';
+import TupleInner from './TupleInner';
+
+import { getViewsFromStorage } from './TupleState';
+import { EventsT, PagesT, TupleClassesT, TupleContextT, TupleStylesT } from './TupleTypes';
 import { ViewportT } from './Viewport/ViewportTypes';
-import { TupleClassesT, TupleStylesT } from './TupleTypes';
 
 
-export interface Props {
+export const TupleContext = createContext({
+    pages: {},
+    views: null,  // initial views.. Will overwrite with localStorage first
+    styles: {},
+    classes: {},
+    events: {},
+    tree: {},
+} as TupleContextT);
+
+
+export interface TupleProps {
+    pages: PagesT,
+    views: ViewportT,
     tree: TreeT,
-}
 
-const Tuple = ({ tree }: Props) => {
-    const {views, styles, classes}: {
-        views: ViewportT | null,
-        styles: TupleStylesT,
-        classes: TupleClassesT,
-    } = useContext(TupleContext);
+    styles?: TupleStylesT,
+    classes?: TupleClassesT,
+    events?: EventsT,
+    
+    children: ReactNode,
+};
 
-    const [_views, setViews] = useState(views)
-    const tupleClassName = `${_classes?.tuple} ${classes?.tuple}`;
 
-    // TODO: This needs to be better
-    const DefaultView = <>No Views. SAD!</>
+const Tuple = ({
+    pages,
+    views,
+    tree,
+    styles,
+    classes,
+    events,
+}: TupleProps) => {
+    const initViews = getViewsFromStorage() || views || null;
+
+    const context = {
+        pages,
+        views: initViews,
+        tree,
+        styles: styles || {},
+        classes: classes || {},
+        events: events || {},
+    };
+
 
     return (
-        <div className={tupleClassName} style={styles.tuple}>
-            <SplitPane resizerPos='25%'>
-                <Tree tree={tree} />
-                <Viewport views={views} defaultView={DefaultView} />
-            </SplitPane>
-        </div>
+        <TupleContext.Provider value={context}>
+            <TupleInner />
+        </TupleContext.Provider>
     );
 }
 

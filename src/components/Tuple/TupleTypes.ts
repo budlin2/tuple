@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { TreeT } from "./Tree/TreeTypes";
 import { ViewportT } from "./Viewport/ViewportTypes";
 
 
@@ -65,6 +66,7 @@ export interface EventsT {}  // TODO: Implement this
 export interface TupleContextT {
     pages: PagesT,
     views: ViewportT | null,
+    tree: TreeT,
     styles: TupleStylesT,
     classes: TupleClassesT,
     events: EventsT,
