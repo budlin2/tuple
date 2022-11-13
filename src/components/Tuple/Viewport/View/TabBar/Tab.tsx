@@ -89,8 +89,9 @@ export const Tab = ({
         setCloseVisible(false);
         // TODO: Local storage events somewhere else... and send as JSON...
         // [ e.dataTransfer.setData("text/plain", JSON.stringify(data)); ]
-        e.dataTransfer && e.dataTransfer.setData('pid', pageId.toString());
-        e.dataTransfer && e.dataTransfer.setData('index', index.toString());
+        e.dataTransfer && e.dataTransfer.setData('pageId', pageId.toString());
+        e.dataTransfer && e.dataTransfer.setData('portId', portId.toString());
+        // e.dataTransfer && e.dataTransfer.setData('index', index.toString());
     };
 
     const dropHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -100,8 +101,12 @@ export const Tab = ({
         if (tabRef.current)
             tabRef.current.style.opacity = '1';
 
-        const dragPid = e.dataTransfer && e.dataTransfer.getData('pid');
-        addTab(dragPid);
+        const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+        const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+
+        if (dragPortId !== portId) {
+            addTab(dragPageId);
+        }
     }
 
     const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
