@@ -38,12 +38,14 @@ const Template: Story<TupleProviderProps> = (args: any) => {
             <div>
                 <div style={{ height: '500px' }}>
                     <View
+                        portId={1}
                         pageIds={['a', 'b', 'c']}
                         activePageId={'b'}
                         dispatch={ ()=>{} }/>
                 </div>
                 <div style={{ height: '500px' }}>
                     <View
+                        portId={2}
                         pageIds={['a', 'b', 'c']}
                         activePageId={'b'}
                         dispatch={ ()=>{} }/>

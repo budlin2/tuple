@@ -2,202 +2,60 @@
 // Recursive component tree of Views and SplitPanes that make up a Viewport
 //----------------------------------------------------------------------------------------------------------------------
 
-import { Dispatch, useEffect, useReducer, useState } from "react";
+import { Dispatch, useContext, useEffect } from "react";
+
 import SplitPane from "../../SplitPane";
+import { DirectionT } from "../../SplitPane/SplitPaneTypes";
+import { ID } from "../TupleTypes";
 import View from "./View/View";
-import {
-    AddTabPayloadT,
-    AddViewPayloadT,
-    ChangeActiveViewPayloadT,
-    isSplitViewT,
-    isViewT,
-    RemoveTabPayloadT,
-    ReplaceWithSplitviewPayloadT,
-    ReplaceWithSplitviewT,
-    ReplaceWithViewPayloadT,
-    ReplaceWithViewT,
-    SideT,
-    SplitViewT,
-    ViewActionKind,
-    ViewportActionT,
-    ViewportT,
-    ViewT
-} from "./ViewportTypes";
-
-
-//---------------------------------------------------------------------------------------------------------------------
-const _add_tab = (state: ViewT, payload: AddTabPayloadT): ViewT => {
-    console.log('--- Add Tab ---')
-    console.log('state', state)
-    console.log('payload', payload)
-    const newPageIds = [
-        ...state.pageIds.slice(0, payload.index),
-        payload.pid,
-        ...state.pageIds.slice(payload.index),
-    ];
-
-    return {
-        // ...state,
-        pageIds: newPageIds,
-        activePageId: payload.pid,
-    } as ViewT;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-const _remove_tab = (state: ViewT, payload: RemoveTabPayloadT): ViewT => {
-    const newPageIds = state.pageIds.filter((_, i) => i !== payload.index);
-
-    const newActivePageId = state.pageIds[payload.index] != state.activePageId
-        ? state.activePageId
-        : state.pageIds[payload.index+1] || state.pageIds[payload.index-1]
-
-    return {
-        // ...state,
-        pageIds: newPageIds,
-        activePageId: newActivePageId,
-    } as ViewT;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------
-const _replace_with_view = (state: SplitViewT, payload: ReplaceWithViewPayloadT): ViewT => {
-    console.log('_replace_with_view')
-    console.log(state)
-    console.log(payload)
-    return {
-        pageIds: payload.pageIds,
-        activePageId: payload.activePageId,
-    } as ViewT;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------
-const _replace_with_splitview = (state: SplitViewT, payload: ReplaceWithSplitviewPayloadT): SplitViewT => {
-    console.log('_replace_with_splitview')
-    console.log(state)
-    console.log(payload)
-    return {
-        head: payload.head,
-        tail: payload.tail,
-        direction: payload.direction,
-    } as SplitViewT;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------
-const _add_view = (state: ViewT, payload: AddViewPayloadT): SplitViewT => {
-    const newView: ViewT = {
-        pageIds: [payload.pid],
-        activePageId: payload.pid,
-    };
-
-    return {
-        head: payload.side == SideT.HEAD ? newView : state,
-        tail: payload.side == SideT.TAIL ? newView: state,
-        direction: payload.direction,
-    } as SplitViewT;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------
-const _change_active_view = (state: ViewT, payload: ChangeActiveViewPayloadT): ViewT => {
-    return {
-        ...state,
-        activePageId: payload.pid,
-    };
-}
-
-
-// TODO: Move this and actions to PortState.tsx?
-//---------------------------------------------------------------------------------------------------------------------
-const reducer = (state: ViewportT, action: ViewportActionT): ViewportT => {
-    switch(action.type) {
-        case ViewActionKind.ADD_TAB:
-            return _add_tab(state as ViewT, action.payload as AddTabPayloadT);
-        case ViewActionKind.REMOVE_TAB:
-            return _remove_tab(state as ViewT, action.payload as RemoveTabPayloadT);
-        case ViewActionKind.REPLACE_WITH_VIEW:
-            return _replace_with_view(state as SplitViewT, action.payload as ReplaceWithViewPayloadT)
-        case ViewActionKind.REPLACE_WITH_SPLITVIEW:
-            return _replace_with_splitview(state as SplitViewT, action.payload as ReplaceWithSplitviewPayloadT)
-        case ViewActionKind.ADD_VIEW:
-            return _add_view(state as ViewT, action.payload as AddViewPayloadT);
-        case ViewActionKind.CHANGE_ACTIVE_VIEW:
-            return _change_active_view(state as ViewT, action.payload as ChangeActiveViewPayloadT);
-        default:
-            return state;
-    }
-}
-
+import { ViewportContext } from "./Viewport";
+import { PortStateT, PortT, RemoveViewActionT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
 
 //----------------------------------------------------------------------------------------------------------------------
 interface PortProps {
-    viewport: SplitViewT | ViewT,
-    propogateUp?: boolean,  // Replace parent with self
-    onTabListEmptyCb?: () => void
-    dispatchParent?: Dispatch<ViewportActionT>
+    id: ID,
+    dispatch: Dispatch<ViewportActionT>,
 }
 
 
 const Port = ({
-    viewport,
-    propogateUp = false,
-    onTabListEmptyCb=()=>{},
-    dispatchParent=()=>{},
+    id,
+    dispatch,
 }: PortProps): JSX.Element => {
-    const [_viewport, dispatch] = useReducer(reducer, viewport);
-    const [replaceWithHead, setReplaceWithHead] = useState(false);
-    const [replaceWithTail, setReplaceWithTail] = useState(false);
+    const context: PortStateT = useContext(ViewportContext);
+
+    //TODO:  This should be lifted to Viewport.tsx once the viewport actions are lifted to Tuple
+    if (context.root == '') {
+        return <>No Views. SAD!</>
+    }
+
+    const port: PortT = context.ports[id];  // TODO: Should this be in useEffect hook?
+
+    const removeView = () => {
+        const removeViewAction: RemoveViewActionT = {
+            type: ViewActionKind.REMOVE_VIEW,
+            payload: { portId: id }
+        }
+
+        dispatch(removeViewAction);
+    }
 
     // When list becomes empty
     useEffect(() => {
-        if (isViewT(_viewport)) {
-            const view = _viewport as ViewT;
-            if (view.pageIds.length == 0) {
-                onTabListEmptyCb();
-            }
+        if (port && port.pageIds && port.pageIds.length <= 0) {
+            removeView();
         }
-    }, [_viewport, isViewT, onTabListEmptyCb]);
-
-    // When other side of parent (which is a splitview) is being removed
-    useEffect(() => {
-        if (propogateUp) {
-            if (isViewT(_viewport)) {
-                const view = _viewport as ViewT;
-                const replaceParentWithViewAction: ReplaceWithViewT = {
-                    type: ViewActionKind.REPLACE_WITH_VIEW,
-                    payload: { pageIds: view.pageIds, activePageId: view.activePageId },
-                };
-                // TODO: update local storage
-                dispatchParent(replaceParentWithViewAction);
-            }
-
-            if (isSplitViewT(_viewport)) {
-                const splitview = _viewport as SplitViewT;
-                const replaceParentWithSplitviewAction: ReplaceWithSplitviewT = {
-                    type: ViewActionKind.REPLACE_WITH_SPLITVIEW,
-                    payload: {
-                        head: splitview.head,
-                        tail: splitview.tail,
-                        direction: splitview.direction,
-                    },
-                };
-                // TODO: update local storage
-                dispatchParent(replaceParentWithSplitviewAction);
-            }
-        }
-    }, [propogateUp, _viewport, isViewT, isSplitViewT, dispatchParent]);
+    }, [port]);
 
     //------------------------------------------------------------------------------------------------------------------
     // VIEW
     //------------------------------------------------------------------------------------------------------------------
-    if (isViewT(_viewport)) {
-        const view = _viewport as ViewT;
-
+    if (port && !port.headId) {
         return (
             <View
-                pageIds={view.pageIds}
-                activePageId={view.activePageId}
+                portId={id}
+                pageIds={port.pageIds as ID[]}
+                activePageId={port.activePageId as ID}
                 dispatch={dispatch}
             />
         );
@@ -206,30 +64,24 @@ const Port = ({
     //------------------------------------------------------------------------------------------------------------------
     // SPLIT-VIEW
     //------------------------------------------------------------------------------------------------------------------
-    if (isSplitViewT(_viewport)) {
-        const splitview = _viewport as SplitViewT;
-
+    if (port && port?.headId) {
         const head = <Port
-            viewport={splitview.head as SplitViewT | ViewT}
-            propogateUp={replaceWithHead}
-            onTabListEmptyCb={() => setReplaceWithTail(true)}
-            dispatchParent={dispatch}
+            id={port.headId}
+            dispatch={dispatch}
         />
 
         const tail = <Port
-            viewport={splitview.tail as SplitViewT | ViewT}
-            propogateUp={replaceWithTail}
-            onTabListEmptyCb={() => setReplaceWithHead(true)}
-            dispatchParent={dispatch}
+            id={port.tailId as ID}
+            dispatch={dispatch}
         />
 
         return (
             <SplitPane
-                dir={splitview.direction}
+                dir={port.direction as DirectionT}
                 resizerPos='50%'>
                 {/* TODO: add resizerPos to SplitViewT */}
-                { splitview.head && head }
-                { splitview.tail && tail }
+                { port.headId && head }
+                { port.tailId && tail }
             </SplitPane>
         );
     }

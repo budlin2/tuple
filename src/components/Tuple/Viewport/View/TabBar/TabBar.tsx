@@ -9,13 +9,15 @@ import _classes from './tabbar.module.css';
 
 
 interface Props {
-    pids: ID[],
+    portId: ID,
+    pageIds: ID[],
     dispatch?: Dispatch<ViewportActionT>
 }
 
 
 const TabBar = ({
-    pids,
+    portId,
+    pageIds,
     dispatch=()=>{},
 }: Props) => {
     const {classes, styles}: {
@@ -30,9 +32,10 @@ const TabBar = ({
             className={tabBarClassName}
             style={styles?.tabBar}
         >
-            { pids.map((pid, i) => (
+            { pageIds.map((pid, i) => (
                 <Tab
                     key={pid}
+                    portId={portId}
                     index={i}
                     pageId={pid}
                     dispatch={dispatch}/>

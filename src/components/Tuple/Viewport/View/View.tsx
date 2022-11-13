@@ -9,6 +9,7 @@ import { ID, PagesT, PageT, TupleClassesT, TupleStylesT } from '../../TupleTypes
 
 
 interface Props {
+    portId: ID,
     pageIds: ID[],
     activePageId: ID,
     dispatch: Dispatch<ViewportActionT>,
@@ -16,11 +17,12 @@ interface Props {
 
 
 const View = ({
+    portId,
     pageIds,
     activePageId,
     dispatch,
 }: Props) => {
-    if (pageIds.length <= 0) return null;
+    if (pageIds && pageIds.length <= 0) return null;
 
     const viewRef = useRef<HTMLDivElement>();
     const {pages, styles, classes}: {
@@ -37,7 +39,7 @@ const View = ({
             ref={viewRef as MutableRefObject<HTMLDivElement>}
             className={viewClassName}
             style={styles?.view}>
-            <TabBar pids={pageIds} dispatch={dispatch}/>
+            <TabBar portId={portId} pageIds={pageIds} dispatch={dispatch}/>
             <activePage.component {...activePage.props } />
         </div>
     );

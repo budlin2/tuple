@@ -16,10 +16,12 @@ import {
     ViewActionKind,
     ViewportActionT
 } from '../../ViewportTypes';
+
 import _classes from './tabbar.module.css';
 
 
 export interface TabProps {
+    portId: ID,
     index: number,
     pageId: ID,     // This may serve as a unique identifier for tab as well,
     dispatch: Dispatch<ViewportActionT>,
@@ -27,6 +29,7 @@ export interface TabProps {
 
 
 export const Tab = ({
+    portId,
     index,
     pageId,
     dispatch,
@@ -48,16 +51,16 @@ export const Tab = ({
     const changeView = () => {
         const changeActiveViewAction: ChangeActiveViewActionT = {
             type: ViewActionKind.CHANGE_ACTIVE_VIEW,
-            payload: { pid: pageId }
+            payload: { portId, pageId }
         };
 
         dispatch(changeActiveViewAction); 
     }
 
-    const addTab = (pid: ID) => {
+    const addTab = (dragPageId: ID) => {
         const addTabAction: AddTabActionT = {
             type: ViewActionKind.ADD_TAB,
-            payload: { pid, index: index+1 },
+            payload: { portId, pageId: dragPageId, index: index+1 },
         };
 
         // TODO: update local storage
@@ -68,7 +71,7 @@ export const Tab = ({
     const removeTab = () => {
         const removeTabAction: RemoveTabActionT = {
             type: ViewActionKind.REMOVE_TAB,
-            payload: { index }
+            payload: { portId, index }
         };
 
         dispatch(removeTabAction);
@@ -106,7 +109,7 @@ export const Tab = ({
         e.stopPropagation();
 
         if (tabRef.current)
-            tabRef.current.style.opacity = '1';
+            tabRef.current.style.opacity = '0.7';
     }
 
     const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
