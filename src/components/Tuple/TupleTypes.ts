@@ -36,6 +36,7 @@ export interface TupleStylesT {
 
     viewport?: CSSProperties,
     view?: CSSProperties,
+    dropZone?: CSSProperties,
 }
 
 
@@ -57,6 +58,7 @@ export interface TupleClassesT {
 
     viewport?: string,
     view?: string,
+    dropZone?: string,
 }
 
 

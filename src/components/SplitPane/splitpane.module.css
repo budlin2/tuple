@@ -41,7 +41,10 @@
 /***************
 * Resizer
 ****************/
-.resizer { position: absolute; opacity: 0 }
+.resizer {
+    position: absolute;
+    opacity: 0;
+}
 .resizerHorizontal {
     top: 0;
     right: -4px;

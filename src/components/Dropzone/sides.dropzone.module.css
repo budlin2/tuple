@@ -1,0 +1,87 @@
+:root {
+    --HOVER_THICKNESS: 20%;
+    --HOVER_THICKNESS_DIFF: 80%; /* 100 - HOVER_THICKNESS */
+    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
+}
+
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+/* DropZone */
+.dropZoneTop {
+    position: absolute;
+    top: 0;
+    height: var(--HOVER_THICKNESS);
+    width: 100%;
+    z-index: 1;
+}
+
+.dropZoneRight {
+    position: absolute;
+    right: 0;
+    width: var(--HOVER_THICKNESS);
+    height: 100%;
+    z-index: 1;
+}
+
+.dropZoneBottom {
+    position: absolute;
+    bottom: 0;
+    height: var(--HOVER_THICKNESS);
+    width: 100%;
+    z-index: 1;
+}
+
+.dropZoneLeft {
+    position: absolute;
+    left: 0;
+    top: var(--HOVER_THICKNESS);
+    width: var(--HOVER_THICKNESS);
+    height: var(--HOVER_THICKNESS_DIFF);
+    z-index: 1;
+}
+
+
+/* DropZone Display */
+.dropZoneDisplayTop {
+    position: absolute;
+    top: 0;
+    height: 50%;
+    width: 100%;
+
+    background: var(--HOVER_COLOR);
+}
+
+.dropZoneDisplayRight {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+
+    background: var(--HOVER_COLOR);
+}
+  
+.dropZoneDisplayBottom {
+    position: absolute;
+    bottom: 0;
+    height: 50%;
+    width: 100%;
+
+    background: var(--HOVER_COLOR);
+}
+
+.dropZoneDisplayLeft {
+    position: absolute;
+    left: 0;
+    width: 50%;
+    height: 100%;
+
+    background: var(--HOVER_COLOR);
+}
