@@ -6,7 +6,7 @@ import {
 } from 'react'
 
 import { TupleContext } from '..';
-import { ID, TupleClassesT, TupleStylesT } from '../TupleTypes';
+import { ID, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 
@@ -24,10 +24,7 @@ const Leaf = ({
 }: Props) => {
     const leafRef = useRef<HTMLDivElement>();
 
-    const { classes, styles }: {
-        classes: TupleClassesT,
-        styles: TupleStylesT,
-    } = useContext(TupleContext);
+    const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
 
     const leafClassName = `${_classes.leaf} ${classes.leaf}`;
     const leafContainerClassName = `${_classes.leafContainer} ${classes.leafContainer}`;

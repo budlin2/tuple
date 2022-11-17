@@ -3,8 +3,8 @@ import { useContext } from 'react';
 import Leaf from './Leaf'
 import Branch from './Branch';
 import { TupleContext } from '..';
-import { BranchT, TreeT } from './TreeTypes';
-import { ID, isID, PagesT, PageT, TupleClassesT, TupleStylesT } from '../TupleTypes';
+import { BranchT } from './TreeTypes';
+import { ID, isID, PageT, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 
@@ -16,7 +16,7 @@ interface BranchesProps {
 
 // Recursive tree component
 const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
-    const {pages}: {pages: PagesT} = useContext(TupleContext);
+    const {state:{ pages }}: TupleContextT = useContext(TupleContext);
 
     if (isID(branchOrLeafId)) {
         const id: ID = branchOrLeafId as ID;
@@ -39,17 +39,8 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
 };
 
 
-export interface Props {
-    tree: TreeT,
-    // maxDepth: number,  // TODO:?
-}
-
-const Tree = ({ tree=[] }: Props) => {
-    const {pages, classes, styles }: {
-        pages: PagesT,
-        classes: TupleClassesT,
-        styles: TupleStylesT,
-    } = useContext(TupleContext);
+const Tree = () => {
+    const {state:{ tree, classes, styles }}: TupleContextT = useContext(TupleContext);
     const treeClassName = `${_classes.tree} ${classes.tree}`;
 
     // TODO: Need better key than index

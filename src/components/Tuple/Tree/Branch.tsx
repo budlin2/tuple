@@ -1,11 +1,10 @@
 import {
     ReactNode,
-    MouseEvent,
     useState,
     useContext
 } from 'react'
 import { TupleContext } from '..';
-import { TupleClassesT, TupleStylesT } from '../TupleTypes';
+import { TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 
@@ -22,13 +21,10 @@ const Branch = ({
     children,
     open=false,
 }: Props) => {
-    const onClick = (e: MouseEvent) => setExpanded(cur => !cur);
+    const onClick = () => setExpanded(cur => !cur);
 
     const [expanded, setExpanded] = useState(open);
-    const { classes, styles }: {
-        classes: TupleClassesT,
-        styles: TupleStylesT,
-    } = useContext(TupleContext);
+    const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
 
     const branchClassName = `${_classes.branch} ${classes.branch} `;
     const branchesClassName = `${_classes.branches} ${classes.branches}`;

@@ -8,21 +8,13 @@ import Tree from './Tree/Tree';
 import Viewport from './Viewport/Viewport';
 import SplitPane from '../SplitPane';
 import { TupleContext } from '.';
-import { TreeT } from './Tree/TreeTypes';
-import { ViewportT } from './Viewport/ViewportTypes';
-import { TupleClassesT, TupleStylesT } from './TupleTypes';
+import { TupleContextT } from './TupleTypes';
 
 import _classes from './tuple.module.css';
 
 
 const TupleInner = () => {
-    const {views, tree, styles, classes}: {
-        views: ViewportT | null,
-        tree: TreeT,
-        styles: TupleStylesT,
-        classes: TupleClassesT,
-    } = useContext(TupleContext);
-
+    const {state:{ styles, classes }}: TupleContextT = useContext(TupleContext);
     const tupleClassName = `${_classes?.tuple} ${classes?.tuple}`;
 
     // TODO: This needs to be better
@@ -31,8 +23,8 @@ const TupleInner = () => {
     return (
         <div className={tupleClassName} style={styles.tuple}>
             <SplitPane resizerPos='25%'>
-                <Tree tree={tree} />
-                <Viewport views={views} defaultView={DefaultView} />
+                <Tree />
+                <Viewport defaultView={DefaultView} />
             </SplitPane>
         </div>
     );

@@ -1,6 +1,7 @@
-import { CSSProperties } from "react";
+import { CSSProperties, Dispatch } from "react";
+import { DirectionT, SideT } from "../SplitPane/SplitPaneTypes";
 import { TreeT } from "./Tree/TreeTypes";
-import { ViewportT } from "./Viewport/ViewportTypes";
+import { PortStateT } from "./Viewport/ViewportTypes";
 
 
 export type ID = number | string;
@@ -65,11 +66,49 @@ export interface TupleClassesT {
 export interface EventsT {}  // TODO: Implement this
 
 
-export interface TupleContextT {
+//----------------------------------------------------------------------------------------------------------------------
+// State Types
+//----------------------------------------------------------------------------------------------------------------------
+export interface TupleStateT {
     pages: PagesT,
-    views: ViewportT | null,
+    views: PortStateT,
     tree: TreeT,
     styles: TupleStylesT,
     classes: TupleClassesT,
     events: EventsT,
 }
+
+export interface TupleContextT {
+    dispatch: Dispatch<TupleActionT>,
+    state: TupleStateT,
+}
+
+export enum TupleActionKind {
+    ADD_TAB = "ADD_TAB",
+    REMOVE_TAB = "REMOVE_TAB",
+    ADD_VIEW = "ADD_VIEW",
+    REMOVE_VIEW = "REMOVE_VIEW",
+    CHANGE_ACTIVE_VIEW = "CHANGE_ACTIVE_VIEW",
+}
+
+export interface AddTabPayloadT { portId: ID, pageId: ID, index: number };
+export interface AddTabActionT { type: TupleActionKind.ADD_TAB, payload: AddTabPayloadT };
+
+export interface RemoveTabPayloadT { portId: ID, index: number };
+export interface RemoveTabActionT { type: TupleActionKind.REMOVE_TAB, payload: RemoveTabPayloadT };
+
+// TODO: Do I need this?
+export interface AddViewPayloadT { portId: ID, pageId: ID, side: SideT, direction: DirectionT };
+export interface AddViewActionT { type: TupleActionKind.ADD_VIEW, payload: AddViewPayloadT };
+
+export interface RemoveViewPayloadT { portId: ID };
+export interface RemoveViewActionT { type: TupleActionKind.REMOVE_VIEW, payload: RemoveViewPayloadT };
+
+export interface ChangeActiveViewPayloadT { portId: ID, pageId: ID };
+export interface ChangeActiveViewActionT { type: TupleActionKind.CHANGE_ACTIVE_VIEW, payload: ChangeActiveViewPayloadT };
+
+export type TupleActionT = AddTabActionT
+                         | RemoveTabActionT
+                         | AddViewActionT
+                         | RemoveViewActionT
+                         | ChangeActiveViewActionT;

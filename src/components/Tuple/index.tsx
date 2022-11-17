@@ -4,22 +4,39 @@
 import {
     createContext,
     ReactNode,
+    useMemo,
+    useReducer,
 } from 'react';
+import { getUniqueId } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
 import TupleInner from './TupleInner';
 
-import { getViewsFromStorage } from './TupleState';
-import { EventsT, PagesT, TupleClassesT, TupleContextT, TupleStylesT } from './TupleTypes';
-import { ViewportT } from './Viewport/ViewportTypes';
+import { getViewsFromStorage, initialViews, reducer } from './TupleState';
+import { EventsT, ID, PagesT, TupleClassesT, TupleContextT, TupleStateT, TupleStylesT } from './TupleTypes';
+import { isSplitViewT, isViewT, PortsT, PortStateT, PortT, SplitViewT, ViewportT, ViewT } from './Viewport/ViewportTypes';
 
 
+// TODO: A better-named structure would be:
+/*
+    {
+        ...
+        viewport: {
+            root:
+            views: {}
+        }
+        ...
+    }
+*/
 export const TupleContext = createContext({
-    pages: {},
-    views: null,  // initial views.. Will overwrite with localStorage first
-    styles: {},
-    classes: {},
-    events: {},
-    tree: {},
+    // dispatch: null,  TODO: do I need to initialize dispatch
+    state: {
+        pages: {},
+        views: initialViews,
+        styles: {},
+        classes: {},
+        events: {},
+        tree: {},
+    }
 } as TupleContextT);
 
 
@@ -46,15 +63,61 @@ const Tuple = ({
 }: TupleProps) => {
     const initViews = getViewsFromStorage() || views || null;
 
-    const context = {
+    const buildPortMap = (
+        viewport: ViewportT,
+        portMap: PortsT,
+        parentId: ID | null = null,
+        isHead: boolean | null = null
+    ): ID => {
+        const id = getUniqueId();
+
+        if (isViewT(viewport)) {
+            const view = viewport as ViewT;
+            portMap[id] = {
+                parentId,
+                isSplitView: false,
+                pageIds: view.pageIds,
+                activePageId: view.activePageId,
+                direction: null,
+                headId: null,
+                tailId: null,
+                isHead,
+            } as PortT;
+        } else if (isSplitViewT(viewport)) {
+            const splitview = viewport as SplitViewT
+            portMap[id] = {
+                parentId,
+                isSplitView: true,
+                pageIds: null,
+                activePageId: null,
+                direction: splitview.direction,
+                headId: buildPortMap(splitview.head, portMap, id, true),
+                tailId: buildPortMap(splitview.tail as ViewportT, portMap, id, false),
+                isHead,
+            } as PortT;
+        } else {
+            throw new Error('All viewport values must be of type ViewT or SplitViewT');
+        }
+
+        return id;
+    };
+
+    const portMap: PortsT = {};
+    const rootId = useMemo(() => buildPortMap(initViews as ViewportT, portMap), []);
+    const initViewportState: PortStateT = { root: rootId, ports: portMap };
+
+    const initState: TupleStateT = {
         pages,
-        views: initViews,
+        views: initViewportState,
         tree,
         styles: styles || {},
         classes: classes || {},
         events: events || {},
     };
 
+
+    const [state, dispatch] = useReducer(reducer, initState);
+    const context = useMemo(() => ({state, dispatch}), [state, dispatch])
 
     return (
         <TupleContext.Provider value={context}>

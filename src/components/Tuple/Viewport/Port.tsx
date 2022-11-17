@@ -2,38 +2,36 @@
 // Recursive component tree of Views and SplitPanes that make up a Viewport
 //----------------------------------------------------------------------------------------------------------------------
 
-import { Dispatch, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import SplitPane from "../../SplitPane";
 import { DirectionT } from "../../SplitPane/SplitPaneTypes";
 import { ID } from "../TupleTypes";
 import View from "./View/View";
-import { ViewportContext } from "./Viewport";
-import { PortStateT, PortT, RemoveViewActionT, ViewActionKind, ViewportActionT } from "./ViewportTypes";
+import { TupleContext } from "..";
+import { TupleContextT, RemoveViewActionT, TupleActionKind } from "../TupleTypes";
+import { PortT } from './ViewportTypes';
 
 //----------------------------------------------------------------------------------------------------------------------
 interface PortProps {
     id: ID,
-    dispatch: Dispatch<ViewportActionT>,
 }
 
 
-const Port = ({
-    id,
-    dispatch,
-}: PortProps): JSX.Element => {
-    const context: PortStateT = useContext(ViewportContext);
+const Port = ({ id }: PortProps): JSX.Element => {
+    const { dispatch, state: { views } }: TupleContextT = useContext(TupleContext);
 
     //TODO:  This should be lifted to Viewport.tsx once the viewport actions are lifted to Tuple
-    if (context.root == '') {
+    //          Should also be inside of viewport { root, views, defaultView}
+    if (views.root == '') {
         return <>No Views. SAD!</>
     }
 
-    const port: PortT = context.ports[id];  // TODO: Should this be in useEffect hook?
+    const port: PortT = views.ports[id];  // TODO: Should this be in useEffect hook?
 
     const removeView = () => {
         const removeViewAction: RemoveViewActionT = {
-            type: ViewActionKind.REMOVE_VIEW,
+            type: TupleActionKind.REMOVE_VIEW,
             payload: { portId: id }
         }
 
@@ -56,7 +54,6 @@ const Port = ({
                 portId={id}
                 pageIds={port.pageIds as ID[]}
                 activePageId={port.activePageId as ID}
-                dispatch={dispatch}
             />
         );
     }
@@ -65,15 +62,8 @@ const Port = ({
     // SPLIT-VIEW
     //------------------------------------------------------------------------------------------------------------------
     if (port && port?.headId) {
-        const head = <Port
-            id={port.headId}
-            dispatch={dispatch}
-        />
-
-        const tail = <Port
-            id={port.tailId as ID}
-            dispatch={dispatch}
-        />
+        const head = <Port id={port.headId} />
+        const tail = <Port id={port.tailId as ID} />
 
         return (
             <SplitPane

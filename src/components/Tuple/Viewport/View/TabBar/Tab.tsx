@@ -3,19 +3,17 @@ import {
     useRef,
     MutableRefObject,
     useContext,
-    Dispatch,
     DragEvent,
 } from 'react';
 
 import { TupleContext } from '../../..';
-import { ID, PagesT, TupleClassesT, TupleStylesT } from '../../../TupleTypes';
+import { ID, TupleContextT } from '../../../TupleTypes';
 import {
     AddTabActionT,
     ChangeActiveViewActionT,
     RemoveTabActionT,
-    ViewActionKind,
-    ViewportActionT
-} from '../../ViewportTypes';
+    TupleActionKind,
+} from '../../../TupleTypes';
 
 import _classes from './tabbar.module.css';
 
@@ -23,8 +21,7 @@ import _classes from './tabbar.module.css';
 export interface TabProps {
     portId: ID,
     index: number,
-    pageId: ID,     // This may serve as a unique identifier for tab as well,
-    dispatch: Dispatch<ViewportActionT>,
+    pageId: ID,  // This also serves as a unique id for tab
 }
 
 
@@ -32,15 +29,15 @@ export const Tab = ({
     portId,
     index,
     pageId,
-    dispatch,
 }: TabProps) => {
+    const {
+        dispatch,
+        state:{ pages, classes, styles },
+    }: TupleContextT = useContext(TupleContext);
+
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
-    const { pages, classes, styles }: {
-        pages: PagesT,
-        classes: TupleClassesT,
-        styles: TupleStylesT,
-    } = useContext(TupleContext);
+
     const tabClassName = `${_classes.tab} ${classes.tab || ''}`;
     const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
     const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
@@ -50,7 +47,7 @@ export const Tab = ({
     //------------------------------------------------------------------------------------------------------------------
     const changeView = () => {
         const changeActiveViewAction: ChangeActiveViewActionT = {
-            type: ViewActionKind.CHANGE_ACTIVE_VIEW,
+            type: TupleActionKind.CHANGE_ACTIVE_VIEW,
             payload: { portId, pageId }
         };
 
@@ -59,7 +56,7 @@ export const Tab = ({
 
     const addTab = (dragPageId: ID) => {
         const addTabAction: AddTabActionT = {
-            type: ViewActionKind.ADD_TAB,
+            type: TupleActionKind.ADD_TAB,
             payload: { portId, pageId: dragPageId, index: index+1 },
         };
 
@@ -70,7 +67,7 @@ export const Tab = ({
 
     const removeTab = () => {
         const removeTabAction: RemoveTabActionT = {
-            type: ViewActionKind.REMOVE_TAB,
+            type: TupleActionKind.REMOVE_TAB,
             payload: { portId, index }
         };
 

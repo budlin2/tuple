@@ -1,8 +1,7 @@
-import { useContext, Dispatch } from 'react';
+import { useContext } from 'react';
 
 import { TupleContext } from '../../..';
-import { ID, TupleClassesT, TupleStylesT } from '../../../TupleTypes';
-import { ViewportActionT } from '../../ViewportTypes';
+import { ID, TupleContextT } from '../../../TupleTypes';
 import Tab from './Tab';
 
 import _classes from './tabbar.module.css';
@@ -11,20 +10,14 @@ import _classes from './tabbar.module.css';
 interface Props {
     portId: ID,
     pageIds: ID[],
-    dispatch?: Dispatch<ViewportActionT>
 }
 
 
 const TabBar = ({
     portId,
     pageIds,
-    dispatch=()=>{},
 }: Props) => {
-    const {classes, styles}: {
-        classes: TupleClassesT,
-        styles: TupleStylesT
-    } = useContext(TupleContext);
-
+    const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
     const tabBarClassName = `${_classes?.tabBar} ${classes?.tabBar}`;
     
     return (
@@ -37,8 +30,7 @@ const TabBar = ({
                     key={pid}
                     portId={portId}
                     index={i}
-                    pageId={pid}
-                    dispatch={dispatch}/>
+                    pageId={pid}/>
             ))}
         </div>
     );
