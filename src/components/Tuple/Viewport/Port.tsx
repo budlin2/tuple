@@ -19,15 +19,15 @@ interface PortProps {
 
 
 const Port = ({ id }: PortProps): JSX.Element => {
-    const { dispatch, state: { views } }: TupleContextT = useContext(TupleContext);
+    const { dispatch, state: { viewport } }: TupleContextT = useContext(TupleContext);
 
     //TODO:  This should be lifted to Viewport.tsx once the viewport actions are lifted to Tuple
     //          Should also be inside of viewport { root, views, defaultView}
-    if (views.root == '') {
+    if (viewport.root == '') {
         return <>No Views. SAD!</>
     }
 
-    const port: PortT = views.ports[id];  // TODO: Should this be in useEffect hook?
+    const port: PortT = viewport.ports[id];  // TODO: Should this be in useEffect hook?
 
     const removeView = () => {
         const removeViewAction: RemoveViewActionT = {

@@ -1,7 +1,7 @@
 import { CSSProperties, Dispatch } from "react";
 import { DirectionT, SideT } from "../SplitPane/SplitPaneTypes";
 import { TreeT } from "./Tree/TreeTypes";
-import { PortStateT } from "./Viewport/ViewportTypes";
+import { ViewportStateT } from "./Viewport/ViewportTypes";
 
 
 export type ID = number | string;
@@ -71,7 +71,7 @@ export interface EventsT {}  // TODO: Implement this
 //----------------------------------------------------------------------------------------------------------------------
 export interface TupleStateT {
     pages: PagesT,
-    views: PortStateT,
+    viewport: ViewportStateT,
     tree: TreeT,
     styles: TupleStylesT,
     classes: TupleClassesT,

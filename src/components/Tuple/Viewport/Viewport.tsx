@@ -14,22 +14,18 @@ export interface Props {
 
 
 const Viewport = ({ defaultView }: Props) => {
-    const { state: {
-        views,
-        styles,
-        classes
-    }}: TupleContextT = useContext(TupleContext);
+    const {state: { viewport, styles, classes }}: TupleContextT = useContext(TupleContext);
 
     const viewportClassName = `${_classes.viewport} ${classes.viewport}`;
 
     // TODO: Show defaultView
-    if (views.root == null) {
+    if (viewport.root == null) {
         return <>No Views. SAD!</>
     }
 
     return (
         <div className={viewportClassName} style={styles.viewport}>
-            <Port id={views.root} />
+            <Port id={viewport.root} />
         </div>
     );
 };

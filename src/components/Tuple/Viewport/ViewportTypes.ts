@@ -35,7 +35,7 @@ export interface PortT {
 // One element of type ID, which is root - used to identify root id
 export type PortsT = { [key: ID]: PortT };
 
-export interface PortStateT {
+export interface ViewportStateT {
     root: ID,
     ports: PortsT,
 };

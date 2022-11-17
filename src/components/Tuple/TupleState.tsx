@@ -1,5 +1,3 @@
-import { createContext } from "react";
-
 import {
     AddTabPayloadT,
     ChangeActiveViewPayloadT,
@@ -8,14 +6,13 @@ import {
     RemoveViewPayloadT,
     TupleActionKind,
     TupleActionT,
-    TupleContextT,
     TupleStateT
 } from "./TupleTypes";
 
 import {
     IdPortTupleT,
     PortsT,
-    PortStateT,
+    ViewportStateT,
     PortT,
     SplitViewT,
     ViewportT,
@@ -41,18 +38,18 @@ const _get_port_copy = (ports: PortsT, id: ID): PortT => {
 
 //---------------------------------------------------------------------------------------------------------------------
 // TODO: Better named types... e.g. PortStateT is poorly named now...
-const _get_sister_details = (state: PortStateT, id: ID): IdPortTupleT | null => {
-    const port: PortT = state.ports[id];
+const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPortTupleT | null => {
+    const port: PortT = viewportState.ports[id];
     if (!port) return null;
 
     const isRoot: boolean = port.parentId == null;  // TODO: Do I really need root in PortStateT
     if (isRoot) return null;
 
-    const parent: PortT = state.ports[port.parentId as ID];
+    const parent: PortT = viewportState.ports[port.parentId as ID];
     if (!parent) return null;
 
     const sisterId: ID = port.isHead ? parent.tailId as ID : parent.headId as ID;
-    const sister = _get_port_copy(state.ports, sisterId);
+    const sister = _get_port_copy(viewportState.ports, sisterId);
 
     return {
         id: sisterId,
@@ -67,7 +64,7 @@ const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
     console.log('state', state)
     console.log('payload', payload)
 
-    const port = _get_port_copy(state.views.ports, payload.portId);
+    const port = _get_port_copy(state.viewport.ports, payload.portId);
 
     const pageIds = port.pageIds;
     if (!pageIds) throw Error('Page ids is null. Was this action called on a Splitview port?');
@@ -79,7 +76,7 @@ const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
     ];
 
     const newPorts = {
-        ...state.views.ports,
+        ...state.viewport.ports,
         [`${payload.portId}`]: {
             ...port,
             pageIds: newPageIds
@@ -88,7 +85,10 @@ const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
 
     return {
         ...state,
-        ports: newPorts,
+        viewport: {
+            ...state.viewport,
+            ports: newPorts,
+        }
     } as TupleStateT;
 }
 
@@ -98,7 +98,7 @@ const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleState
     console.log('state', state)
     console.log('payload', payload)
 
-    const port = _get_port_copy(state.views.ports, payload.portId);
+    const port = _get_port_copy(state.viewport.ports, payload.portId);
 
     const pageIds = port.pageIds;
     if (!pageIds) throw Error('Page ids is null. Was this action called on a Splitview port?');
@@ -110,7 +110,7 @@ const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleState
         : pageIds[payload.index+1] || pageIds[payload.index-1];
     
     const newPorts = {
-        ...state.views.ports,
+        ...state.viewport.ports,
         [`${payload.portId}`]: {
             ...port,
             pageIds: newPageIds,
@@ -120,8 +120,8 @@ const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleState
 
     return {
         ...state,
-        views: {
-            ...state.views,
+        viewport: {
+            ...state.viewport,
             ports: newPorts,
         }
     } as TupleStateT;
@@ -149,22 +149,22 @@ const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleSta
     console.log('state', state)
     console.log('payload', payload)
 
-    let rootId: ID = state.views.root;
-    let port = _get_port_copy(state.views.ports, payload.portId);
+    let rootId: ID = state.viewport.root;
+    let port = _get_port_copy(state.viewport.ports, payload.portId);
     const isRoot = !port.parentId;
 
     if (isRoot) {
         return {
             ...state,
-            views: initialViews,  // TODO:
+            viewport: initialViewport,
         }
     }
 
-    const parent = _get_port_copy(state.views.ports, port.parentId as ID);
+    const parent = _get_port_copy(state.viewport.ports, port.parentId as ID);
     const parentIsRoot = !parent.parentId;
-    const sister = _get_sister_details(state.views, payload.portId);
+    const sister = _get_sister_details(state.viewport, payload.portId);
 
-    let newPorts: PortsT = { ...state.views.ports };
+    const newPorts: PortsT = { ...state.viewport.ports };
 
     if (parentIsRoot) {
         if (sister) {
@@ -176,7 +176,7 @@ const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleSta
         }
     } else {
         const grandparentId: ID = parent.parentId as ID;
-        const grandparent  = _get_port_copy(state.views.ports, grandparentId);
+        const grandparent  = _get_port_copy(state.viewport.ports, grandparentId);
 
         if (parent.isHead) {
             grandparent.headId = sister?.id as ID;
@@ -199,8 +199,8 @@ const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleSta
 
     return {
         ...state,
-        views: {
-            //...state.views
+        viewport: {
+            //...state.viewport
             root: rootId,
             ports: newPorts,
         }
@@ -214,10 +214,10 @@ const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloa
     console.log('state', state)
     console.log('payload', payload)
 
-    const port = _get_port_copy(state.views.ports, payload.portId);
+    const port = _get_port_copy(state.viewport.ports, payload.portId);
 
     const newPorts = {
-        ...state.views.ports,
+        ...state.viewport.ports,
         [`${payload.portId}`]: {
             ...port,
             activePageId: payload.pageId,
@@ -226,8 +226,8 @@ const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloa
 
     const newState = {
         ...state,
-        views: {
-            ...state.views,
+        viewport: {
+            ...state.viewport,
             ports: newPorts,
         }
     } as TupleStateT;
@@ -255,4 +255,4 @@ export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT =
     }
 }
 
-export const initialViews: PortStateT = { root: '', ports: {} }
+export const initialViewport: ViewportStateT = { root: '', ports: {} }

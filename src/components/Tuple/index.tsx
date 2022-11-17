@@ -11,27 +11,16 @@ import { getUniqueId } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
 import TupleInner from './TupleInner';
 
-import { getViewsFromStorage, initialViews, reducer } from './TupleState';
+import { getViewsFromStorage, initialViewport, reducer } from './TupleState';
 import { EventsT, ID, PagesT, TupleClassesT, TupleContextT, TupleStateT, TupleStylesT } from './TupleTypes';
-import { isSplitViewT, isViewT, PortsT, PortStateT, PortT, SplitViewT, ViewportT, ViewT } from './Viewport/ViewportTypes';
+import { isSplitViewT, isViewT, PortsT, ViewportStateT, PortT, SplitViewT, ViewportT, ViewT } from './Viewport/ViewportTypes';
 
 
-// TODO: A better-named structure would be:
-/*
-    {
-        ...
-        viewport: {
-            root:
-            views: {}
-        }
-        ...
-    }
-*/
 export const TupleContext = createContext({
     // dispatch: null,  TODO: do I need to initialize dispatch
     state: {
         pages: {},
-        views: initialViews,
+        viewport: initialViewport,
         styles: {},
         classes: {},
         events: {},
@@ -104,11 +93,11 @@ const Tuple = ({
 
     const portMap: PortsT = {};
     const rootId = useMemo(() => buildPortMap(initViews as ViewportT, portMap), []);
-    const initViewportState: PortStateT = { root: rootId, ports: portMap };
+    const initViewportState: ViewportStateT = { root: rootId, ports: portMap };
 
     const initState: TupleStateT = {
         pages,
-        views: initViewportState,
+        viewport: initViewportState,
         tree,
         styles: styles || {},
         classes: classes || {},
