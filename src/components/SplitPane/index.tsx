@@ -10,6 +10,7 @@ import {
 } from 'react'
 
 import _classes from './splitpane.module.css';
+import _global_classes from '../styles.module.css';
 import { DirectionT } from './SplitPaneTypes';
 
 

@@ -41,22 +41,28 @@
 /***************
 * Resizer
 ****************/
+:root{
+    --RESIZER_WIDTH: 10px;
+    --RESIZER_OFFSET: -5px;
+}
+
 .resizer {
     position: absolute;
     opacity: 0;
+    z-index: 2;
 }
 .resizerHorizontal {
     top: 0;
-    right: -4px;
-    width: 8px;
+    right: var(--RESIZER_OFFSET);
+    width: var(--RESIZER_WIDTH);
     cursor: w-resize;
     height: 100%;
 }
 
 .resizerVertical {
     left: 0;
-    bottom: -4px;
-    height: 8px;
+    bottom: var(--RESIZER_OFFSET);
+    height: var(--RESIZER_WIDTH);
     cursor: n-resize;
     width: 100%;
 }

@@ -5,6 +5,8 @@ import { TupleContext } from '../..';
 import { ID, PageT, TupleContextT } from '../../TupleTypes';
 
 import _classes from '../viewport.module.css';
+import DropZoneSides from '../../../Dropzone/DropZoneSides';
+import DropZoneCenter from '../../../Dropzone/DropZoneCenter';
 
 
 interface Props {
@@ -33,7 +35,11 @@ const View = ({
             className={viewClassName}
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
-            <activePage.component {...activePage.props } />
+            <DropZoneSides>
+                <DropZoneCenter>
+                    <activePage.component {...activePage.props } />
+                </DropZoneCenter>
+            </DropZoneSides>
         </div>
     );
 }

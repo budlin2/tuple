@@ -5,6 +5,7 @@ import { ID, TupleContextT } from '../../../TupleTypes';
 import Tab from './Tab';
 
 import _classes from './tabbar.module.css';
+import _global_classes from '../../../../styles.module.css';
 
 
 interface Props {
@@ -18,7 +19,7 @@ const TabBar = ({
     pageIds,
 }: Props) => {
     const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
-    const tabBarClassName = `${_classes?.tabBar} ${classes?.tabBar}`;
+    const tabBarClassName = `${_global_classes.noScrollbar} ${_classes?.tabBar} ${classes?.tabBar}`;
     
     return (
         <div

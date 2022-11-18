@@ -5,8 +5,6 @@ import {
     useState
 } from 'react';
 
-import { Side } from './DropZoneTypes';
-
 import _classes from './center.dropzone.module.css';
 
 
