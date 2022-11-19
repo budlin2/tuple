@@ -13,9 +13,7 @@ import { TupleContextT, RemoveViewActionT, TupleActionKind } from "../TupleTypes
 import { PortT } from './ViewportTypes';
 
 //----------------------------------------------------------------------------------------------------------------------
-interface PortProps {
-    id: ID,
-}
+interface PortProps { id: ID }
 
 
 const Port = ({ id }: PortProps): JSX.Element => {

@@ -1,7 +1,7 @@
 .view {
     background-color: lightgrey;
     border-left: 1px solid black;
-    border-top: 1px solid black;
+    /* border-top: 1px solid black; */
 }
 
 .tabBar {
@@ -19,6 +19,7 @@
 
 .tree {
     background: darkgrey;
+    border-right: 1px solid rgb(109, 109, 109);
 }
 
 .branch {

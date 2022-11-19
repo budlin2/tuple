@@ -19,12 +19,17 @@
 
 .dropZoneDisplay {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    bottom: 0.5rem;
-    left: 0.5rem;
+    /* top: 0.35rem;
+    right: 0.35rem;
+    bottom: 0.35rem;
+    left: 0.35rem;
 
-    border-radius: 10px;
+    border-radius: 5px; */
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
     background: var(--HOVER_COLOR);
 }

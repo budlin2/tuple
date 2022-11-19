@@ -1,5 +1,8 @@
+import { getUniqueId } from "../../utils";
+import { SideT } from "../SplitPane/SplitPaneTypes";
 import {
     AddTabPayloadT,
+    AddViewPayloadT,
     ChangeActiveViewPayloadT,
     ID,
     RemoveTabPayloadT,
@@ -129,21 +132,98 @@ const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleState
 
 
 //---------------------------------------------------------------------------------------------------------------------
-// const _add_view = (state: PortStateT, payload: AddViewPayloadT): PortStateT => {
-//     const newView: ViewT = {
-//         pageIds: [payload.pid],
-//         activePageId: payload.pid,
-//     };
+// Create a new splitview port with children as original port and new tab
+/*
+    Will turn:
+            (Parent)
+               |
+            (Port)
 
-//     return {
-//         head: payload.side == SideT.HEAD ? newView : state,
-//         tail: payload.side == SideT.TAIL ? newView: state,
-//         direction: payload.direction,
-//     } as SplitViewT;
-// }
+    Into:
+             (Parent)
+                |
+            (New Port)
+              /    \
+         (Port)    (New Child)
+*/
+const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT => {
+    console.log('--- Add View ---')
+    console.log('state', state)
+    console.log('payload', payload)
+
+    const newPortId = getUniqueId();
+    const newChildId = getUniqueId();
+
+    const port = _get_port_copy(state.viewport.ports, payload.portId);
+    const isRoot = !port.parentId;
+
+    const newChild: PortT = {
+        parentId: newPortId,
+        isSplitView: false,
+        pageIds: [payload.pageId],
+        activePageId: payload.pageId,
+        direction: null,
+        headId: null,
+        tailId: null,
+        isHead: payload.side === SideT.HEAD,
+    };
+
+    const newPort = {
+        parentId: port.parentId,
+        isSplitView: true,
+        pageIds: null,
+        activePageId: null,
+        direction: payload.direction,
+        headId: payload.side === SideT.HEAD ? newChildId : payload.portId,
+        tailId: payload.side === SideT.TAIL ? newChildId : payload.portId,
+        isHead: port.isHead,
+    }
+
+    console.log('parent id', port.parentId)
+
+    const newPorts = {
+        ...state.viewport.ports,
+        [`${newPortId}`]: newPort,      // parent
+        [`${newChildId}`]: newChild,    // child
+    }
+
+    // If not the root, handle changes to parent
+    if (!isRoot) {
+        const parent = _get_port_copy(state.viewport.ports, port.parentId as ID);
+        if (port.isHead)
+            parent.headId = newPortId;
+
+        if (port.isHead !== null && !port.isHead)
+            parent.tailId = newPortId;
+
+        newPorts[port.parentId as ID] = parent;  // grandparent
+    }
+
+    // Add back updated port
+    port.parentId = newPortId;
+    port.isHead = payload.side === SideT.TAIL;
+    newPorts[payload.portId] = port;
+
+    console.log('New state', {
+        ...state,
+        viewport: {
+            ...state.viewport,
+            ports: newPorts,
+        }
+    });
+    
+    return {
+        ...state,
+        viewport: {
+            // ...state.viewport,
+            root: isRoot ? newPortId : state.viewport.root,
+            ports: newPorts,
+        }
+    } as TupleStateT;
+}
 
 //---------------------------------------------------------------------------------------------------------------------
-// Replace parent with sister component
+// Remove => Replace parent with sister component
 const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleStateT => {
     console.log('--- Remove View ---')
     console.log('state', state)
@@ -244,8 +324,8 @@ export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT =
             return _add_tab(state, action.payload as AddTabPayloadT);
         case TupleActionKind.REMOVE_TAB:
             return _remove_tab(state, action.payload as RemoveTabPayloadT);
-        // case ViewActionKind.ADD_VIEW:
-        //     return _add_view(state, action.payload as AddViewPayloadT);
+        case TupleActionKind.ADD_VIEW:
+            return _add_view(state, action.payload as AddViewPayloadT);
         case TupleActionKind.REMOVE_VIEW:
             return _remove_view(state, action.payload as RemoveViewPayloadT);
         case TupleActionKind.CHANGE_ACTIVE_VIEW:

@@ -2,6 +2,7 @@
 export type DirectionT = 'horizontal' | 'vertical' | 'none';
 
 export enum SideT {
-    HEAD = "head",
-    TAIL = "tail",
+    HEAD = "HEAD",
+    TAIL = "TAIL",
+    NULL = "NULL",
 }

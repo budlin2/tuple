@@ -5,15 +5,15 @@ import {
     useState
 } from 'react';
 
-import { Side } from './DropZoneTypes';
+import { DropSideT } from './DropZoneTypes';
 
 import _classes from './sides.dropzone.module.css';
 
 
 export interface Props {
-    onDragOverCB?       : ((e: DragEvent<Element>, side: Side) => void) | null,
-    onDragLeaveCB?      : ((e: DragEvent<Element>, side: Side) => void) | null,
-    onDropCB?           : ((e: DragEvent<Element>, side: Side) => void) | null,
+    onDragOverCB?       : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
+    onDragLeaveCB?      : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
+    onDropCB?           : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
     validateDraggable?  : ((e: DragEvent<Element>) => boolean) | null,
     className?          : string | null,
     style?              : CSSProperties | null,
@@ -37,15 +37,15 @@ const DropZoneSides = ({
 
     const withCustomClass = (_className: string) => `${_className} ${className}`;
 
-    const onDragOverHandler = (e: DragEvent<Element>, side: Side) => {
+    const onDragOverHandler = (e: DragEvent<Element>, side: DropSideT) => {
         // e.stopPropagation();
         e.preventDefault();
     
         switch (side) {
-            case Side.TOP   : setTopVisible(true);      break;
-            case Side.RIGHT : setRightVisible(true);    break;
-            case Side.BOTTOM: setBottomVisible(true);   break;
-            case Side.LEFT  : setLeftVisible(true);     break;
+            case DropSideT.TOP      : setTopVisible(true);      break;
+            case DropSideT.RIGHT    : setRightVisible(true);    break;
+            case DropSideT.BOTTOM   : setBottomVisible(true);   break;
+            case DropSideT.LEFT     : setLeftVisible(true);     break;
             default:
                 throw Error("Invalid side!");
         }
@@ -53,12 +53,12 @@ const DropZoneSides = ({
         onDragOverCB && onDragOverCB(e, side);
     };
 
-    const onDragLeaveHandler = (e: DragEvent<Element>, side: Side) => {
+    const onDragLeaveHandler = (e: DragEvent<Element>, side: DropSideT) => {
         switch (side) {
-            case Side.TOP   :   setTopVisible(false);       break;
-            case Side.RIGHT :   setRightVisible(false);     break;
-            case Side.BOTTOM:   setBottomVisible(false);    break;
-            case Side.LEFT  :   setLeftVisible(false);      break;
+            case DropSideT.TOP      :   setTopVisible(false);       break;
+            case DropSideT.RIGHT    :   setRightVisible(false);     break;
+            case DropSideT.BOTTOM   :   setBottomVisible(false);    break;
+            case DropSideT.LEFT     :   setLeftVisible(false);      break;
             default:
                 throw Error("Invalid side!");
         }
@@ -66,12 +66,12 @@ const DropZoneSides = ({
         onDragLeaveCB && onDragLeaveCB(e, side);
     };
 
-    const onDropHandler = (e: DragEvent<Element>, side: Side) => {
+    const onDropHandler = (e: DragEvent<Element>, side: DropSideT) => {
         switch (side) {
-            case Side.TOP   :   setTopVisible(false);       break;
-            case Side.BOTTOM:   setBottomVisible(false);    break;
-            case Side.RIGHT :   setRightVisible(false);     break;
-            case Side.LEFT  :   setLeftVisible(false);      break;
+            case DropSideT.TOP      :   setTopVisible(false);       break;
+            case DropSideT.BOTTOM   :   setBottomVisible(false);    break;
+            case DropSideT.RIGHT    :   setRightVisible(false);     break;
+            case DropSideT.LEFT     :   setLeftVisible(false);      break;
             default:
                 throw Error("Bad paramater!");
         }
@@ -86,24 +86,24 @@ const DropZoneSides = ({
         <div className={_classes.root}>
             {/* ACTUAL DROP ZONE */}
             <div className={_classes.dropZoneTop}
-                onDragOver  = { e => onDragOverHandler(e, Side.TOP) }
-                onDragLeave = { e => onDragLeaveHandler(e, Side.TOP) }
-                onDrop      = { e => onDropHandler(e, Side.TOP) } />
+                onDragOver  = { e => onDragOverHandler(e, DropSideT.TOP) }
+                onDragLeave = { e => onDragLeaveHandler(e, DropSideT.TOP) }
+                onDrop      = { e => onDropHandler(e, DropSideT.TOP) } />
 
             <div className={_classes.dropZoneRight}
-                onDragOver  = { e => onDragOverHandler(e, Side.RIGHT) }
-                onDragLeave = { e => onDragLeaveHandler(e, Side.RIGHT) }
-                onDrop      = { e => onDropHandler(e, Side.RIGHT) } />
+                onDragOver  = { e => onDragOverHandler(e, DropSideT.RIGHT) }
+                onDragLeave = { e => onDragLeaveHandler(e, DropSideT.RIGHT) }
+                onDrop      = { e => onDropHandler(e, DropSideT.RIGHT) } />
 
             <div className={_classes.dropZoneBottom}
-                onDragOver  = { e => onDragOverHandler(e, Side.BOTTOM) }
-                onDragLeave = { e => onDragLeaveHandler(e, Side.BOTTOM) }
-                onDrop      = { e => onDropHandler(e, Side.BOTTOM) } />
+                onDragOver  = { e => onDragOverHandler(e, DropSideT.BOTTOM) }
+                onDragLeave = { e => onDragLeaveHandler(e, DropSideT.BOTTOM) }
+                onDrop      = { e => onDropHandler(e, DropSideT.BOTTOM) } />
 
             <div className={_classes.dropZoneLeft}
-                onDragOver  = { e => onDragOverHandler(e, Side.LEFT) }
-                onDragLeave = { e => onDragLeaveHandler(e, Side.LEFT) }
-                onDrop      = { e => onDropHandler(e, Side.LEFT) } />
+                onDragOver  = { e => onDragOverHandler(e, DropSideT.LEFT) }
+                onDragLeave = { e => onDragLeaveHandler(e, DropSideT.LEFT) }
+                onDrop      = { e => onDropHandler(e, DropSideT.LEFT) } />
 
             {/* DROP ZONE DISPLAYED TO USER */}
             { topVisible    && <div className={withCustomClass(_classes.dropZoneDisplayTop)}    style={style || {}} /> }
