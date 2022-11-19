@@ -36,13 +36,14 @@ const View = ({
 
     const onDropSideHandler = (e: DragEvent<Element>, side: DropSideT) => {
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+        const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
         const addViewPayload: AddViewPayloadT = {
+            dragPortId,
             portId: portId,
             pageId: dragPageId,
             side: SideT.NULL,
             direction: 'none',
         };
-        
 
         switch(side) {
             case DropSideT.TOP:
@@ -74,7 +75,7 @@ const View = ({
     }
 
     const validateDraggable = (e: DragEvent<Element>, side: DropSideT) => {
-
+        // TODO:
     }
 
     return (

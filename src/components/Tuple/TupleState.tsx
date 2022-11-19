@@ -157,6 +157,11 @@ const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT =>
     const port = _get_port_copy(state.viewport.ports, payload.portId);
     const isRoot = !port.parentId;
 
+    // If dropped on same port the drag started from, remove the original pageId to avoid duplicates
+    if (payload.dragPortId === payload.portId) {
+        port.pageIds = port.pageIds?.filter(item => item !== payload.pageId) as ID[];
+    }
+
     const newChild: PortT = {
         parentId: newPortId,
         isSplitView: false,

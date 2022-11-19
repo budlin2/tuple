@@ -98,7 +98,7 @@ export interface RemoveTabPayloadT { portId: ID, index: number };
 export interface RemoveTabActionT { type: TupleActionKind.REMOVE_TAB, payload: RemoveTabPayloadT };
 
 // TODO: Do I need this?
-export interface AddViewPayloadT { portId: ID, pageId: ID, side: SideT, direction: DirectionT };
+export interface AddViewPayloadT { dragPortId: ID, portId: ID, pageId: ID, side: SideT, direction: DirectionT };
 export interface AddViewActionT { type: TupleActionKind.ADD_VIEW, payload: AddViewPayloadT };
 
 export interface RemoveViewPayloadT { portId: ID };
