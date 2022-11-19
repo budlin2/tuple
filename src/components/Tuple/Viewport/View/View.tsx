@@ -2,7 +2,7 @@ import { useContext, useRef, MutableRefObject, DragEvent } from 'react';
 
 import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../..';
-import { AddViewActionT, AddViewPayloadT, ID, PageT, TupleActionKind, TupleContextT } from '../../TupleTypes';
+import { AddTabActionT, AddViewActionT, AddViewPayloadT, ID, PageT, TupleActionKind, TupleContextT } from '../../TupleTypes';
 
 import _classes from '../viewport.module.css';
 import DropZoneSides from '../../../Dropzone/DropZoneSides';
@@ -34,9 +34,10 @@ const View = ({
     const activePage: PageT = pages[activePageId];
     const viewClassName = `${_classes?.view} ${classes?.view}`;
 
-    const onDropSideHandler = (e: DragEvent<Element>, side: DropSideT) => {
-        const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
-        const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+    //------------------------------------------------------------------------------------------------------------------
+    // Actions Dispatchers
+    //------------------------------------------------------------------------------------------------------------------
+    const addView = (dragPortId: ID, dragPageId: ID, side: DropSideT) => {
         const addViewPayload: AddViewPayloadT = {
             dragPortId,
             portId: portId,
@@ -74,6 +75,39 @@ const View = ({
         dispatch(addViewAction);
     }
 
+    // TODO: This is now defined both here and Tab.tsx. Think about moving to new file (possible TupleState.tsx)
+    //          The index is by necessity different though
+    const addTab = (dragPageId: ID) => {
+        const addTabAction: AddTabActionT = {
+            type: TupleActionKind.ADD_TAB,
+            payload: { portId, pageId: dragPageId, index: 0 },
+        };
+
+        // TODO: update local storage
+
+        dispatch(addTabAction);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const dropSideHandler = (e: DragEvent<Element>, side: DropSideT) => {
+        const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+        const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+
+        addView(dragPortId, dragPageId, side);
+    }
+
+    // TODO: Better handling of adding tab to same port
+    const dropCenterHandler = (e: DragEvent<Element>) => {
+        const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+        const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+
+        if (dragPortId !== portId) {
+            addTab(dragPageId);
+        }
+    }
+
     const validateDraggable = (e: DragEvent<Element>, side: DropSideT) => {
         // TODO:
     }
@@ -84,8 +118,8 @@ const View = ({
             className={viewClassName}
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
-            <DropZoneSides onDropCB={onDropSideHandler}>
-                <DropZoneCenter>
+            <DropZoneSides onDropCB={dropSideHandler}>
+                <DropZoneCenter onDropCB={dropCenterHandler}>
                     <activePage.component {...activePage.props } />
                 </DropZoneCenter>
             </DropZoneSides>
