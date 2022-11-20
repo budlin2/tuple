@@ -15,17 +15,10 @@
     left: 10%;
     right: 10%;
     z-index: 1;
-    pointer-events: none;  /* Allow highlighting of children components */
 }
 
 .dropZoneDisplay {
     position: absolute;
-    /* top: 0.35rem;
-    right: 0.35rem;
-    bottom: 0.35rem;
-    left: 0.35rem;
-
-    border-radius: 5px; */
 
     top: 0;
     right: 0;

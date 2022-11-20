@@ -118,7 +118,9 @@ const View = ({
             <TabBar portId={portId} pageIds={pageIds} />
             <DropZoneSides onDropCB={dropSideHandler}>
                 <DropZoneCenter onDropCB={dropCenterHandler}>
-                    <activePage.component {...activePage.props } />
+                    <div style={{ zIndex: 1 }}>
+                        <activePage.component {...activePage.props } />
+                    </div>
                 </DropZoneCenter>
             </DropZoneSides>
         </div>

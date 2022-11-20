@@ -21,8 +21,6 @@
     height: var(--HOVER_THICKNESS);
     width: 100%;
     z-index: 1;
-
-    pointer-events: none;  /* Allow highlighting of children components */
 }
 
 .dropZoneRight {
@@ -31,8 +29,6 @@
     width: var(--HOVER_THICKNESS);
     height: 100%;
     z-index: 1;
-
-    pointer-events: none;  /* Allow highlighting of children components */
 }
 
 .dropZoneBottom {
@@ -41,8 +37,6 @@
     height: var(--HOVER_THICKNESS);
     width: 100%;
     z-index: 1;
-
-    pointer-events: none;  /* Allow highlighting of children components */
 }
 
 .dropZoneLeft {
@@ -52,8 +46,6 @@
     width: var(--HOVER_THICKNESS);
     height: var(--HOVER_THICKNESS_DIFF);
     z-index: 1;
-
-    pointer-events: none;  /* Allow highlighting of children components */
 }
 
 
