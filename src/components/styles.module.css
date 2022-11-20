@@ -1,3 +1,7 @@
+:root {
+    --TAB-HEIGHT: 30px;
+}
+
 .noScrollbar {
     /* overflow: hidden; */
     overflow-y: auto;

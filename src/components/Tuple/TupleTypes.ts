@@ -91,7 +91,7 @@ export enum TupleActionKind {
     CHANGE_ACTIVE_VIEW = "CHANGE_ACTIVE_VIEW",
 }
 
-export interface AddTabPayloadT { portId: ID, pageId: ID, index: number };
+export interface AddTabPayloadT { portId: ID, pageId: ID, dragPortId: ID, index: number };
 export interface AddTabActionT { type: TupleActionKind.ADD_TAB, payload: AddTabPayloadT };
 
 export interface RemoveTabPayloadT { portId: ID, index: number };

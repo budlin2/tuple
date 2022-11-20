@@ -54,10 +54,10 @@ export const Tab = ({
         dispatch(changeActiveViewAction); 
     }
 
-    const addTab = (dragPageId: ID) => {
+    const addTab = (dragPortId: ID, dragPageId: ID) => {
         const addTabAction: AddTabActionT = {
             type: TupleActionKind.ADD_TAB,
-            payload: { portId, pageId: dragPageId, index: index+1 },
+            payload: { portId, pageId: dragPageId, dragPortId, index: index+1 },
         };
 
         // TODO: update local storage
@@ -101,9 +101,7 @@ export const Tab = ({
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
 
-        if (dragPortId !== portId) {
-            addTab(dragPageId);
-        }
+        addTab(dragPortId, dragPageId);
     }
 
     const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {

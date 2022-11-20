@@ -77,10 +77,10 @@ const View = ({
 
     // TODO: This is now defined both here and Tab.tsx. Think about moving to new file (possible TupleState.tsx)
     //          The index is by necessity different though
-    const addTab = (dragPageId: ID) => {
+    const addTab = (dragPortId: ID, dragPageId: ID) => {
         const addTabAction: AddTabActionT = {
             type: TupleActionKind.ADD_TAB,
-            payload: { portId, pageId: dragPageId, index: 0 },
+            payload: { portId, pageId: dragPageId, dragPortId, index: 0 },
         };
 
         // TODO: update local storage
@@ -103,9 +103,7 @@ const View = ({
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
 
-        if (dragPortId !== portId) {
-            addTab(dragPageId);
-        }
+        addTab(dragPortId, dragPageId);
     }
 
     const validateDraggable = (e: DragEvent<Element>, side: DropSideT) => {

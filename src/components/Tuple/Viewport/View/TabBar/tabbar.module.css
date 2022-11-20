@@ -17,7 +17,7 @@
     min-width: 80px;
     max-width: 120px;
     flex-shrink: 0;
-    height: 30px;
+    height: var(--TAB-HEIGHT);
     border-right: 1px solid black;
 
     cursor: pointer;

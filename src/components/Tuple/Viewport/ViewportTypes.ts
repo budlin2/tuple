@@ -38,6 +38,7 @@ export type PortsT = { [key: ID]: PortT };
 export interface ViewportStateT {
     root: ID,
     ports: PortsT,
+    skipTabRemoval: boolean,  // Not graceful, but necessart because dataTransfer object not available onDragEnd
 };
 
 export interface IdPortTupleT {  // TODO: This name leaves something to be desired

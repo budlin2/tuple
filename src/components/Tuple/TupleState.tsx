@@ -66,6 +66,15 @@ const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
     console.log('--- Add Tab ---')
     console.log('state', state)
     console.log('payload', payload)
+    if (payload.portId === payload.dragPortId) {
+        return {
+            ...state,
+            viewport: {
+                ...state.viewport,
+                skipTabRemoval: true
+            }
+        };
+    }
 
     const port = _get_port_copy(state.viewport.ports, payload.portId);
 
@@ -100,6 +109,16 @@ const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleState
     console.log('--- Remove Tab ---')
     console.log('state', state)
     console.log('payload', payload)
+
+    if (state.viewport.skipTabRemoval) {
+        return {
+            ...state,
+            viewport: {
+                ...state.viewport,
+                skipTabRemoval: false
+            }
+        };
+    }
 
     const port = _get_port_copy(state.viewport.ports, payload.portId);
 
@@ -340,4 +359,4 @@ export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT =
     }
 }
 
-export const initialViewport: ViewportStateT = { root: '', ports: {} }
+export const initialViewport: ViewportStateT = { root: '', ports: {}, skipTabRemoval: false }
