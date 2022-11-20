@@ -19,7 +19,7 @@ const Viewport = ({ defaultView }: Props) => {
     const viewportClassName = `${_classes.viewport} ${classes.viewport}`;
 
     // TODO: Show defaultView
-    if (viewport.root == null) {
+    if (viewport.root == '') {
         return <>No Views. SAD!</>
     }
 

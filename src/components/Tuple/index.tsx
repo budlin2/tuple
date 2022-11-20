@@ -93,7 +93,7 @@ const Tuple = ({
 
     const portMap: PortsT = {};
     const rootId = useMemo(() => buildPortMap(initViews as ViewportT, portMap), []);
-    const initViewportState: ViewportStateT = { root: rootId, ports: portMap };
+    const initViewportState: ViewportStateT = { ...initialViewport, root: rootId, ports: portMap };
 
     const initState: TupleStateT = {
         pages,
