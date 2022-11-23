@@ -9,6 +9,7 @@ import DropZoneSides from '../../../Dropzone/DropZoneSides';
 import DropZoneCenter from '../../../Dropzone/DropZoneCenter';
 import { DropSideT } from '../../../Dropzone/DropZoneTypes';
 import { addTab, addView } from '../../state/dispatchers';
+import { validateDraggable } from '../../state';
 
 
 interface Props {
@@ -49,11 +50,6 @@ const View = ({
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
 
         addTab(dispatch, portId, dragPortId, dragPageId);
-    }
-
-    const validateDraggable = (e: DragEvent<Element>): boolean => {
-        const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
-        return !!dragPageId;
     }
 
     return (

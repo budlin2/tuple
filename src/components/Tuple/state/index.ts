@@ -32,3 +32,8 @@ export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT =
             return state;
     }
 }
+
+export const validateDraggable = (e: DragEvent<Element>): boolean => {
+    const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+    return !!dragPageId;
+}

@@ -7,6 +7,7 @@ import {
 } from 'react';
 
 import { TupleContext } from '../../..';
+import { validateDraggable } from '../../../state';
 import { addTab, changeView, removeTab } from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
 
@@ -60,6 +61,8 @@ export const Tab = ({
 
         if (tabRef.current)
             tabRef.current.style.opacity = '1';
+
+        if (!validateDraggable(e)) return;
 
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
