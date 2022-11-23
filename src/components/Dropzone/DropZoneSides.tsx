@@ -86,21 +86,25 @@ const DropZoneSides = ({
         <div className={_classes.root}>
             {/* ACTUAL DROP ZONE */}
             <div className={_classes.dropZoneTop}
+                style       = { style || {} }
                 onDragOver  = { e => onDragOverHandler(e, DropSideT.TOP) }
                 onDragLeave = { e => onDragLeaveHandler(e, DropSideT.TOP) }
                 onDrop      = { e => onDropHandler(e, DropSideT.TOP) } />
 
             <div className={_classes.dropZoneRight}
+                style       = { style || {} }
                 onDragOver  = { e => onDragOverHandler(e, DropSideT.RIGHT) }
                 onDragLeave = { e => onDragLeaveHandler(e, DropSideT.RIGHT) }
                 onDrop      = { e => onDropHandler(e, DropSideT.RIGHT) } />
 
             <div className={_classes.dropZoneBottom}
+                style       = { style || {} }
                 onDragOver  = { e => onDragOverHandler(e, DropSideT.BOTTOM) }
                 onDragLeave = { e => onDragLeaveHandler(e, DropSideT.BOTTOM) }
                 onDrop      = { e => onDropHandler(e, DropSideT.BOTTOM) } />
 
             <div className={_classes.dropZoneLeft}
+                style       = { style || {} }
                 onDragOver  = { e => onDragOverHandler(e, DropSideT.LEFT) }
                 onDragLeave = { e => onDragLeaveHandler(e, DropSideT.LEFT) }
                 onDrop      = { e => onDropHandler(e, DropSideT.LEFT) } />

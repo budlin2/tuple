@@ -116,11 +116,20 @@ const View = ({
             className={viewClassName}
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
-            <DropZoneSides onDropCB={dropSideHandler}>
-                <DropZoneCenter onDropCB={dropCenterHandler}>
+            <DropZoneSides
+                style={styles.dropZoneSide}
+                className={classes.dropZoneSide}
+                onDropCB={dropSideHandler}>
+
+                <DropZoneCenter
+                    style={styles.dropZoneCenter}
+                    className={classes.dropZoneCenter}
+                    onDropCB={dropCenterHandler}>
+
                     <div style={{ zIndex: 1 }}>
                         <activePage.component {...activePage.props } />
                     </div>
+                    
                 </DropZoneCenter>
             </DropZoneSides>
         </div>
