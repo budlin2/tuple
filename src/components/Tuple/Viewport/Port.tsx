@@ -9,8 +9,9 @@ import { DirectionT } from "../../SplitPane/SplitPaneTypes";
 import { ID } from "../TupleTypes";
 import View from "./View/View";
 import { TupleContext } from "..";
-import { TupleContextT, RemoveViewActionT, TupleActionKind } from "../TupleTypes";
+import { TupleContextT } from "../TupleTypes";
 import { PortT } from './ViewportTypes';
+import { removeView } from "../state/dispatchers";
 
 //----------------------------------------------------------------------------------------------------------------------
 interface PortProps { id: ID }
@@ -20,19 +21,10 @@ const Port = ({ id }: PortProps): JSX.Element => {
     const { dispatch, state: { viewport } }: TupleContextT = useContext(TupleContext);
     const port: PortT = viewport.ports[id];  // TODO: Should this be in useEffect hook?
 
-    const removeView = () => {
-        const removeViewAction: RemoveViewActionT = {
-            type: TupleActionKind.REMOVE_VIEW,
-            payload: { portId: id }
-        }
-
-        dispatch(removeViewAction);
-    }
-
     // When list becomes empty
     useEffect(() => {
         if (port && port.pageIds && port.pageIds.length <= 0) {
-            removeView();
+            removeView(dispatch, id);
         }
     }, [port]);
 

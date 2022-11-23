@@ -11,9 +11,10 @@ import { getUniqueId } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
 import TupleInner from './TupleInner';
 
-import { getViewsFromStorage, initialViewport, reducer } from './TupleState';
+import { initialViewport, reducer } from './state';
 import { EventsT, ID, PagesT, TupleClassesT, TupleContextT, TupleStateT, TupleStylesT } from './TupleTypes';
 import { isSplitViewT, isViewT, PortsT, ViewportStateT, PortT, SplitViewT, ViewportT, ViewT } from './Viewport/ViewportTypes';
+import { getViewsFromStorage } from './state/actions';
 
 
 export const TupleContext = createContext({

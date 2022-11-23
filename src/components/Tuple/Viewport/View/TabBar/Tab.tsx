@@ -7,13 +7,8 @@ import {
 } from 'react';
 
 import { TupleContext } from '../../..';
+import { addTab, changeView, removeTab } from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
-import {
-    AddTabActionT,
-    ChangeActiveViewActionT,
-    RemoveTabActionT,
-    TupleActionKind,
-} from '../../../TupleTypes';
 
 import _classes from './tabbar.module.css';
 
@@ -43,44 +38,12 @@ export const Tab = ({
     const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
 
     //------------------------------------------------------------------------------------------------------------------
-    // Actions Dispatchers
-    //------------------------------------------------------------------------------------------------------------------
-    const changeView = () => {
-        const changeActiveViewAction: ChangeActiveViewActionT = {
-            type: TupleActionKind.CHANGE_ACTIVE_VIEW,
-            payload: { portId, pageId }
-        };
-
-        dispatch(changeActiveViewAction); 
-    }
-
-    const addTab = (dragPortId: ID, dragPageId: ID) => {
-        const addTabAction: AddTabActionT = {
-            type: TupleActionKind.ADD_TAB,
-            payload: { portId, pageId: dragPageId, dragPortId, index: index+1 },
-        };
-
-        // TODO: update local storage
-
-        dispatch(addTabAction);
-    }
-
-    const removeTab = () => {
-        const removeTabAction: RemoveTabActionT = {
-            type: TupleActionKind.REMOVE_TAB,
-            payload: { portId, index }
-        };
-
-        dispatch(removeTabAction);
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
     const mouseEnterHandler = () => setCloseVisible(true);
     const mouseLeaveHandler = () => setCloseVisible(false);
 
-    const clickHandler = () => changeView();
+    const clickHandler = () => changeView(dispatch, portId, pageId);
 
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
@@ -101,7 +64,7 @@ export const Tab = ({
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
 
-        addTab(dragPortId, dragPageId);
+        addTab(dispatch, portId, dragPortId, dragPageId, index+1);
     }
 
     const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -123,7 +86,7 @@ export const Tab = ({
     const removeTabHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        removeTab();
+        removeTab(dispatch, portId, index);
     };
 
     return (

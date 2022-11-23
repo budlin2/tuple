@@ -1,5 +1,6 @@
-import { getUniqueId } from "../../utils";
-import { SideT } from "../SplitPane/SplitPaneTypes";
+import { initialViewport } from ".";
+import { getUniqueId } from "../../../utils";
+import { SideT } from "../../SplitPane/SplitPaneTypes";
 import {
     AddTabPayloadT,
     AddViewPayloadT,
@@ -7,10 +8,8 @@ import {
     ID,
     RemoveTabPayloadT,
     RemoveViewPayloadT,
-    TupleActionKind,
-    TupleActionT,
     TupleStateT
-} from "./TupleTypes";
+} from "../TupleTypes";
 
 import {
     IdPortTupleT,
@@ -20,7 +19,7 @@ import {
     SplitViewT,
     ViewportT,
     ViewT
-} from "./Viewport/ViewportTypes";
+} from "../Viewport/ViewportTypes";
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -34,14 +33,14 @@ export const getViewsFromStorage = (): ViewportT | null => {
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-const _get_port_copy = (ports: PortsT, id: ID): PortT => {
+export const _get_port_copy = (ports: PortsT, id: ID): PortT => {
     const port = { ...ports[id] };
     return port || null;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 // TODO: Better named types... e.g. PortStateT is poorly named now...
-const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPortTupleT | null => {
+export const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPortTupleT | null => {
     const port: PortT = viewportState.ports[id];
     if (!port) return null;
 
@@ -62,7 +61,7 @@ const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPortTuple
 
 
 //---------------------------------------------------------------------------------------------------------------------
-const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
+export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
     console.log('--- Add Tab ---')
     console.log('state', state)
     console.log('payload', payload)
@@ -105,7 +104,7 @@ const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleStateT => {
+export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleStateT => {
     console.log('--- Remove Tab ---')
     console.log('state', state)
     console.log('payload', payload)
@@ -165,7 +164,7 @@ const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleState
               /    \
          (Port)    (New Child)
 */
-const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT => {
+export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT => {
     console.log('--- Add View ---')
     console.log('state', state)
     console.log('payload', payload)
@@ -248,7 +247,7 @@ const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT =>
 
 //---------------------------------------------------------------------------------------------------------------------
 // Remove => Replace parent with sister component
-const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleStateT => {
+export const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleStateT => {
     console.log('--- Remove View ---')
     console.log('state', state)
     console.log('payload', payload)
@@ -313,7 +312,7 @@ const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleSta
 
 
 //---------------------------------------------------------------------------------------------------------------------
-const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloadT): TupleStateT => {
+export const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloadT): TupleStateT => {
     console.log('--- Change Active View ---')
     console.log('state', state)
     console.log('payload', payload)
@@ -338,25 +337,3 @@ const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloa
 
     return newState; 
 }
-
-
-// TODO: Move this and actions to PortState.tsx?
-//---------------------------------------------------------------------------------------------------------------------
-export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT => {
-    switch(action.type) {
-        case TupleActionKind.ADD_TAB:
-            return _add_tab(state, action.payload as AddTabPayloadT);
-        case TupleActionKind.REMOVE_TAB:
-            return _remove_tab(state, action.payload as RemoveTabPayloadT);
-        case TupleActionKind.ADD_VIEW:
-            return _add_view(state, action.payload as AddViewPayloadT);
-        case TupleActionKind.REMOVE_VIEW:
-            return _remove_view(state, action.payload as RemoveViewPayloadT);
-        case TupleActionKind.CHANGE_ACTIVE_VIEW:
-            return _change_active_view(state, action.payload as ChangeActiveViewPayloadT);
-        default:
-            return state;
-    }
-}
-
-export const initialViewport: ViewportStateT = { root: '', ports: {}, skipTabRemoval: false }
