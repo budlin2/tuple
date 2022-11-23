@@ -44,7 +44,6 @@ const View = ({
         addView(dispatch, portId, dragPortId, dragPageId, side);
     }
 
-    // TODO: Better handling of adding tab to same port
     const dropCenterHandler = (e: DragEvent<Element>) => {
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
@@ -52,8 +51,9 @@ const View = ({
         addTab(dispatch, portId, dragPortId, dragPageId);
     }
 
-    const validateDraggable = (e: DragEvent<Element>, side: DropSideT) => {
-        // TODO:
+    const validateDraggable = (e: DragEvent<Element>): boolean => {
+        const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+        return !!dragPageId;
     }
 
     return (
@@ -65,12 +65,14 @@ const View = ({
             <DropZoneSides
                 style={styles.dropZoneSide}
                 className={classes.dropZoneSide}
-                onDropCB={dropSideHandler}>
+                onDropCB={dropSideHandler}
+                validateDraggable={validateDraggable}>
 
                 <DropZoneCenter
                     style={styles.dropZoneCenter}
                     className={classes.dropZoneCenter}
-                    onDropCB={dropCenterHandler}>
+                    onDropCB={dropCenterHandler}
+                    validateDraggable={validateDraggable}>
 
                     <div style={{ zIndex: 1 }}>
                         <activePage.component {...activePage.props } />
