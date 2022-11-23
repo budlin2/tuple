@@ -34,7 +34,7 @@
 .dropZoneBottom {
     position: absolute;
     bottom: 0;
-    height: var(--HOVER_THICKNESS);
+    height: calc(var(--HOVER_THICKNESS) + var(--TAB-HEIGHT));
     width: 100%;
     z-index: 1;
 }
