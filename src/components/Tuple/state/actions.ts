@@ -153,7 +153,6 @@ export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): Tup
 //---------------------------------------------------------------------------------------------------------------------
 // Add single view to empty viewport
 export const _add_new_view = (state: TupleStateT, payload: AddNewViewPayloadT): TupleStateT => {
-    console.log(state.viewport.ports);
     if (Object.keys(state.viewport.ports).length !== 0) {
         throw Error('_add_new_view() should only be called on an empty viewport. Otherwise call _add_view()');
     }

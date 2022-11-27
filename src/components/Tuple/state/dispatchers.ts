@@ -46,7 +46,7 @@ export const addNewView = (
     pageId: ID,
 ) => {
     const addNewViewPayload: AddNewViewPayloadT = { pageId };
-    
+
     const addNewViewAction: AddNewViewActionT = {
         type: TupleActionKind.ADD_NEW_VIEW,
         payload: addNewViewPayload,

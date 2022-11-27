@@ -249,3 +249,19 @@ SixViews.args = {
     tree,
     classes,
 };
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// Six Views - No Styles
+const _SixViewsTopRight: SplitViewT = { head: Cars, tail: Carpe, direction: 'vertical' };
+const _SixViewsTop: SplitViewT = { head: HelloWorld, tail: _SixViewsTopRight, direction: 'horizontal' };
+const _SixViewsBottomLeft: SplitViewT = { head: Apple, tail: Banana, direction: 'horizontal' };
+const _SixViewsBottom: SplitViewT = { head: _SixViewsBottomLeft, tail: Diem, direction: 'horizontal' };
+const __SixViews: SplitViewT = { head: _SixViewsTop, tail: _SixViewsBottom, direction: 'vertical' };
+
+export const SixViewsNoStyles = Template.bind({});
+SixViewsNoStyles.args = {
+    pages,
+    views: __SixViews,
+    tree,
+};
