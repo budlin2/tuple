@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import { DropSideT } from "../../Dropzone/DropZoneTypes";
 import { SideT } from "../../SplitPane/SplitPaneTypes";
-import { AddTabActionT, AddViewActionT, AddViewPayloadT, ChangeActiveViewActionT, ID, RemoveTabActionT, RemoveViewActionT, TupleActionKind, TupleActionT } from "../TupleTypes";
+import { AddNewViewActionT, AddNewViewPayloadT, AddTabActionT, AddViewActionT, AddViewPayloadT, ChangeActiveViewActionT, ID, RemoveTabActionT, RemoveViewActionT, TupleActionKind, TupleActionT } from "../TupleTypes";
 
 
 //------------------------------------------------------------------------------------------------------------------
@@ -39,6 +39,21 @@ export const removeTab = (
     dispatch(removeTabAction);
 }
 
+
+//---------------------------------------------------------------------------------------------------------------------
+export const addNewView = (
+    dispatch: Dispatch<TupleActionT>,
+    pageId: ID,
+) => {
+    const addNewViewPayload: AddNewViewPayloadT = { pageId };
+    
+    const addNewViewAction: AddNewViewActionT = {
+        type: TupleActionKind.ADD_NEW_VIEW,
+        payload: addNewViewPayload,
+    };
+
+    dispatch(addNewViewAction);
+};
 
 //---------------------------------------------------------------------------------------------------------------------
 export const addView = (

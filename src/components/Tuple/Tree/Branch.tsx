@@ -7,6 +7,7 @@ import { TupleContext } from '..';
 import { TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
+import _global_classes from '../../styles.module.css';
 
 
 interface Props {
@@ -26,7 +27,7 @@ const Branch = ({
     const [expanded, setExpanded] = useState(open);
     const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
 
-    const branchClassName = `${_classes.branch} ${classes.branch} `;
+    const branchClassName = `${_global_classes.noHighlight} ${_classes.branch} ${classes.branch} `;
     const branchesClassName = `${_classes.branches} ${classes.branches}`;
     
     return (

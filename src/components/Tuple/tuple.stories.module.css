@@ -13,6 +13,10 @@
     color: white;
 }
 
+.tabActive {
+    background: blueviolet;
+}
+
 .tabClose {
     background-color: darkgrey;
 }

@@ -3,6 +3,7 @@ import { ReactNode, useContext } from 'react';
 import { TupleContext } from '..';
 import { TupleContextT } from '../TupleTypes';
 import Port from './Port';
+import DefaultView from './View/DefaultView';
 
 import _classes from './viewport.module.css';
 
@@ -20,7 +21,7 @@ const Viewport = ({ defaultView }: Props) => {
 
     // TODO: Show defaultView
     if (viewport.root == '') {
-        return <>No Views. SAD!</>
+        return <DefaultView />
     }
 
     return (

@@ -30,7 +30,7 @@ const Leaf = ({
     const leafContainerClassName = `${_classes.leafContainer} ${classes.leafContainer}`;
 
     const dragStartHandler = (e: any) => {
-        e.dataTransfer.setData('pid', pageId);
+        e.dataTransfer.setData('pageId', pageId);
     };
 
     return (

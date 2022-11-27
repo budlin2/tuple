@@ -31,7 +31,11 @@ export interface TupleStylesT {
     leaf?: CSSProperties,
 
     tabBar?: CSSProperties,
+    tabBarDragOver?: CSSProperties,
+    // tabBarActive?: CSSProperties,  // TODO: when user has selected current view
     tab?: CSSProperties,
+    tabDragOver?: CSSProperties,
+    tabActive?: CSSProperties,
     tabLabel?: CSSProperties,
     tabClose?: CSSProperties,
 
@@ -54,7 +58,11 @@ export interface TupleClassesT {
     leaf?: string,
 
     tabBar?: string,
+    tabBarDragOver?: string,
+    // tabBarActive?: string,  // TODO: when user has selected current view
     tab?: string,
+    tabDragOver?: string,
+    tabActive?: string,
     tabLabel?: string,
     tabClose?: string,
 
@@ -88,6 +96,7 @@ export interface TupleContextT {
 export enum TupleActionKind {
     ADD_TAB = "ADD_TAB",
     REMOVE_TAB = "REMOVE_TAB",
+    ADD_NEW_VIEW = "ADD_NEW_VIEW",
     ADD_VIEW = "ADD_VIEW",
     REMOVE_VIEW = "REMOVE_VIEW",
     CHANGE_ACTIVE_VIEW = "CHANGE_ACTIVE_VIEW",
@@ -99,7 +108,9 @@ export interface AddTabActionT { type: TupleActionKind.ADD_TAB, payload: AddTabP
 export interface RemoveTabPayloadT { portId: ID, index: number };
 export interface RemoveTabActionT { type: TupleActionKind.REMOVE_TAB, payload: RemoveTabPayloadT };
 
-// TODO: Do I need this?
+export interface AddNewViewPayloadT { pageId: ID };
+export interface AddNewViewActionT { type: TupleActionKind.ADD_NEW_VIEW, payload: AddNewViewPayloadT };
+
 export interface AddViewPayloadT { dragPortId: ID, portId: ID, pageId: ID, side: SideT, direction: DirectionT };
 export interface AddViewActionT { type: TupleActionKind.ADD_VIEW, payload: AddViewPayloadT };
 
@@ -111,6 +122,7 @@ export interface ChangeActiveViewActionT { type: TupleActionKind.CHANGE_ACTIVE_V
 
 export type TupleActionT = AddTabActionT
                          | RemoveTabActionT
+                         | AddNewViewActionT
                          | AddViewActionT
                          | RemoveViewActionT
                          | ChangeActiveViewActionT;

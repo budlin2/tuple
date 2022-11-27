@@ -28,15 +28,20 @@ export const Tab = ({
 }: TabProps) => {
     const {
         dispatch,
-        state:{ pages, classes, styles },
+        state:{ pages, classes, styles, viewport },
     }: TupleContextT = useContext(TupleContext);
 
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
+    const port = viewport.ports[portId];
+    const isActiveTab = pageId === port.activePageId;
 
-    const tabClassName = `${_classes.tab} ${classes.tab || ''}`;
-    const tabLabelClassName: string = `${_classes.tabLabel} ${classes.tabLabel || ''}`;
-    const tabCloseClassName: string = `${_classes.tabClose} ${classes.tabClose || ''}`;
+    const inactiveTabClassName = `${_classes.tab || ''} ${classes.tab || ''}`;
+    const activeTabClassName = `${inactiveTabClassName} ${_classes.tabActive || ''} ${classes.tabActive || ''}`;
+    const tabClassName = isActiveTab ? activeTabClassName : inactiveTabClassName;
+
+    const tabLabelClassName = `${_classes.tabLabel || ''} ${classes.tabLabel || ''}`;
+    const tabCloseClassName = `${_classes.tabClose || ''} ${classes.tabClose || ''}`
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -95,7 +100,7 @@ export const Tab = ({
     return (
         <div ref={tabRef as MutableRefObject<HTMLDivElement> }
             draggable 
-            style={styles.tab}
+            style={isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab}
             className={tabClassName}
 
             onDragStart={dragStartHandler}

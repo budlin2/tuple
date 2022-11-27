@@ -2,6 +2,7 @@ import { initialViewport } from ".";
 import { getUniqueId } from "../../../utils";
 import { SideT } from "../../SplitPane/SplitPaneTypes";
 import {
+    AddNewViewPayloadT,
     AddTabPayloadT,
     AddViewPayloadT,
     ChangeActiveViewPayloadT,
@@ -150,6 +151,38 @@ export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): Tup
 
 
 //---------------------------------------------------------------------------------------------------------------------
+// Add single view to empty viewport
+export const _add_new_view = (state: TupleStateT, payload: AddNewViewPayloadT): TupleStateT => {
+    console.log(state.viewport.ports);
+    if (Object.keys(state.viewport.ports).length !== 0) {
+        throw Error('_add_new_view() should only be called on an empty viewport. Otherwise call _add_view()');
+    }
+
+    const newPortId = getUniqueId();
+    const newPorts = {
+        [`${newPortId}`]: {
+            parentId: null,
+            isSplitView: false,
+            pageIds: [payload.pageId],
+            activePageId: payload.pageId,
+            direction: null,
+            headId: null,
+            tailId: null,
+            isHead: null,
+        }
+    };
+
+    return {
+        ...state,
+        viewport: {
+            // ...state.viewport,
+            root: newPortId,
+            ports: newPorts,
+        }
+    } as TupleStateT;
+};
+
+//---------------------------------------------------------------------------------------------------------------------
 // Create a new splitview port with children as original port and new tab
 /*
     Will turn:
@@ -225,6 +258,10 @@ export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleSt
     // Add back updated port
     port.parentId = newPortId;
     port.isHead = payload.side === SideT.TAIL;
+    port.activePageId = port.activePageId === payload.pageId
+        ? port.pageIds && port.pageIds[0]
+        : port.activePageId;
+
     newPorts[payload.portId] = port;
 
     console.log('New state', {
