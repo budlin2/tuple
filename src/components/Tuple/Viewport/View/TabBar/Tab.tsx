@@ -7,6 +7,7 @@ import {
 } from 'react';
 
 import { TupleContext } from '../../..';
+import { setCustomDragImage } from '../../../../Draggable';
 import { validateDraggable } from '../../../state';
 import { addTab, changeView, removeTab } from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
@@ -33,6 +34,8 @@ export const Tab = ({
 
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
+
+    const label = pages[pageId].name;
     const port = viewport.ports[portId];
     const isActiveTab = pageId === port.activePageId;
 
@@ -53,11 +56,9 @@ export const Tab = ({
 
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
-        // TODO: Local storage events somewhere else... and send as JSON...
-        // [ e.dataTransfer.setData("text/plain", JSON.stringify(data)); ]
+        setCustomDragImage(e, label, classes.draggable, styles.draggable);
         e.dataTransfer && e.dataTransfer.setData('pageId', pageId.toString());
         e.dataTransfer && e.dataTransfer.setData('portId', portId.toString());
-        // e.dataTransfer && e.dataTransfer.setData('index', index.toString());
     };
 
     const dropHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -117,7 +118,7 @@ export const Tab = ({
             <div
                 style={styles.tabLabel}
                 className={tabLabelClassName}>
-                { pages[pageId].name }
+                { label }
             </div>
             <div className={_classes.tabCloseContainer}>
                 { closeVisible &&

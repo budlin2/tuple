@@ -3,6 +3,7 @@
 }
 
 .branch {
+    padding: 2px;
     border-bottom: 1px solid black;
 }
 
@@ -16,16 +17,10 @@
     padding-left: 0.3rem;
 }
 
-.leafContainer {
-    display: flex;
-}
-
 .leaf {
-    margin-top: 2px;
     padding: 2px;
     padding-left: 5px;
     padding-right: 5px;
-    border-radius: 5px;
 }
 
 .leaf:hover {
