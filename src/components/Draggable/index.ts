@@ -9,7 +9,6 @@ export const setCustomDragImage = (
     style: CSSProperties | null = null,
 ) => {
     const elem = document.createElement("div");
-    console.log(elem);
     
     elem.innerText = text;
     elem.className = `${_classes.draggable} ${className}`;

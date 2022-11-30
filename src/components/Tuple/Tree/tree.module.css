@@ -1,19 +1,23 @@
 .tree {
     height: 100%;
+    border-right: var(--BORDER);
+    background-color: var(--COLOR_SECONDARY);
+    color: var(--COLOR_PRIMARY_DARK);
 }
 
 .branch {
     padding: 2px;
-    border-bottom: 1px solid black;
+    border-bottom: var(--BORDER);
 }
 
 .branch:hover {
     cursor: pointer;
+    background: var(--HOVER_COLOR);
 }
 
 .branches {
     margin-left: 0.3rem;
-    border-left: 1px dashed black;
+    border-left: var(--BORDER_DASHED);
     padding-left: 0.3rem;
 }
 
@@ -24,6 +28,7 @@
 }
 
 .leaf:hover {
-    background: rgba(0,0,0,0.2);
+    background: var(--HOVER_COLOR);
     cursor: pointer;
+    border-radius: 15px 0 0 15px; /* TODO: Might be a bit much for default styles*/
 }

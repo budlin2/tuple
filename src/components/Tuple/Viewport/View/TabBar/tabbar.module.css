@@ -3,6 +3,10 @@
     width: 100%;
     overflow-x: scroll;
     overflow-y: auto;
+
+    background-color: var(--COLOR_SECONDARY);
+    color: var(--COLOR_PRIMARY_DARK);
+    border-bottom: var(--BORDER);
 }
 
 .tab {
@@ -18,9 +22,11 @@
     max-width: 120px;
     flex-shrink: 0;
     height: var(--TAB-HEIGHT);
-    border-right: 1px solid black;
 
     cursor: pointer;
+
+    border-right: var(--BORDER);
+
 }
 
 .tabLabel {
@@ -46,4 +52,10 @@
     height: 20px;
 
     cursor: pointer;
+}
+
+.tabActive {
+    background: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+    border-radius: 0px 10px 0 0;
 }

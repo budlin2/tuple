@@ -1,7 +1,6 @@
-:root {
+.root {
     --HOVER_THICKNESS: 20%;
     --HOVER_THICKNESS_DIFF: 80%; /* 100 - HOVER_THICKNESS */
-    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
 }
 
 .root {

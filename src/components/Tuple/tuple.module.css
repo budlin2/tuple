@@ -1,3 +1,6 @@
 .tuple {
+    background-color: #FAFAFF;
+    /* If changing font family, should change in Draggable as well. It gets it seperately because its outside of Tuple */
+    font-family: var(--FONT);
     height: 900px;
 }
