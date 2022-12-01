@@ -58,24 +58,23 @@ const View = ({
             className={viewClassName}
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
-            <DropZoneSides
-                style={styles.dropZoneSide}
-                className={classes.dropZoneSide}
-                onDropCB={dropSideHandler}
+            <DropZoneCenter
+                style={styles.dropZoneCenter}
+                className={classes.dropZoneCenter}
+                onDropCB={dropCenterHandler}
                 validateDraggable={validateDraggable}>
 
-                <DropZoneCenter
-                    style={styles.dropZoneCenter}
-                    className={classes.dropZoneCenter}
-                    onDropCB={dropCenterHandler}
+                <DropZoneSides
+                    style={styles.dropZoneSide}
+                    className={classes.dropZoneSide}
+                    onDropCB={dropSideHandler}
                     validateDraggable={validateDraggable}>
 
                     <div style={{ zIndex: 1 }}>
                         <activePage.component {...activePage.props } />
                     </div>
-                    
-                </DropZoneCenter>
-            </DropZoneSides>
+                </DropZoneSides>
+            </DropZoneCenter>
         </div>
     );
 }
