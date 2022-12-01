@@ -6,7 +6,7 @@ import {
 } from 'react'
 
 import { TupleContext } from '..';
-import { setCustomDragImage } from '../../Draggable';
+import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
 import { ID, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
@@ -23,24 +23,24 @@ const Leaf = ({
     text,
     pageId,
 }: Props) => {
-    const leafRef = useRef<HTMLDivElement>();
-
     const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
 
     const leafClassName = `${_classes.leaf} ${classes.leaf}`;
-    const leafContainerClassName = `${_classes.leafContainer} ${classes.leafContainer}`;
 
     const dragStartHandler = (e: any) => {
         setCustomDragImage(e, text, classes.draggable, styles.draggable);
         e.dataTransfer.setData('pageId', pageId);
     };
 
+    const dragEndHandler = (e: any) => cleanupDraggable();
+
     return (
         <div
             style={styles.leaf}
             className={leafClassName}
             draggable
-            onDragStart={dragStartHandler}>
+            onDragStart={dragStartHandler}
+            onDragEnd={dragEndHandler}>
             { text }
         </div>
     );

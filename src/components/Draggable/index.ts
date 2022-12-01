@@ -2,6 +2,11 @@ import { CSSProperties, DragEvent } from 'react';
 
 import _classes from './draggable.module.css';
 
+
+const DRAG_ID = 'DRAG_QUEEN_STORY_HOUR_LMAOOOOO';
+
+
+// Returns id of element, so calling component can remove it later
 export const setCustomDragImage = (
     e: DragEvent<HTMLDivElement>,
     text: string = 'Dragging',
@@ -10,6 +15,7 @@ export const setCustomDragImage = (
 ) => {
     const elem = document.createElement("div");
     
+    elem.id = DRAG_ID;
     elem.innerText = text;
     elem.className = `${_classes.draggable} ${className}`;
 
@@ -21,4 +27,11 @@ export const setCustomDragImage = (
     
     document.body.appendChild(elem);
     e.dataTransfer.setDragImage(elem, 20, 10);
+}
+
+
+export const cleanupDraggable = () => {
+    const draggable = document.getElementById(DRAG_ID);
+    if (draggable?.parentNode)
+        draggable.parentNode.removeChild(draggable);
 }

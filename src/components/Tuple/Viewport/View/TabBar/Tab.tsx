@@ -4,10 +4,11 @@ import {
     MutableRefObject,
     useContext,
     DragEvent,
+    useEffect,
 } from 'react';
 
 import { TupleContext } from '../../..';
-import { setCustomDragImage } from '../../../../Draggable';
+import { cleanupDraggable, setCustomDragImage } from '../../../../Draggable';
 import { validateDraggable } from '../../../state';
 import { addTab, changeView, removeTab } from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
@@ -32,6 +33,10 @@ export const Tab = ({
         state:{ pages, classes, styles, viewport },
     }: TupleContextT = useContext(TupleContext);
 
+    useEffect(() => {
+        cleanupDraggable();
+    }, [cleanupDraggable]);
+
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
 
@@ -45,6 +50,8 @@ export const Tab = ({
 
     const tabLabelClassName = `${_classes.tabLabel || ''} ${classes.tabLabel || ''}`;
     const tabCloseClassName = `${_classes.tabClose || ''} ${classes.tabClose || ''}`
+
+    const tabStyle = isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab;
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -92,20 +99,24 @@ export const Tab = ({
             tabRef.current.style.opacity = '1';
     }
 
-    const removeTabHandler = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        removeTab(dispatch, portId, index);
-    };
+    const dragEndHandler = (e: DragEvent<HTMLDivElement>) => {
+        // e.preventDefault();
+        // e.stopPropagation();
+
+        cleanupDraggable();
+        removeTabHandler();
+    }
+
+    const removeTabHandler = () => removeTab(dispatch, portId, index);
 
     return (
         <div ref={tabRef as MutableRefObject<HTMLDivElement> }
             draggable 
-            style={isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab}
+            style={tabStyle}
             className={tabClassName}
 
             onDragStart={dragStartHandler}
-            onDragEnd={removeTabHandler}
+            onDragEnd={dragEndHandler}
             onDragEnter={dragOverHandler}
             onDragOver={dragOverHandler}
             onDragLeave={dragLeaveHandler}
