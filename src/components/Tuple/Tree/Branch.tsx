@@ -25,10 +25,22 @@ const Branch = ({
     const onClick = () => setExpanded(cur => !cur);
 
     const [expanded, setExpanded] = useState(open);
-    const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
+    const { state: {
+        classes,
+        styles,
+        template,
+    }}: TupleContextT = useContext(TupleContext);
 
-    const branchClassName = `${_global_classes.noHighlight} ${_classes.branch} ${classes.branch} `;
-    const branchesClassName = `${_classes.branches} ${classes.branches}`;
+    const branchClassName = `
+        ${_global_classes.noHighlight}
+        ${_classes?.branch || ''}
+        ${template?.branch || ''}
+        ${classes?.branch  || ''}`;
+
+    const branchesClassName = `
+        ${_classes?.branches || ''}
+        ${template?.branches || ''}
+        ${classes?.branches  || ''}`;
     
     return (
         <div>

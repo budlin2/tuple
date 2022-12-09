@@ -91,7 +91,13 @@ const tree: TreeT = [
 //----------------------------------------------------------------------------------------------------------------------
 const Template: Story<TupleProps> = (args: any) => {
     return (
-        <Tuple {...args} />
+        <div style={{
+            height: 900,
+            width: 1500,
+            border: '1px solid lightgrey',
+        }}>
+            <Tuple {...args} />
+        </div>
     );
 }
 
@@ -252,7 +258,7 @@ SixViews.args = {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// Six Views - No Styles
+// Six Views - No Template
 const _SixViewsTopRight: SplitViewT = { head: Cars, tail: Carpe, direction: 'vertical' };
 const _SixViewsTop: SplitViewT = { head: HelloWorld, tail: _SixViewsTopRight, direction: 'horizontal' };
 const _SixViewsBottomLeft: SplitViewT = { head: Apple, tail: Banana, direction: 'horizontal' };
@@ -264,4 +270,14 @@ SixViewsNoStyles.args = {
     pages,
     views: __SixViews,
     tree,
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+// Six Views - No Template
+export const Lannister = Template.bind({});
+Lannister.args = {
+    pages,
+    views: __SixViews,
+    tree,
+    template: 'lannister',
 };

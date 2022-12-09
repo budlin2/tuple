@@ -16,6 +16,8 @@ import { EventsT, ID, PagesT, TupleClassesT, TupleContextT, TupleStateT, TupleSt
 import { isSplitViewT, isViewT, PortsT, ViewportStateT, PortT, SplitViewT, ViewportT, ViewT } from './Viewport/ViewportTypes';
 import { getViewsFromStorage } from './state/actions';
 
+import lannister from './templates/lannister.module.css';
+
 
 export const TupleContext = createContext({
     // dispatch: null,  TODO: do I need to initialize dispatch
@@ -24,6 +26,7 @@ export const TupleContext = createContext({
         viewport: initialViewport,
         styles: {},
         classes: {},
+        template: null,
         events: {},
         tree: {},
     }
@@ -37,10 +40,19 @@ export interface TupleProps {
 
     styles?: TupleStylesT,
     classes?: TupleClassesT,
+    template: string,
     events?: EventsT,
     
     children: ReactNode,
 };
+
+
+const getTemplateCss = (template: string | null): CSSModuleClasses | null => {
+    switch(template) {
+        case 'lannister': return lannister;
+        default: return null;
+    }
+}
 
 
 const Tuple = ({
@@ -49,6 +61,7 @@ const Tuple = ({
     tree,
     styles,
     classes,
+    template,
     events,
 }: TupleProps) => {
     const initViews = getViewsFromStorage() || views || null;
@@ -102,6 +115,7 @@ const Tuple = ({
         tree,
         styles: styles || {},
         classes: classes || {},
+        template: getTemplateCss(template),
         events: events || {},
     };
 

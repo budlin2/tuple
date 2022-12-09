@@ -1,14 +1,5 @@
-/* Global CSS Variables */
 :root {
-    --FONT: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    --COLOR_PRIMARY: #231A61;
-    --COLOR_PRIMARY_DARK: #120D31;
-    --COLOR_SECONDARY: #F2F2FC;
-    --COLOR_WHITE:  #FAFAFF;
-    --TAB-HEIGHT: 30px;
-    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
-    --BORDER:        1px solid var(--COLOR_PRIMARY_DARK);
-    --BORDER_DASHED: 1px dashed var(--COLOR_PRIMARY_DARK);
+    --GOOD_FONT: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .noScrollbar {

@@ -85,6 +85,7 @@ export interface TupleStateT {
     tree: TreeT,
     styles: TupleStylesT,
     classes: TupleClassesT,
+    template: CSSModuleClasses | null,
     events: EventsT,
 }
 

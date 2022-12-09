@@ -23,9 +23,16 @@ const Leaf = ({
     text,
     pageId,
 }: Props) => {
-    const {state:{ classes, styles }}: TupleContextT = useContext(TupleContext);
+    const { state: {
+        classes,
+        styles,
+        template,
+    }}: TupleContextT = useContext(TupleContext);
 
-    const leafClassName = `${_classes.leaf} ${classes.leaf}`;
+    const leafClassName = `
+        ${_classes?.leaf || ''}
+        ${template?.leaf || ''}
+        ${classes?.leaf  || ''}`;
 
     const dragStartHandler = (e: any) => {
         setCustomDragImage(e, text, classes.draggable, styles.draggable);

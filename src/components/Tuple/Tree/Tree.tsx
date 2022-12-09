@@ -40,8 +40,17 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
 
 
 const Tree = () => {
-    const {state:{ tree, classes, styles }}: TupleContextT = useContext(TupleContext);
-    const treeClassName = `${_classes.tree} ${classes.tree}`;
+    const { state: {
+        tree,
+        classes,
+        styles,
+        template,
+    }}: TupleContextT = useContext(TupleContext);
+
+    const treeClassName = `
+        ${_classes?.tree || ''}
+        ${template?.tree || ''}
+        ${classes?.tree  || ''}`;
 
     // TODO: Need better key than index
     // https://reactjs.org/docs/lists-and-keys.html#:~:text=We%20don%E2%80%99t%20recommend%20using%20indexes%20for%20keys%20if%20the%20order%20of%20items%20may%20change.
