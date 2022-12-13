@@ -4,17 +4,20 @@
     --COLOR_PRIMARY_DARK: #120D31;
     --COLOR_SECONDARY: #F2F2FC;
     --COLOR_WHITE:  #FAFAFF;
-    --TAB-HEIGHT: 2rem;
     --HOVER_COLOR: rgba(10, 10, 10, 0.5);
     --BORDER:        1px solid var(--COLOR_PRIMARY_DARK);
     --BORDER_DASHED: 1px dashed var(--COLOR_PRIMARY_DARK);
-    --BORDER_RADIUS: 15px 0 0 15px;;
+    --BORDER_RADIUS: 15px 0 0 15px;
 }
 
 
 .tuple {
     background-color: var(--COLOR_WHITE);
 }
+
+/***********************************************************************************************************************
+ * Tree
+ ***********************************************************************************************************************/
 
 .tree {
     border-right: var(--BORDER);
@@ -49,4 +52,28 @@
     background: var(--HOVER_COLOR);
     cursor: pointer;
     border-radius: var(--BORDER_RADIUS);
+}
+
+/***********************************************************************************************************************
+ * Viewport
+ ***********************************************************************************************************************/
+
+.view {
+    border-left: var(--BORDER);
+    border-top: var(--BORDER);
+}
+
+.tabBar {
+    background-color: var(--COLOR_SECONDARY);
+    color: var(--COLOR_PRIMARY_DARK);
+}
+
+.tab {
+    border-right: var(--BORDER);
+}
+
+.tabActive {
+    background: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+    border-radius: 0px 10px 0 0;
 }

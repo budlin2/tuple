@@ -2,11 +2,3 @@
     height: 100%;
     width: 100%;
 }
-
-/* TODO: Move this to /View */
-.view {
-    height: 100%;
-    width: 100%;
-    border-left: var(--BORDER);
-    border-top: var(--BORDER);
-}

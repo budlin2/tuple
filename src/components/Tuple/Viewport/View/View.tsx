@@ -4,13 +4,13 @@ import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../..';
 import { ID, PageT, TupleContextT } from '../../TupleTypes';
 
-import _classes from '../viewport.module.css';
 import DropZoneSides from '../../../Dropzone/DropZoneSides';
 import DropZoneCenter from '../../../Dropzone/DropZoneCenter';
 import { DropSideT } from '../../../Dropzone/DropZoneTypes';
 import { addTab, addView } from '../../state/dispatchers';
 import { validateDraggable } from '../../state';
 
+import _classes from './view.module.css';
 
 interface Props {
     portId: ID,
@@ -29,11 +29,15 @@ const View = ({
     const viewRef = useRef<HTMLDivElement>();
     const {
         dispatch,
-        state: { pages, styles, classes }
+        state: { pages, styles, classes, template }
     }: TupleContextT = useContext(TupleContext);
 
     const activePage: PageT = pages[activePageId];
-    const viewClassName = `${_classes?.view} ${classes?.view}`;
+
+    const viewClassName = `
+        ${_classes?.view || ''}
+        ${template?.view || ''}
+        ${classes?.view  || ''}`;
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers

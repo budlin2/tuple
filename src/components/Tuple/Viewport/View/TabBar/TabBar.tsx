@@ -22,10 +22,15 @@ const TabBar = ({
 }: Props) => {
     const {
         dispatch,
-        state:{ classes, styles }
+        state:{ classes, styles, template }
     }: TupleContextT = useContext(TupleContext);
-    const tabBarClassName = `${_global_classes.noScrollbar} ${_classes?.tabBar} ${classes?.tabBar}`;
     
+    const tabBarClassName = `
+        ${_global_classes.noScrollbar}
+        ${_classes?.tabBar || ''}
+        ${template?.tabBar || ''}
+        ${classes?.tabBar  || ''}`;
+
     const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();

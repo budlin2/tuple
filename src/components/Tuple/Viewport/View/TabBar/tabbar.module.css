@@ -1,12 +1,15 @@
+:root {
+    --PADDING_MEDIUM: 0.5rem;
+    --PADDING_SMALL: 0.2rem;
+}
+
 .tabBar {
     display: flex;
     width: 100%;
     overflow-x: scroll;
     overflow-y: auto;
 
-    background-color: var(--COLOR_SECONDARY);
-    color: var(--COLOR_PRIMARY_DARK);
-    border-bottom: var(--BORDER);
+    border-bottom: 1px solid black
 }
 
 .tab {
@@ -16,17 +19,16 @@
     align-items: center;
     overflow: hidden;
 
-    padding-left: 4px;
-    padding-right: 1px;
-    min-width: 80px;
-    max-width: 120px;
+    padding-left: var(--PADDING_MEDIUM);
+    padding-right: var(--PADDING_SMALL);
+    min-width: 5rem;
+    max-width: 8rem;
     flex-shrink: 0;
     height: var(--TAB-HEIGHT);
 
     cursor: pointer;
 
-    border-right: var(--BORDER);
-
+    border-right: 1px solid black;
 }
 
 .tabLabel {
@@ -55,8 +57,17 @@
     cursor: pointer;
 }
 
+.tabClose:hover {
+    background: black;
+    color: white;
+}
+
 .tabActive {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
-    border-radius: 0px 10px 0 0;
+    background: black;
+    color: white;
+}
+
+.tabActive .tabClose:hover {
+    background: white;
+    color: black;
 }

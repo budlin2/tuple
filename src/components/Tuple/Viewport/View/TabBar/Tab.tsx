@@ -30,7 +30,7 @@ export const Tab = ({
 }: TabProps) => {
     const {
         dispatch,
-        state:{ pages, classes, styles, viewport },
+        state:{ pages, classes, styles, template, viewport },
     }: TupleContextT = useContext(TupleContext);
 
     useEffect(() => {
@@ -44,12 +44,30 @@ export const Tab = ({
     const port = viewport.ports[portId];
     const isActiveTab = pageId === port.activePageId;
 
-    const inactiveTabClassName = `${_classes.tab || ''} ${classes.tab || ''}`;
-    const activeTabClassName = `${inactiveTabClassName} ${_classes.tabActive || ''} ${classes.tabActive || ''}`;
-    const tabClassName = isActiveTab ? activeTabClassName : inactiveTabClassName;
+    const inactiveTabClassName = `
+        ${_classes?.tab || ''}
+        ${template?.tab || ''}
+        ${classes?.tab  || ''}`;
 
-    const tabLabelClassName = `${_classes.tabLabel || ''} ${classes.tabLabel || ''}`;
-    const tabCloseClassName = `${_classes.tabClose || ''} ${classes.tabClose || ''}`
+    const activeTabClassName = `
+        ${inactiveTabClassName}
+        ${_classes?.tabActive || ''}
+        ${template?.tabActive || ''}
+        ${classes?.tabActive  || ''}`;
+
+    const tabClassName = isActiveTab
+        ? activeTabClassName
+        : inactiveTabClassName;
+
+    const tabLabelClassName = `
+        ${_classes?.tabLabel || ''}
+        ${template?.tabLabel || ''}
+        ${classes?.tabLabel  || ''}`;
+
+    const tabCloseClassName = `
+        ${_classes?.tabClose || ''}
+        ${template?.tabClose || ''}
+        ${classes?.tabClose  || ''}`;
 
     const tabStyle = isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab;
 

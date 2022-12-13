@@ -1,5 +1,6 @@
 :root {
     --GOOD_FONT: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    --TAB-HEIGHT: 2rem;
 }
 
 .noScrollbar {

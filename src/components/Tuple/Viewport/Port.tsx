@@ -18,11 +18,14 @@ interface PortProps { id: ID }
 
 
 const Port = ({ id }: PortProps): JSX.Element => {
-    const { dispatch, state: { viewport } }: TupleContextT = useContext(TupleContext);
+    const {
+        dispatch,
+        state: { viewport }
+    }: TupleContextT = useContext(TupleContext);
+
     const port: PortT = viewport.ports[id];  // TODO: Should this be in useEffect hook?
 
-    // When list becomes empty
-    useEffect(() => {
+    useEffect(() => {  // When list becomes empty
         if (port && port.pageIds && port.pageIds.length <= 0) {
             removeView(dispatch, id);
         }

@@ -15,9 +15,17 @@ export interface Props {
 
 
 const Viewport = ({ defaultView }: Props) => {
-    const {state: { viewport, styles, classes }}: TupleContextT = useContext(TupleContext);
+    const { state: {
+        viewport,
+        styles,
+        classes,
+        template,
+    }}: TupleContextT = useContext(TupleContext);
 
-    const viewportClassName = `${_classes.viewport} ${classes.viewport}`;
+    const viewportClassName = `
+        ${_classes?.viewport || ''}
+        ${template?.viewport || ''}
+        ${classes?.viewport  || ''}`;
 
     // TODO: Show defaultView
     if (viewport.root == '') {
