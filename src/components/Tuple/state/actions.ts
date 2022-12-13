@@ -91,7 +91,8 @@ export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStat
         ...state.viewport.ports,
         [`${payload.portId}`]: {
             ...port,
-            pageIds: newPageIds
+            activePageId: payload.pageId,
+            pageIds: newPageIds,
         }
     }
 
@@ -139,6 +140,14 @@ export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): Tup
             activePageId: newActivePageId,
         }
     }
+
+    console.log('New state', {
+        ...state,
+        viewport: {
+            ...state.viewport,
+            ports: newPorts,
+        }
+    })
 
     return {
         ...state,

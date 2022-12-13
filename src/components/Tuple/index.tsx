@@ -87,7 +87,7 @@ const Tuple = ({
                 isHead,
             } as PortT;
         } else if (isSplitViewT(viewport)) {
-            const splitview = viewport as SplitViewT
+            const splitview = viewport as SplitViewT;
             portMap[id] = {
                 parentId,
                 isSplitView: true,

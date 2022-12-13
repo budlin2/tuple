@@ -34,8 +34,12 @@ const Leaf = ({
         ${template?.leaf || ''}
         ${classes?.leaf  || ''}`;
 
+    const draggableClass = `
+        ${template?.draggable || ''}
+        ${classes?.draggable || ''}`;
+
     const dragStartHandler = (e: any) => {
-        setCustomDragImage(e, text, classes.draggable, styles.draggable);
+        setCustomDragImage(e, text, draggableClass, styles.draggable);
         e.dataTransfer.setData('pageId', pageId);
     };
 

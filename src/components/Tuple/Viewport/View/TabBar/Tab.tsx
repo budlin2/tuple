@@ -5,6 +5,7 @@ import {
     useContext,
     DragEvent,
     useEffect,
+    MouseEvent as rMouseEvent,
 } from 'react';
 
 import { TupleContext } from '../../..';
@@ -69,6 +70,10 @@ export const Tab = ({
         ${template?.tabClose || ''}
         ${classes?.tabClose  || ''}`;
 
+    const draggableClass = `
+        ${template?.draggable || ''}
+        ${classes?.draggable || ''}`;
+
     const tabStyle = isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab;
 
     //------------------------------------------------------------------------------------------------------------------
@@ -81,7 +86,7 @@ export const Tab = ({
 
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
-        setCustomDragImage(e, label, classes.draggable, styles.draggable);
+        setCustomDragImage(e, label, draggableClass, styles.draggable);
         e.dataTransfer && e.dataTransfer.setData('pageId', pageId.toString());
         e.dataTransfer && e.dataTransfer.setData('portId', portId.toString());
     };
@@ -105,6 +110,7 @@ export const Tab = ({
         e.preventDefault();
         e.stopPropagation();
 
+        // TODO: Better solution for this
         if (tabRef.current)
             tabRef.current.style.opacity = '0.7';
     }
@@ -122,6 +128,11 @@ export const Tab = ({
         // e.stopPropagation();
 
         cleanupDraggable();
+        removeTabHandler();
+    }
+
+    const onCloseClickHandler = (e: rMouseEvent) => {
+        e.stopPropagation();
         removeTabHandler();
     }
 
@@ -154,7 +165,7 @@ export const Tab = ({
                     <div
                         style={styles.tabClose}
                         className={tabCloseClassName}
-                        onClick={removeTabHandler}>
+                        onClick={onCloseClickHandler}>
                         { "\u2716" }
                     </div>
                 }

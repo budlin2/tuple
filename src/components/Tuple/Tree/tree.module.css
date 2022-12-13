@@ -13,7 +13,6 @@
 .branch {
     background: black;
     color: white;
-    border-bottom: 1px solid black;
     padding-left: var(--PADDING_HORIZONTAL);
 }
 
