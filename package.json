@@ -1,7 +1,9 @@
 {
   "name": "tuple",
-  "private": true,
   "version": "0.0.0",
+  "license": "MIT",
+  "author": "budl",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -29,8 +31,20 @@
     "@vitejs/plugin-react": "^1.3.0",
     "babel-loader": "^8.2.5",
     "typescript": "^4.6.3",
-    "vite": "^2.9.9"
+    "vite": "^2.9.9",
+    "vite-plugin-dts": "^0.9.10"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "tuple@0.0.0"
+  "_id": "tuple@0.0.0",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/tuple.umd.ts",
+  "module": "./dist/tuple.es.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/tuple.es.ts",
+      "require": "./dist/tuple.umd.ts"
+    }
+  }
 }
