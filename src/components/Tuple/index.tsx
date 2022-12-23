@@ -48,10 +48,8 @@ export interface TupleProps {
 
     styles?: TupleStylesT,
     classes?: TupleClassesT,
-    template: string,
+    template?: string,
     events?: EventsT,
-    
-    children: ReactNode,
 };
 
 
@@ -143,24 +141,24 @@ const Tuple = ({
         { state, dispatch }
     ), [state, dispatch]);
 
-    useEffect(() => {
-        let foo = window.open(
-            'https://google.com/',
-            '_blank',  // TODO: Can I use this??
-            `height=${600}, width=${800}`,
-        );
-        console.log(foo);
-        const onUnload = (e: any) => {
-            e.preventDefault();
-            console.log('hey!')
-            foo?.close();
-            e.returnValue = "Are you sure?"
-            return "Are you sure?"
-        }
+    // useEffect(() => {
+    //     let foo = window.open(
+    //         'https://google.com/',
+    //         '_blank',  // TODO: Can I use this??
+    //         `height=${600}, width=${800}`,
+    //     );
+    //     console.log(foo);
+    //     const onUnload = (e: any) => {
+    //         e.preventDefault();
+    //         console.log('hey!')
+    //         foo?.close();
+    //         e.returnValue = "Are you sure?"
+    //         return "Are you sure?"
+    //     }
         
-        window.addEventListener('beforeunload', onUnload);
-        return window.removeEventListener('beforeunload', onUnload);
-    }, []);
+    //     window.addEventListener('beforeunload', onUnload);
+    //     return window.removeEventListener('beforeunload', onUnload);
+    // }, []);
 
     return (
         <TupleContext.Provider value={context}>
