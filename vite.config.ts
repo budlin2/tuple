@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -15,15 +14,14 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/lib/index.ts'),
       name: 'tuple',
-      formats: ['es', 'umd'],
-      fileName: (format) => `tuple.${format}.ts`
+      fileName: 'tuple'
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
       output: {
         globals: {
           react: 'React',
-          // 'react-dom': 'ReactDOM',
+          'react-dom': 'ReactDOM',
         }
       }
     }

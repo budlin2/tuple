@@ -1,4 +1,5 @@
 import { Meta, Story } from "@storybook/react";
+
 import DropZoneCenter, { Props } from './DropZoneCenter';
 
 export default {

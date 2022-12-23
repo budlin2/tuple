@@ -1,11 +1,12 @@
 {
-  "name": "tuple",
-  "version": "0.0.0",
+  "name": "tuple-ui",
+  "version": "0.0.10",
   "license": "MIT",
   "author": "budl",
-  "type": "module",
   "scripts": {
     "dev": "vite",
+    "tsc": "tsc --noEmit",
+    "tscv": "tsc --version",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
@@ -30,21 +31,20 @@
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^1.3.0",
     "babel-loader": "^8.2.5",
-    "typescript": "^4.6.3",
+    "typescript": "^4.9.4",
     "vite": "^2.9.9",
     "vite-plugin-dts": "^0.9.10"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "tuple@0.0.0",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/tuple.umd.ts",
-  "module": "./dist/tuple.es.ts",
+  "type": "module",
+  "files": [ "dist" ],
+  "types": "./dist/index.d.ts",
+  "main": "./dist/tuple.umd.js",
+  "module": "./dist/tuple.es.js",
   "exports": {
     ".": {
-      "import": "./dist/tuple.es.ts",
-      "require": "./dist/tuple.umd.ts"
+      "import": "./dist/tuple.es.js",
+      "require": "./dist/tuple.umd.js"
     }
   }
 }
