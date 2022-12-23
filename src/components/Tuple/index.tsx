@@ -8,7 +8,7 @@ import {
     useReducer,
     useEffect,
 } from 'react';
-import { getUniqueId } from '../../utils';
+import { getUniqueId, isObject } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
 import TupleInner from './TupleInner';
 
@@ -43,14 +43,30 @@ export const TupleContext = createContext({
 
 export interface TupleProps {
     pages: PagesT,
-    views: ViewportT,
     tree: TreeT,
 
+    views?: ViewportT,
     styles?: TupleStylesT,
     classes?: TupleClassesT,
     template?: string,
     events?: EventsT,
 };
+
+
+const validateProps = ({
+    pages,
+    tree,
+    views
+} : TupleProps) => {
+    if (!isObject(pages))
+        throw Error('"pages" props should be of the form, PagesT.');
+
+    if (!Array.isArray(tree))
+        throw Error('"tree" prop must be an array.');
+
+    if (!(isViewT(views) || isSplitViewT(views)))
+        throw Error('"views" props should be of type - ViewT or SplitViewT.');
+}
 
 
 const Tuple = ({
@@ -62,6 +78,7 @@ const Tuple = ({
     template,
     events,
 }: TupleProps) => {
+    validateProps({ pages, views, tree });
     // let initViews = getViewsFromStorage() || views || null;
     let initViews = views || null;
     // if (initViews) {

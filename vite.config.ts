@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts';
+import libCss from 'vite-plugin-libcss';
 import * as path from 'path';
 
 export default defineConfig({
   plugins: [
     react(),
+    libCss(),
     dts({
       insertTypesEntry: true,
     }),

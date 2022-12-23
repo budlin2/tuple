@@ -8,36 +8,14 @@ export const getUniqueId = () => {
 
 
 const getRandomWord = () => {
-    const words = [
-      "apple",
-      "zebra",
-      "lion",
-      "pancho",
-      "lioness",
-      "tough",
-      "weak",
-      "pretty",
-      "monkey",
-      "monster",
-      "conservative",
-      "imp",
-      "sloth",
-      "dragon",
-      "house",
-      "door",
-      "window",
-      "air",
-      "park",
-      "tree",
-      "chipmunk",
-      "monk",
-      "priestess",
-      "elephant"
-    ];
-  
+    const words = ["apple","zebra","lion","pancho","lioness","tough","weak","pretty","monkey","monster","conservative","imp","sloth","dragon","house","door","window","air","park","tree","chipmunk","monk","priestess","elephant"];
+
     const max = words.length - 1;
     const min = 0;
     const index = Math.floor(Math.random() * (max - min + 1) + min);
   
     return words[index];
-  };
+};
+
+
+export const isObject = (obj: any) => typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
