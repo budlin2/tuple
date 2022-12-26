@@ -1,25 +1,10 @@
-.noScrollbar {
-    /* overflow: hidden; */
-    overflow-y: auto;
-
-    /* IE, Edge and Firefox */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* Chrome, Safari and Opera */
-.noScrollbar::-webkit-scrollbar {
-    /* overflow: hidden; */
-    display: none;
-}
-
 /***************
 * Container
 ****************/
 .container {
     display: flex;
-    height: 100%;
-    width: 100%;
+    /* height: 100%;
+    width: 100%; */
 }
 .containerVertical { flex-direction: column }
 

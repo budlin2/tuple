@@ -120,9 +120,9 @@ const SplitPane = ({
     let headStyle: CSSProperties = {};
 
     let containerClassName: string = _classes.container;
-    const headClassName: string = `${_classes.noScrollbar} ${_classes.pane} ${_classes.paneHead}`;
+    const headClassName: string = `${_global_classes.noScrollbar} ${_classes.pane} ${_classes.paneHead}`;
     let resizerClassName: string = _classes.resizer;
-    const tailClassName: string = `${_classes.noScrollbar} ${_classes.pane} ${_classes.paneTail}`;
+    const tailClassName: string = `${_global_classes.noScrollbar} ${_classes.pane} ${_classes.paneTail}`;
 
     switch(dir) {
         case 'horizontal':
@@ -146,23 +146,24 @@ const SplitPane = ({
             className={containerClassName}
             onMouseMove={mouseMoveHandler}
             onMouseUp={mouseUpHandler}
-            onMouseLeave={mouseUpHandler}
-        >
-            <div ref={headRef as MutableRefObject<HTMLDivElement>}
-                className={headClassName}
-                style={headStyle}
-            >
+            onMouseLeave={mouseUpHandler}>
+
+            <div className={headClassName} style={headStyle}
+                ref={headRef as MutableRefObject<HTMLDivElement>}>
+
                 { childrenArr && childrenArr[0] }
                 { resizable &&
                     <div ref={ resizerRef as MutableRefObject<HTMLDivElement> }
                         className={resizerClassName}
                         onMouseDown={mouseDownHandler}/>
                 }
+
             </div>
-            <div ref={ tailRef  as MutableRefObject<HTMLDivElement> }
-                className={tailClassName}
-            >
+            <div className={tailClassName}
+                ref={tailRef as MutableRefObject<HTMLDivElement>}>
+
                 { dir !== 'none' && childrenArr && childrenArr[1] }
+
             </div>
         </div>
     );
