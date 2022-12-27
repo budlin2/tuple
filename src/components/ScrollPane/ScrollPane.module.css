@@ -9,6 +9,7 @@
 .scrollpane {
     scrollbar-width: auto;
     scrollbar-color: var(--HOVER_COLOR) transparent;
+    overflow-y: overlay;    /* Scrollbar overlays content */
 }
 
 /* Chrome, Edge, and Safari */
