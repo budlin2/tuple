@@ -74,7 +74,7 @@ const View = ({
                     onDropCB={dropSideHandler}
                     validateDraggable={validateDraggable}>
 
-                    <div style={{ zIndex: 1 }}>
+                    <div className={_classes.contentContainer}>
                         <activePage.component {...activePage.props } />
                     </div>
                 </DropZoneSides>
