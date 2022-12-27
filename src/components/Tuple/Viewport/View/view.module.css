@@ -7,4 +7,28 @@
 
 .contentContainer {
     z-index: 1;  /* This allows highlighting of inner text */
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+/****************************** SCROLLBAR ******************************/
+/* Firefox */
+.contentContainer {
+    scrollbar-width: auto;
+    scrollbar-color: var(--HOVER_COLOR) transparent;
+}
+
+/* Chrome, Edge, and Safari */
+.contentContainer::-webkit-scrollbar {
+    width: 0.75rem;
+}
+
+.contentContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.contentContainer::-webkit-scrollbar-thumb {
+    background-color: var(--HOVER_COLOR);
+    border-radius: 0.rem;
 }

@@ -4,7 +4,10 @@
     justify-content: center;
 
     position: relative;
-    height: 100%;
+    /* TODO: Gotta figure out this TAB-HEIGHT issue...
+    Should calculate this in javascript code and pass
+    it into classes that need it as a style */
+    height: calc(100% - var(--TAB-HEIGHT));
     width: 100%;
 }
 
