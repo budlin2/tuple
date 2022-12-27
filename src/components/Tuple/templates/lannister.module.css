@@ -82,6 +82,10 @@
     border-right: var(--BORDER);
 }
 
+.tab:hover {
+    background: var(--HOVER_COLOR);
+}
+
 .tabActive {
     background: var(--COLOR_PRIMARY);
     color: var(--COLOR_WHITE);
