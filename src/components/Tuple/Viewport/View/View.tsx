@@ -40,6 +40,10 @@ const View = ({
         ${template?.view || ''}
         ${classes?.view  || ''}`;
 
+    const scrollPaneClassName = `
+        ${_classes.contentContainer}
+        ${classes.scrollPane}`;
+
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
@@ -75,7 +79,7 @@ const View = ({
                     onDropCB={dropSideHandler}
                     validateDraggable={validateDraggable}>
 
-                    <ScrollPane className={_classes.contentContainer}>
+                    <ScrollPane className={scrollPaneClassName} style={styles?.scrollPane || null}>
                         <activePage.component {...activePage.props } />
                     </ScrollPane>
 

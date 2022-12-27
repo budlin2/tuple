@@ -43,6 +43,7 @@ export interface TupleStylesT {
     view?: CSSProperties,
     dropZoneCenter?: CSSProperties,
     dropZoneSide?: CSSProperties,
+    scrollPane?: CSSProperties,
 }
 
 
@@ -70,6 +71,7 @@ export interface TupleClassesT {
     view?: string,
     dropZoneCenter?: string,
     dropZoneSide?: string,
+    scrollPane?: string,
 }
 
 
