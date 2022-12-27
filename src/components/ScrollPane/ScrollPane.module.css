@@ -24,3 +24,12 @@
     background-color: var(--HOVER_COLOR);
     border-radius: 0;
 }
+
+/* Hidden */
+.scrollpaneHidden {
+    scrollbar-color: transparent transparent;
+}
+
+.scrollpaneHidden::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
