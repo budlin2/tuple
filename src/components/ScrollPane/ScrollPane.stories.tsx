@@ -1,17 +1,17 @@
 import { Meta, Story } from "@storybook/react";
-import Foo, { Props as FooProps } from '.';
+import ScrollPane, { Props as ScrollPaneProps } from '.';
 
 export default {
-    title: 'Components/Foo',
-    component: Foo,
+    title: 'Components/ScrollPane',
+    component: ScrollPane,
     argTypes: { handleClick: { action: "handleClick" } },
 } as Meta;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Template
 //----------------------------------------------------------------------------------------------------------------------
-const Template: Story<FooProps> = (args: any) => (
-    <Foo {...args} />
+const Template: Story<ScrollPaneProps> = (args: ScrollPaneProps) => (
+    <ScrollPane {...args} />
 );
 
 

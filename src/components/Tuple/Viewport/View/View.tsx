@@ -11,6 +11,7 @@ import { addTab, addView } from '../../state/dispatchers';
 import { validateDraggable } from '../../state';
 
 import _classes from './view.module.css';
+import ScrollPane from '../../../ScrollPane';
 
 interface Props {
     portId: ID,
@@ -74,9 +75,10 @@ const View = ({
                     onDropCB={dropSideHandler}
                     validateDraggable={validateDraggable}>
 
-                    <div className={_classes.contentContainer}>
+                    <ScrollPane className={_classes.contentContainer}>
                         <activePage.component {...activePage.props } />
-                    </div>
+                    </ScrollPane>
+
                 </DropZoneSides>
             </DropZoneCenter>
         </div>

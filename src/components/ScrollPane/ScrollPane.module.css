@@ -1,0 +1,26 @@
+.scrollpane {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+/****************************** SCROLLBAR ******************************/
+/* Firefox */
+.scrollpane {
+    scrollbar-width: auto;
+    scrollbar-color: var(--HOVER_COLOR) transparent;
+}
+
+/* Chrome, Edge, and Safari */
+.scrollpane::-webkit-scrollbar {
+    width: 0.75rem;
+}
+
+.scrollpane::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollpane::-webkit-scrollbar-thumb {
+    background-color: var(--HOVER_COLOR);
+    border-radius: 0;
+}

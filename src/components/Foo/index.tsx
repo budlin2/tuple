@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 
 
-interface Props {
+export interface Props {
     styles?: CSSProperties,
 }
 
