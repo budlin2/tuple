@@ -70,7 +70,7 @@ export const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPo
 
 //---------------------------------------------------------------------------------------------------------------------
 export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
-    // _log_action('Add Tab', state, payload);
+    _log_action('Add Tab', state, payload);
 
     if (payload.portId === payload.dragPortId) {
         return {
@@ -113,7 +113,7 @@ export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStat
 
 //---------------------------------------------------------------------------------------------------------------------
 export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleStateT => {
-    // _log_action('Remove Tab', state, payload);
+    _log_action('Remove Tab', state, payload);
 
     if (state.viewport.skipTabRemoval) {
         return {
@@ -202,7 +202,7 @@ export const _add_new_view = (state: TupleStateT, payload: AddNewViewPayloadT): 
          (Port)    (New Child)
 */
 export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT => {
-    // _log_action('Add View', state, payload);
+    _log_action('Add View', state, payload);
 
     const newPortId = getUniqueId();
     const newChildId = getUniqueId();
@@ -277,7 +277,7 @@ export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleSt
 //---------------------------------------------------------------------------------------------------------------------
 // Remove => Replace parent with sister component
 export const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleStateT => {
-    // _log_action('Remove View', state, payload);
+    _log_action('Remove View', state, payload);
 
     let rootId: ID = state.viewport.root;
     let port = _get_port_copy(state.viewport.ports, payload.portId);
@@ -340,7 +340,7 @@ export const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): T
 
 //---------------------------------------------------------------------------------------------------------------------
 export const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloadT): TupleStateT => {
-    // _log_action('Change Active View', state, payload);
+    _log_action('Change Active View', state, payload);
 
     const port = _get_port_copy(state.viewport.ports, payload.portId);
 

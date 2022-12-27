@@ -24,11 +24,11 @@ const ScrollPane = ({
     useEffect(() => {
         if (isScrolling) {
            setClassName(scrollPaneClasses);
-           setTimeout(() => setIsScrolling(false), 1000);
+           setTimeout(() => setIsScrolling(false), 750);
         } else {
             setClassName(`${scrollPaneClasses} ${_classes.scrollpaneHidden}`);
         }
-    }, [isScrolling]);
+    }, [isScrolling, setIsScrolling, scrollPaneClasses, _classes, setClassName]);
 
     return (
         <div className={_className} style={style} onScroll={onScrollHandler}>
