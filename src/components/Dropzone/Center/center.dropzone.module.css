@@ -7,17 +7,17 @@
     /* TODO: Gotta figure out this TAB-HEIGHT issue...
     Should calculate this in javascript code and pass
     it into classes that need it as a style */
-    height: calc(100% - var(--TAB-HEIGHT));
+    height: 100%;
     width: 100%;
 }
 
 .dropZone {
     position: absolute;
-    top: 10%;
-    bottom: 10%;
-    left: 10%;
-    right: 10%;
-    z-index: 1;
+    top: 20%;
+    bottom: 20%;
+    left: 20%;
+    right: 20%;
+    z-index: 2;
 }
 
 .dropZoneDisplay {

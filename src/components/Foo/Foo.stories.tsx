@@ -1,4 +1,5 @@
 import { Meta, Story } from "@storybook/react";
+
 import Foo, { Props as FooProps } from '.';
 
 export default {

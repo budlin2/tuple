@@ -4,14 +4,15 @@ import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../..';
 import { ID, PageT, TupleContextT } from '../../TupleTypes';
 
-import DropZoneSides from '../../../Dropzone/DropZoneSides';
-import DropZoneCenter from '../../../Dropzone/DropZoneCenter';
+import DropZoneSides from '../../../Dropzone/Sides/DropZoneSides';
+import DropZoneCenter from '../../../Dropzone/Center/DropZoneCenter';
 import { DropSideT } from '../../../Dropzone/DropZoneTypes';
 import { addTab, addView } from '../../state/dispatchers';
 import { validateDraggable } from '../../state';
 
 import _classes from './view.module.css';
 import ScrollPane from '../../../ScrollPane';
+import DropZone from '../../../Dropzone';
 
 interface Props {
     portId: ID,
@@ -33,7 +34,7 @@ const View = ({
         state: { pages, styles, classes, template }
     }: TupleContextT = useContext(TupleContext);
 
-    const activePage: PageT = pages[activePageId];
+    const ActivePage: PageT = pages[activePageId];
 
     const viewClassName = `
         ${_classes?.view || ''}
@@ -67,24 +68,20 @@ const View = ({
             className={viewClassName}
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
-            <DropZoneCenter
-                style={styles.dropZoneCenter}
-                className={classes.dropZoneCenter}
-                onDropCB={dropCenterHandler}
-                validateDraggable={validateDraggable}>
+            <DropZone
+                centerDropZoneStyle     = {styles.dropZoneCenter}
+                sidesDropZoneStyle      = {styles.dropZoneSide}
+                centerDropZoneClassName = {classes.dropZoneCenter}
+                sidesDropZoneClassName  = {classes.dropZoneSide}
+                dropCenterCb            = {dropCenterHandler}
+                dropSidesCb             = {dropSideHandler}
+                validateDraggable       = {validateDraggable}>
 
-                <DropZoneSides
-                    style={styles.dropZoneSide}
-                    className={classes.dropZoneSide}
-                    onDropCB={dropSideHandler}
-                    validateDraggable={validateDraggable}>
+                <ScrollPane className={scrollPaneClassName} style={styles?.scrollPane || null}>
+                    <ActivePage.component {...ActivePage.props } />
+                </ScrollPane>
 
-                    <ScrollPane className={scrollPaneClassName} style={styles?.scrollPane || null}>
-                        <activePage.component {...activePage.props } />
-                    </ScrollPane>
-
-                </DropZoneSides>
-            </DropZoneCenter>
+            </DropZone>
         </div>
     );
 }

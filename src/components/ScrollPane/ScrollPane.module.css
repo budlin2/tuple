@@ -26,7 +26,7 @@
     border-radius: 0;
 }
 
-/* Hidden */
+/* Scrollbar Hidden */
 .scrollpaneHidden {
     scrollbar-color: transparent transparent;
 }

@@ -1,7 +1,7 @@
 import { useContext, DragEvent } from 'react';
 import { TupleContext } from '../..';
 
-import DropZoneCenter from '../../../Dropzone/DropZoneCenter';
+import DropZoneCenter from '../../../Dropzone/Center/DropZoneCenter';
 import { validateDraggable } from '../../state';
 import { addNewView } from '../../state/dispatchers';
 import { TupleContextT } from '../../TupleTypes';
