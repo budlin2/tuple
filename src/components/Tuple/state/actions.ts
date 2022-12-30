@@ -25,8 +25,8 @@ import {
 
 const _log_action = (label: string, state: any, payload: any) => {
     console.log(`----- ${label} -----`);
-    console.log('state', payload);
-    console.log('state', payload);
+    console.log('state', state);
+    console.log('payload', payload);
 }
 
 
@@ -278,6 +278,14 @@ export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleSt
 // Remove => Replace parent with sister component
 export const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleStateT => {
     _log_action('Remove View', state, payload);
+
+    // React's Strict mode will cause duplicate renders, which
+    // will cause this action to be called twice. This check
+    // returns the correct state on the second call.
+    const portKeys = Object.keys(state.viewport.ports)
+    if (!portKeys.includes(payload.portId.toString())) {
+        return state;
+    }
 
     let rootId: ID = state.viewport.root;
     let port = _get_port_copy(state.viewport.ports, payload.portId);
