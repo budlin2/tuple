@@ -1,7 +1,7 @@
 import { CSSProperties, Dispatch } from "react";
 import { DirectionT, SideT } from "../SplitPane/SplitPaneTypes";
 import { TreeT } from "./Tree/TreeTypes";
-import { ViewportStateT } from "./Viewport/ViewportTypes";
+import { ViewportStateT, ViewportT } from "./Viewport/ViewportTypes";
 
 
 export type ID = number | string;
@@ -76,6 +76,17 @@ export interface TupleClassesT {
 
 
 export interface EventsT {}  // TODO: Implement this
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// Local Storage
+//----------------------------------------------------------------------------------------------------------------------
+export interface StorageView {
+    open: boolean,
+    view: ViewportT,
+}
+
+export interface StorageViews { [key: ID]: StorageView }
 
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -164,16 +164,14 @@ const Tuple = ({
     //         '_blank',  // TODO: Can I use this??
     //         `height=${600}, width=${800}`,
     //     );
-    //     console.log(foo);
+    //     // foo?.close();
     //     const onUnload = (e: any) => {
     //         e.preventDefault();
-    //         console.log('hey!')
     //         foo?.close();
-    //         e.returnValue = "Are you sure?"
     //         return "Are you sure?"
     //     }
         
-    //     window.addEventListener('beforeunload', onUnload);
+    //     window.onbeforeunload = onUnload;
     //     return window.removeEventListener('beforeunload', onUnload);
     // }, []);
 
