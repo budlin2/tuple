@@ -1,9 +1,4 @@
-import {
-    CSSProperties,
-    useRef,
-    MutableRefObject,
-    useContext,
-} from 'react'
+import { CSSProperties, useContext } from 'react'
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';

@@ -1,7 +1,8 @@
 import {
     ReactNode,
     useState,
-    useContext
+    useContext,
+    CSSProperties
 } from 'react'
 import { TupleContext } from '..';
 import { TupleContextT } from '../TupleTypes';
@@ -14,6 +15,8 @@ interface Props {
     text: string,
     children: ReactNode,
     open?: boolean,
+    className?: string,
+    style?: CSSProperties,
 }
 
 
@@ -21,6 +24,8 @@ const Branch = ({
     text,
     children,
     open=false,
+    className,
+    style={},
 }: Props) => {
     const onClick = () => setExpanded(cur => !cur);
 
@@ -33,9 +38,7 @@ const Branch = ({
 
     const branchClassName = `
         ${_global_classes.noHighlight}
-        ${_classes?.branch || ''}
-        ${template?.branch || ''}
-        ${classes?.branch  || ''}`;
+        ${className || ''}`;
 
     const branchesClassName = `
         ${_classes?.branches || ''}
@@ -46,7 +49,7 @@ const Branch = ({
         <div>
             <div
                 className={branchClassName}
-                style={styles.branch}
+                style={style}
                 onClick={onClick}>
                 { text }
             </div>

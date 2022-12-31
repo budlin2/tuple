@@ -3,6 +3,7 @@
     --PADDING_VERTICAL: 0.2rem;
 }
 
+/**********  TREE  **********/
 .tree {
     height: 100%;
     border-right: 1px solid black;
@@ -10,6 +11,7 @@
     white-space: nowrap;  /* Prevent text wrap */
 }
 
+/**********  BRANCH  **********/
 .branch {
     background: black;
     color: white;
@@ -26,6 +28,7 @@
     border-left: 1px solid black;
 }
 
+/**********  LEAF  **********/
 .leaf {
     padding: 0.1rem;
     padding-left: var(--PADDING_HORIZONTAL);
@@ -34,4 +37,24 @@
 .leaf:hover {
     background: rgba(0, 0, 0, 0.5);
     cursor: pointer;
+}
+
+/**********  ROOT  **********/
+.root {
+    background: red;
+}
+
+.rootlet {
+    background: blue;
+    border: 1px solid yellow;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.symbolContainer {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
 }
