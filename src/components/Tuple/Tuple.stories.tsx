@@ -6,6 +6,7 @@ import classes from './tuple.stories.module.css';
 import { TreeT } from "./Tree/TreeTypes";
 import { SplitViewT, ViewT } from "./Viewport/ViewportTypes";
 import { PagesT } from "./TupleTypes";
+import Page from "../Page";
 
 
 export default {
@@ -47,24 +48,24 @@ const tomato = <div>tomato</div>;
 const orange = <div>orange</div>;
 
 const pages: PagesT = {
-    'hello': { name: 'lorem', component: () => lorem },
-    'world': { name: 'HELLO', component: () => world },
-    'ford': { name: 'ford', component: () => ford },
-    'jeep': { name: 'jeep', component: () => jeep },
-    'chrysler': { name: 'chrysler', component: () => chrysler },
-    'ferrari': { name: 'ferrari', component: () => ferrari },
-    'gm': { name: 'gm', component: () => gm },
-    'honda': { name: 'honda', component: () => honda },
-    'carpe': { name: 'carpe', component: () => carpe },
-    'diem': { name: 'diem', component: () => diem },
-    'monkey': { name: 'monkey', component: () => monkey },
-    'pox': { name: 'pox', component: () => pox },
-    'apple': { name: 'apple', component: () => apple },
-    'banana': { name: 'banana', component: () => banana },
-    'carrot': { name: 'carrot', component: () => carrot },
-    'brocoli': { name: 'brocoli', component: () => brocoli },
-    'tomato': { name: 'tomato', component: () => tomato },
-    'orange': { name: 'orange', component: () => orange },
+    'hello':    { name: 'lorem'     , component: () => <Page>{lorem}</Page> },
+    'world':    { name: 'HELLO'     , component: () => <Page>{world}</Page> },
+    'ford':     { name: 'ford'      , component: () => <Page>{ford}</Page> },
+    'jeep':     { name: 'jeep'      , component: () => <Page>{jeep}</Page> },
+    'chrysler': { name: 'chrysler'  , component: () => <Page>{chrysler}</Page> },
+    'ferrari':  { name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
+    'gm':       { name: 'gm'        , component: () => <Page>{gm}</Page> },
+    'honda':    { name: 'honda'     , component: () => <Page>{honda}</Page> },
+    'carpe':    { name: 'carpe'     , component: () => <Page>{carpe}</Page> },
+    'diem':     { name: 'diem'      , component: () => <Page>{diem}</Page> },
+    'monkey':   { name: 'monkey'    , component: () => <Page>{monkey}</Page> },
+    'pox':      { name: 'pox'       , component: () => <Page>{pox}</Page> },
+    'apple':    { name: 'apple'     , component: () => <Page>{apple}</Page> },
+    'banana':   { name: 'banana'    , component: () => <Page>{banana}</Page> },
+    'carrot':   { name: 'carrot'    , component: () => <Page>{carrot}</Page> },
+    'brocoli':  { name: 'brocoli'   , component: () => <Page>{brocoli}</Page> },
+    'tomato':   { name: 'tomato'    , component: () => <Page>{tomato}</Page> },
+    'orange':   { name: 'orange'    , component: () => <Page>{orange}</Page> },
 };
 
 //----------------------------------------------------------------------------------------------------------------------
