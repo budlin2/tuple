@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { TupleContext } from '..';
+import { get_storage_ports } from '../state/browser-actions';
 import { TupleContextT } from '../TupleTypes';
 import { default as Taproot } from './Branch'
 import Rootlet from './Rootlet';
@@ -28,7 +29,11 @@ const Root = ({
 
     const getRootlets = (): string[] => {
         //TODO: Implement local storage fetching
-        return ['baratheon', 'stark', 'lannister', 'hightower'];
+        const rootlets = get_storage_ports();
+        if (rootlets) {
+            return Object.keys(rootlets);
+        }
+        return [];
     }
 
     const rootlets = getRootlets();
