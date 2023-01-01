@@ -11,13 +11,44 @@ import {
 import { getUniqueId, isObject } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
 import TupleInner from './TupleInner';
-
 import { initialViewport, reducer } from './state';
-import { EventsT, ID, PagesT, TupleClassesT, TupleContextT, TupleStateT, TupleStylesT } from './TupleTypes';
-import { isSplitViewT, isViewT, PortsT, ViewportStateT, PortT, SplitViewT, ViewportT, ViewT } from './Viewport/ViewportTypes';
+
+import {
+    EventsT,
+    ID,
+    PagesT,
+    PortMapT,
+    StoragePort,
+    TupleClassesT,
+    TupleContextT,
+    TupleStateT,
+    TupleStylesT
+} from './TupleTypes';
+
+import {
+    isSplitViewT,
+    isViewT,
+    PortsT,
+    ViewportStateT,
+    PortT,
+    SplitViewT,
+    ViewportT,
+    ViewT,
+} from './Viewport/ViewportTypes';
+
+import {
+    get_storage_port,
+    get_storage_ports,
+    get_viewport_id_from_query_params,
+    set_storage_port,
+    set_storage_port_open,
+} from './state/browser-actions';
+
 
 import lannister from './templates/lannister.module.css';
-// import { getViewsFromStorage, setViewsToStorage } from './storage';
+
+
+const ROOT_PORT_ID = 'root';
 
 
 const getTemplateCss = (template: string | null): CSSModuleClasses | null => {
@@ -79,27 +110,9 @@ const Tuple = ({
     events,
 }: TupleProps) => {
     validateProps({ pages, views, tree });
-    // let initViews = getViewsFromStorage() || views || null;
-    let initViews = views || null;
-    // if (initViews) {
 
-    // } else {
-    //     if (views) {
-    //         const defaultView = views;
-    //         const rootId = 'root';
-    //         setViewsToStorage(rootId, defaultView);
-    //         initViews = {
-    //             [`${rootId}`]: {
-    //                 view: views,
-    //                 open: true,
-    //             }
-    //         }
-    //     } {
-    //         initViews = null;
-    //     }
-    // }
-
-    const buildPortMap = (
+    //------------------------------------------------------------------------------------------------------------------
+    const buildPortMapHelper = (
         viewport: ViewportT,
         portMap: PortsT,
         parentId: ID | null = null,
@@ -127,8 +140,8 @@ const Tuple = ({
                 pageIds: null,
                 activePageId: null,
                 direction: splitview.direction,
-                headId: buildPortMap(splitview.head, portMap, id, true),
-                tailId: buildPortMap(splitview.tail as ViewportT, portMap, id, false),
+                headId: buildPortMapHelper(splitview.head, portMap, id, true),
+                tailId: buildPortMapHelper(splitview.tail as ViewportT, portMap, id, false),
                 isHead,
             } as PortT;
         } else {
@@ -138,9 +151,54 @@ const Tuple = ({
         return id;
     };
 
-    const portMap: PortsT = {};
-    const rootId = useMemo(() => buildPortMap(initViews as ViewportT, portMap), []);
-    const initViewportState: ViewportStateT = { ...initialViewport, root: rootId, ports: portMap };
+    const buildPortMap = (viewport: ViewportT): PortMapT => {
+        const ports: PortsT = {};
+        const rootId = useMemo(() => buildPortMapHelper(viewport, ports), []);
+
+        return { ports, rootId };
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    const getPortMap = (): PortMapT | null => {
+        // Query Paramater
+        const viewportId = get_viewport_id_from_query_params();
+        if (viewportId) {
+            const urlParamPorts: StoragePort = get_storage_port(viewportId);
+            if (urlParamPorts?.ports && urlParamPorts?.rootId) {
+                set_storage_port_open(viewportId);
+                const { ports, rootId } = urlParamPorts;
+                return { ports, rootId };
+            }
+
+            // TODO: Add ID to storage?
+            return null;  // ID found in URL Query paramaters, but not in storage
+        }
+
+        // Storage
+        const storagePorts = get_storage_ports();
+        if (storagePorts) {
+            if (storagePorts[ROOT_PORT_ID]) {
+                set_storage_port_open(ROOT_PORT_ID);
+                const { ports, rootId } = storagePorts[ROOT_PORT_ID];
+                return { ports, rootId };
+            }
+        }
+
+        // Props
+        if (views) {
+            const { ports, rootId } = buildPortMap(views);
+            set_storage_port(ROOT_PORT_ID, ports, rootId, true);
+            return { ports, rootId };
+        }
+
+        // No ports found. Create new root
+        set_storage_port(ROOT_PORT_ID, null, null, true);
+        return null;
+    };
+
+    //------------------------------------------------------------------------------------------------------------------
+    const { ports, rootId } = getPortMap();
+    const initViewportState: ViewportStateT = { ...initialViewport, root: rootId, ports };
 
     const initState: TupleStateT = {
         pages,

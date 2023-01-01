@@ -1,7 +1,7 @@
 import { CSSProperties, Dispatch } from "react";
 import { DirectionT, SideT } from "../SplitPane/SplitPaneTypes";
 import { TreeT } from "./Tree/TreeTypes";
-import { ViewportStateT, ViewportT } from "./Viewport/ViewportTypes";
+import { PortsT, ViewportStateT, ViewportT } from "./Viewport/ViewportTypes";
 
 
 export type ID = number | string;
@@ -16,6 +16,8 @@ export interface PageT {
 }
 
 export type PagesT = { [key: ID]: PageT }
+
+export type PortMapT = { ports: PortsT, rootId: ID };
 
 
 // Should always have same fields as TupleClassesT
@@ -85,12 +87,13 @@ export interface EventsT {}  // TODO: Implement this
 //----------------------------------------------------------------------------------------------------------------------
 // Local Storage
 //----------------------------------------------------------------------------------------------------------------------
-export interface StorageView {
+export interface StoragePort {
     open: boolean,
-    view: ViewportT,
+    ports: PortsT,
+    rootId: ID,
 }
 
-export interface StorageViews { [key: ID]: StorageView }
+export interface StoragePorts { [key: ID]: StoragePort }
 
 
 //----------------------------------------------------------------------------------------------------------------------

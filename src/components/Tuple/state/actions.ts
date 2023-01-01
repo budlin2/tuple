@@ -29,17 +29,6 @@ const _log_action = (label: string, state: any, payload: any) => {
     console.log('payload', payload);
 }
 
-
-//---------------------------------------------------------------------------------------------------------------------
-// TODO: What to do with this...?
-export const getViewsFromStorage = (): ViewportT | null => {
-    const storageViews = localStorage.getItem("views");
-    if (storageViews)
-        return JSON.parse(storageViews) as SplitViewT | ViewT;
-
-    return null
-};
-
 //---------------------------------------------------------------------------------------------------------------------
 export const _get_port_copy = (ports: PortsT, id: ID): PortT => {
     const port = { ...ports[id] };
