@@ -31,7 +31,7 @@ export const get_storage_port = (id: ID): StoragePort | null => {
 
 
 //---------------------------------------------------------------------------------------------------------------------
-export const set_storage_port = (portId: ID, ports: PortsT, rootId: ID, open: boolean) => {
+export const set_storage_ports = (portId: ID, ports: PortsT, rootId: ID, open: boolean) => {
     const storagePorts: StoragePorts = get_storage_ports() || {};
     storagePorts[portId] = {
         open,

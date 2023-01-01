@@ -40,7 +40,7 @@ import {
     get_storage_port,
     get_storage_ports,
     get_viewport_id_from_query_params,
-    set_storage_port,
+    set_storage_ports,
     set_storage_port_open,
 } from './state/browser-actions';
 
@@ -48,7 +48,7 @@ import {
 import lannister from './templates/lannister.module.css';
 
 
-const ROOT_PORT_ID = 'root';
+export const ROOT_PORT_ID = 'root';
 
 
 const getTemplateCss = (template: string | null): CSSModuleClasses | null => {
@@ -187,12 +187,12 @@ const Tuple = ({
         // Props
         if (views) {
             const { ports, rootId } = buildPortMap(views);
-            set_storage_port(ROOT_PORT_ID, ports, rootId, true);
+            set_storage_ports(ROOT_PORT_ID, ports, rootId, true);
             return { ports, rootId };
         }
 
         // No ports found. Create new root
-        set_storage_port(ROOT_PORT_ID, null, null, true);
+        set_storage_ports(ROOT_PORT_ID, null, null, true);
         return null;
     };
 
