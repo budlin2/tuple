@@ -158,23 +158,6 @@ const Tuple = ({
         { state, dispatch }
     ), [state, dispatch]);
 
-    // useEffect(() => {
-    //     let foo = window.open(
-    //         'https://google.com/',
-    //         '_blank',  // TODO: Can I use this??
-    //         `height=${600}, width=${800}`,
-    //     );
-    //     // foo?.close();
-    //     const onUnload = (e: any) => {
-    //         e.preventDefault();
-    //         foo?.close();
-    //         return "Are you sure?"
-    //     }
-        
-    //     window.onbeforeunload = onUnload;
-    //     return window.removeEventListener('beforeunload', onUnload);
-    // }, []);
-
     return (
         <TupleContext.Provider value={context}>
             {/* <TupleInner showTree={false} /> */}
