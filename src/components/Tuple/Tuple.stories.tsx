@@ -169,85 +169,6 @@ const Orange: ViewT = {
     activePageId: 'orange',
 };
 
-//----------------------------------------------------------------------------------------------------------------------
-// Single View
-export const SingleView = Template.bind({});
-SingleView.args = {
-    pages,
-    views: MonkeyPox,
-    tree,
-    classes,
-};
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// Horizontal Split View
-const HorizontalSplitViews: SplitViewT = { head: HelloWorld, tail: Carpe, direction: 'horizontal' };
-
-export const HorizontalSplitView = Template.bind({});
-HorizontalSplitView.args = {
-    pages,
-    views: HorizontalSplitViews,
-    tree,
-    classes,
-};
-
-//----------------------------------------------------------------------------------------------------------------------
-// Vertical Split View
-const VerticalSplitViews: SplitViewT = { head: HelloWorld, tail: Carpe, direction: 'vertical' };
-
-export const VerticalSplitView = Template.bind({});
-VerticalSplitView.args = {
-    pages,
-    views: VerticalSplitViews,
-    tree,
-    classes,
-};
-
-//----------------------------------------------------------------------------------------------------------------------
-// ThreeViews
-const ThreeViewsRight: SplitViewT = { head: Diem, tail: MonkeyPox, direction: 'vertical' };
-const _ThreeViews: SplitViewT = { head: Cars, tail: ThreeViewsRight, direction: 'horizontal' };
-
-export const ThreeViews = Template.bind({});
-ThreeViews.args = {
-    pages,
-    views: _ThreeViews,
-    tree,
-    classes,
-};
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// FourViews
-const FourViewsLeft: SplitViewT = { head: Carpe, tail: MonkeyPox, direction: 'vertical' };
-const FourViewsRight: SplitViewT = { head: HelloWorld, tail: Diem, direction: 'vertical' };
-const _FourViews: SplitViewT = { head: FourViewsLeft, tail: FourViewsRight, direction: 'horizontal' };
-
-export const FourViews = Template.bind({});
-FourViews.args = {
-    pages,
-    views: _FourViews,
-    tree,
-    classes,
-};
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// Five Views
-const FiveViewsTopRight: SplitViewT = { head: Cars, tail: Carpe, direction: 'vertical' };
-const FiveViewsTop: SplitViewT = { head: HelloWorld, tail: FiveViewsTopRight, direction: 'horizontal' };
-const FiveViewsBottom: SplitViewT = { head: Diem, tail: MonkeyPox, direction: 'horizontal' };
-const _FiveViews: SplitViewT = { head: FiveViewsTop, tail: FiveViewsBottom, direction: 'vertical' };
-
-export const FiveViews = Template.bind({});
-FiveViews.args = {
-    pages,
-    views: _FiveViews,
-    tree,
-    classes,
-};
-
 
 //----------------------------------------------------------------------------------------------------------------------
 // Six Views
@@ -282,7 +203,7 @@ SixViewsNoStyles.args = {
 };
 
 //----------------------------------------------------------------------------------------------------------------------
-// Six Views - No Template
+// Six Views - Lannister
 export const Lannister = Template.bind({});
 Lannister.args = {
     pages,

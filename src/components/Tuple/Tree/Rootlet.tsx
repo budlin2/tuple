@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useContext } from 'react'
+import { ReactNode, useContext, MouseEvent as rMouseEvent, useRef } from 'react'
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
@@ -24,6 +24,8 @@ const Rootlet = ({
     closeSymbol='\u25CB',
     openSymbol='\u25CF',
 }: Props) => {
+    const textboxRef = useRef<HTMLInputElement>();
+
     const { state: {
         classes,
         styles,
@@ -63,6 +65,15 @@ const Rootlet = ({
         open_new_viewport_window(text);
     }
 
+    // Textbox events
+    const onTextClickHandler = (e: rMouseEvent) => {
+        textboxRef.current.blur();
+    }
+
+    const onTextDoubleClickHandler = (e: rMouseEvent) => {
+        textboxRef.current.focus();
+    }
+
     
 
     return (
@@ -79,11 +90,15 @@ const Rootlet = ({
                 </div>
 
                 <input type="text"
+                    ref={textboxRef}
                     className={rootletTextBoxClassName}
                     style={styles.rootletTextBox}
                     id={text}
                     name={text}
                     value={text}
+                    onClick={onTextClickHandler}
+                    onMouseDown={onTextClickHandler}
+                    onDoubleClick={onTextDoubleClickHandler}
                 />
             </>
         </div>

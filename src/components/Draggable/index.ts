@@ -26,7 +26,7 @@ export const setCustomDragImage = (
     }
     
     document.body.appendChild(elem);
-    e.dataTransfer.setDragImage(elem, 20, 10);
+    e.dataTransfer.setDragImage(elem, 40, 12);
 }
 
 

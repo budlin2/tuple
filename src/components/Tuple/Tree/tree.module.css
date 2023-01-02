@@ -47,6 +47,7 @@
     border-bottom: 1px solid black;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .rootlets {
@@ -71,6 +72,8 @@
     width: 100%;
     margin-right: var(--PADDING_HORIZONTAL);
     padding: 0.2rem;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
 
 .rootletTextBox:hover {
@@ -80,6 +83,7 @@
 .rootletTextBox:focus {
     outline: none;
     border: 1px solid white;
+    cursor: text;
 }
 
 .symbolContainer {
