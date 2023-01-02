@@ -33,6 +33,10 @@ export interface TupleStylesT {
     leaf?: CSSProperties,
     root?: CSSProperties,
     rootlet?: CSSProperties,
+    rootlets?: CSSProperties,
+    rootletTextBox?: CSSProperties,
+    rootletContainer?: CSSProperties,
+    symbolContainer?: CSSProperties,
 
     tabBar?: CSSProperties,
     tabBarDragOver?: CSSProperties,
@@ -63,6 +67,10 @@ export interface TupleClassesT {
     leaf?: string,
     root?: string,
     rootlet?: string,
+    rootlets?: string,
+    rootletTextBox?: string,
+    rootletContainer?: string,
+    symbolContainer?: string,
 
     tabBar?: string,
     tabBarDragOver?: string,

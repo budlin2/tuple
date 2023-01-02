@@ -14,7 +14,6 @@ interface Props {
     open: boolean,
     openSymbol?: string | ReactNode, //TODO: Maybe a part of context?
     closeSymbol?: string | ReactNode,
-    style?: CSSProperties,
 }
 
 
@@ -38,7 +37,13 @@ const Rootlet = ({
 
     const symbolContainerClassName = `
         ${_classes?.symbolContainer}
-        `
+        ${template?.symbolContainer || ''}
+        ${classes?.symbolContainer  || ''}`
+
+    const rootletTextBoxClassName = `
+        ${_classes?.rootletTextBox}
+        ${template?.rootletTextBox || ''}
+        ${classes?.rootletTextBox  || ''}`
 
     const draggableClass = `
         ${template?.draggable || ''}
@@ -68,12 +73,14 @@ const Rootlet = ({
             onClick={onClickHandler}
             onDragStart={dragStartHandler}
             onDragEnd={dragEndHandler}>
-            <>  {/* TODO: Why do I need this? */}
-                <div className={symbolContainerClassName}>
+            <>
+                <div className={symbolContainerClassName} style={styles.symbolContainer}>
                     { open ? openSymbol : closeSymbol }
                 </div>
 
                 <input type="text"
+                    className={rootletTextBoxClassName}
+                    style={styles.rootletTextBox}
                     id={text}
                     name={text}
                     value={text}

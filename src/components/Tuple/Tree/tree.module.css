@@ -49,17 +49,40 @@
     align-items: center;
 }
 
-.rootlet {
+.rootlets {
+    padding-top: var(--PADDING_VERTICAL);
+    padding-bottom: var(--PADDING_VERTICAL);
+
     background: black;
     color: white;
+}
 
+.rootlet {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 }
 
+.rootletTextBox {
+    color: white;
+    background: transparent;
+    border: none;
+    width: 100%;
+    margin-right: var(--PADDING_HORIZONTAL);
+    padding: 0.2rem;
+}
+
+.rootletTextBox:hover {
+    border-bottom: 1px solid white;
+}
+
+.rootletTextBox:focus {
+    outline: none;
+    border: 1px solid white;
+}
+
 .symbolContainer {
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
+    margin-left: var(--PADDING_HORIZONTAL);
+    padding-right: var(--PADDING_HORIZONTAL);
 }

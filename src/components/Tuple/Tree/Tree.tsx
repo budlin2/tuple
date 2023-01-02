@@ -35,16 +35,23 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
     }
 
     const branch: BranchT = branchOrLeafId as BranchT;
-    // Define this here, because root uses branch component with different styles
+    // Define these here, because root uses branch component with different styles
     const branchClassName = `
         ${_classes?.branch || ''}
         ${template?.branch || ''}
         ${classes?.branch || ''}`
 
+    const branchesClassName = `
+        ${_classes?.branches || ''}
+        ${template?.branches || ''}
+        ${classes?.branches  || ''}`;
+
     return (
         <Branch text={branch.label}
-            className={branchClassName}
-            style={styles.branch}
+            branchClassName={branchClassName}
+            branchesClassName={branchesClassName}
+            branchStyle={styles.branch}
+            branchesStyle={styles.branches}
         >
             { branch.branches.map((b, i) => (
                 <Branches key={`${bid}${i}`} branchOrLeafId={b}/>

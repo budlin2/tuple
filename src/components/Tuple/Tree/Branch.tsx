@@ -1,11 +1,8 @@
 import {
     ReactNode,
     useState,
-    useContext,
-    CSSProperties
-} from 'react'
-import { TupleContext } from '..';
-import { TupleContextT } from '../TupleTypes';
+    CSSProperties,
+} from 'react';
 
 import _classes from './tree.module.css';
 import _global_classes from '../../styles.module.css';
@@ -15,8 +12,10 @@ interface Props {
     text: string,
     children: ReactNode,
     open?: boolean,
-    className?: string,
-    style?: CSSProperties,
+    branchClassName?: string,
+    branchesClassName?: string,
+    branchStyle?: CSSProperties,
+    branchesStyle?: CSSProperties,
 }
 
 
@@ -24,40 +23,32 @@ const Branch = ({
     text,
     children,
     open=false,
-    className,
-    style={},
+    branchClassName,
+    branchesClassName,
+    branchStyle={},
+    branchesStyle={},
 }: Props) => {
     const onClick = () => setExpanded(cur => !cur);
 
     const [expanded, setExpanded] = useState(open);
-    const { state: {
-        classes,
-        styles,
-        template,
-    }}: TupleContextT = useContext(TupleContext);
 
-    const branchClassName = `
+    const _branchClassName = `
         ${_global_classes.noHighlight}
-        ${className || ''}`;
-
-    const branchesClassName = `
-        ${_classes?.branches || ''}
-        ${template?.branches || ''}
-        ${classes?.branches  || ''}`;
+        ${branchClassName || ''}`;
     
     return (
         <div>
             <div
-                className={branchClassName}
-                style={style}
+                className={_branchClassName}
+                style={branchStyle}
                 onClick={onClick}>
                 { text }
             </div>
-            { expanded && <div
-                className={branchesClassName}
-                style={styles.branches}>
-                { children }
-            </div> }
+            { expanded && (
+                <div className={branchesClassName} style={branchesStyle}>
+                    { children }
+                </div>
+            )}
         </div>
     );
 }

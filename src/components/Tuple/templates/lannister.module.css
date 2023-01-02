@@ -60,6 +60,23 @@
     border-radius: var(--BORDER_RADIUS);
 }
 
+.rootlets {
+    background: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+}
+
+.rootletTextBox {
+    color: var(--COLOR_WHITE);
+}
+
+.rootletTextBox:hover {
+    border-bottom: 1px solid var(--COLOR_WHITE);
+}
+
+.rootletTextBox:focus {
+    border: 1px solid var(--COLOR_WHITE);
+}
+
 /***********************************************************************************************************************
  * Viewport
  ***********************************************************************************************************************/
@@ -95,9 +112,4 @@
 .tabActive .tabClose:hover {
     background: var(--COLOR_WHITE);
     color: var(--COLOR_PRIMARY);
-}
-
-.rootlet {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
 }

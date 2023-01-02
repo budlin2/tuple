@@ -27,6 +27,12 @@ const Root = ({
         ${template?.root || ''}
         ${classes?.root  || ''}`;
 
+
+    const rootletsClassName = `
+        ${_classes?.rootlets || ''}
+        ${template?.rootlets || ''}
+        ${classes?.rootlets  || ''}`;
+
     const getRootlets = (): string[] => {
         //TODO: Implement local storage fetching
         const rootlets = get_storage_ports();
@@ -39,7 +45,12 @@ const Root = ({
     const rootlets = getRootlets();
 
     return (
-        <Taproot text={rootName} className={rootClassName} style={styles.root}>
+        <Taproot text={rootName}
+            branchClassName={rootClassName}
+            branchesClassName={rootletsClassName}
+            branchStyle={styles.rootlets}
+            branchesStyle={styles.rootlets}
+        >
             { rootlets.map( r => (
                 <Rootlet text={r} treeId={r} open={true} />
             ))}
