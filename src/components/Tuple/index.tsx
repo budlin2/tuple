@@ -114,6 +114,10 @@ const Tuple = ({
 
     const viewportId = get_viewport_id_from_query_params();
 
+    window.addEventListener("beforeunload", () => {
+        set_storage_port_open(viewportId || 'root', false);
+    }, false);
+
     //------------------------------------------------------------------------------------------------------------------
     const buildPortMapHelper = (
         viewport: ViewportT,

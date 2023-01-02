@@ -96,6 +96,9 @@ export const set_storage_port_open = (id: ID, open: boolean = true) => {
 // Window Actions
 //---------------------------------------------------------------------------------------------------------------------
 export const open_new_viewport_window = (viewportId: string | number) => {
+    const viewport = get_storage_port(viewportId);
+    if (viewport.open) { return; }
+
     const url = new URL(window.location.href);
     url.searchParams.set(VIEWPORT_QUERY_ID, viewportId.toString());
 
