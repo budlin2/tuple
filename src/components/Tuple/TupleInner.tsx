@@ -11,6 +11,7 @@ import { TupleContext } from '.';
 import { TupleContextT } from './TupleTypes';
 
 import _classes from './tuple.module.css';
+import { get_viewport_id_from_query_params } from './state/browser-actions';
 
 
 const TupleInner = () => {
@@ -20,6 +21,8 @@ const TupleInner = () => {
         template,
     }}: TupleContextT = useContext(TupleContext);
 
+    const isRootViewport = get_viewport_id_from_query_params() === '';
+
     const tupleClassName = `
         ${_classes?.tuple || ''}
         ${template?.tuple || ''}
@@ -27,6 +30,10 @@ const TupleInner = () => {
 
     // TODO: This needs to be better
     const DefaultView = <>No Views. SAD!</>
+
+    if (!isRootViewport) {
+        return <Viewport defaultView={DefaultView} />;
+    }
 
     return (
         <div className={tupleClassName} style={styles.tuple}>

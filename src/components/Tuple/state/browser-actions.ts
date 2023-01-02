@@ -109,7 +109,7 @@ export const open_new_viewport_window = (viewportId: string | number) => {
 // if already opened, duplicate it and append to views? Probz not.
 //  First ask user if they would like to duplicate it... Or close it
 // Calling function should handle all this
-export const get_viewport_id_from_query_params = (): string | null => {
+export const get_viewport_id_from_query_params = (): string => {
     const urlParams = new URLSearchParams(location.search);
     const viewportId = urlParams.get(VIEWPORT_QUERY_ID);
 
