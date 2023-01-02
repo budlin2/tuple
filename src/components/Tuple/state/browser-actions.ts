@@ -126,7 +126,7 @@ export const outside_window = (x: number, y: number) => x < 0 || x > window.oute
 //---------------------------------------------------------------------------------------------------------------------
 // On drop operations we need to know if we dropped the draggable on
 // a different viewport than the one the draggable originated from
-export const get_dragged_to_different_viewport = async (timeout: number = 100): Promise<boolean> => {
+export const get_dragged_to_different_viewport = async (timeout: number = 0): Promise<boolean> => {
     let ret = false;
     const draggedToDifferentViewport = JSON.parse(
         localStorage.getItem(DRAGGED_TO_DIFF_VP_ID)
