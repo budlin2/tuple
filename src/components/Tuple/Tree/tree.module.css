@@ -41,12 +41,17 @@
 
 /**********  ROOT  **********/
 .root {
-    background: red;
+    font-size: 1.2rem;
+    height: 2.4rem;
+    padding-left: var(--PADDING_MEDIUM);
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
 }
 
 .rootlet {
-    background: blue;
-    border: 1px solid yellow;
+    background: black;
+    color: white;
 
     display: flex;
     flex-direction: row;
