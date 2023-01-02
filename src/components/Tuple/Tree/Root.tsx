@@ -6,6 +6,7 @@ import { default as Taproot } from './Branch'
 import Rootlet from './Rootlet';
 
 import _classes from './tree.module.css';
+import { RootletDisplayT } from './TreeTypes';
 
 
 export interface Props {
@@ -33,11 +34,14 @@ const Root = ({
         ${template?.rootlets || ''}
         ${classes?.rootlets  || ''}`;
 
-    const getRootlets = (): string[] => {
+    const getRootlets = (): RootletDisplayT[] => {
         //TODO: Implement local storage fetching
         const rootlets = get_storage_ports();
         if (rootlets) {
-            return Object.keys(rootlets);
+            return Object.entries(rootlets).map(rootlet => ({
+                text: rootlet[0] as string,
+                open: rootlet[1].open as boolean,
+            }));
         }
         return [];
     }
@@ -52,7 +56,7 @@ const Root = ({
             branchesStyle={styles.rootlets}
         >
             { rootlets.map( r => (
-                <Rootlet text={r} treeId={r} open={true} />
+                <Rootlet text={r.text} treeId={r.text} open={r.open} />
             ))}
         </Taproot>
     );

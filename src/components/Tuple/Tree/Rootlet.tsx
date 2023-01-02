@@ -21,8 +21,8 @@ const Rootlet = ({
     text,
     treeId,
     open,
-    openSymbol='O',
-    closeSymbol='C',
+    closeSymbol='\u25CB',
+    openSymbol='\u25CF',
 }: Props) => {
     const { state: {
         classes,

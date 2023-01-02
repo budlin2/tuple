@@ -8,3 +8,8 @@ export interface BranchT {
 }
 
 export type TreeT = (ID | BranchT)[];
+
+export interface RootletDisplayT {
+    text: string,
+    open: boolean,
+}
