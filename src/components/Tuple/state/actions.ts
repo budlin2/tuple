@@ -75,6 +75,23 @@ export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStat
 
     const pageIds = port.pageIds;
     if (!pageIds) throw Error('Page ids is null. Was this action called on a Splitview port?');
+    if (pageIds.includes(payload.pageId)) {
+        const newPorts: PortsT = {
+            ...state.viewport.ports,
+            [payload.portId]: {
+                ...port,
+                activePageId: payload.pageId,
+            }
+        };
+        
+        return {
+            ...state,
+            viewport: {
+                ...state.viewport,
+                ports: newPorts
+            }
+        }
+    }
 
     const newPageIds = [
         ...pageIds?.slice(0, payload.index),
