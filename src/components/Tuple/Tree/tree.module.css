@@ -42,7 +42,7 @@
 /**********  ROOT  **********/
 .root {
     font-size: 1.2rem;
-    height: 2.4rem;
+    height: calc(var(--TAB-HEIGHT) + 1px);
     padding-left: var(--PADDING_MEDIUM);
     border-bottom: 1px solid black;
     display: flex;
