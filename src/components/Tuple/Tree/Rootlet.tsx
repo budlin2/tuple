@@ -52,15 +52,15 @@ const Rootlet = ({
         ${classes?.draggable || ''}`;
 
 
-    const dragStartHandler = (e: any) => {
+    const dragStartHandler = (e: rMouseEvent) => {
         setCustomDragImage(e, text, draggableClass, styles.draggable);
     };
 
-    const onClickHandler = (e: any) => {
-        //TODO: Also need to implement this for Leaf... Should be trivial getting topLeft leaf. Just keep traversing the heads of each Port until you get it...
+    const onClickHandler = () => {
+        open_new_viewport_window(text);
     }
 
-    const dragEndHandler = (e: any) => {
+    const dragEndHandler = () => {
         cleanupDraggable();
         open_new_viewport_window(text);
     }
@@ -73,8 +73,6 @@ const Rootlet = ({
     const onTextDoubleClickHandler = (e: rMouseEvent) => {
         textboxRef.current.focus();
     }
-
-    
 
     return (
         <div

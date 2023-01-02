@@ -8,7 +8,7 @@ const DRAG_ID = 'DRAG_QUEEN_STORY_HOUR_LMAOOOOO';
 
 // Returns id of element, so calling component can remove it later
 export const setCustomDragImage = (
-    e: DragEvent<HTMLDivElement>,
+    e: DragEvent<Element>,
     text: string = 'Dragging',
     className: string = '',
     style: CSSProperties | null = null,

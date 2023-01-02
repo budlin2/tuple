@@ -2,9 +2,7 @@ import { useContext } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
-import { get_storage_ports } from '../state/browser-actions';
 import { StoragePorts, TupleContextT } from '../TupleTypes';
-import { PortsT } from '../Viewport/ViewportTypes';
 import { default as Taproot } from './Branch'
 import Rootlet from './Rootlet';
 
@@ -40,8 +38,6 @@ const Root = ({
     const getRootlets = (): RootletDisplayT[] => {
         //TODO: Implement local storage fetching
         const [rootlets, _] = useLocalStorage<StoragePorts>('ports', null);
-        console.log(rootlets);
-        // const rootlets = get_storage_ports();
         if (rootlets) {
             return Object.entries(rootlets).map(rootlet => ({
                 text: rootlet[0] as string,

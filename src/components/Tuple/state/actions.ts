@@ -62,11 +62,19 @@ export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStat
     _log_action('Add Tab', state, payload);
 
     if (payload.portId === payload.dragPortId) {
+        const newPorts = {
+            ...state.viewport.ports,
+            [payload.portId]: {
+                ...state.viewport.ports[payload.portId],
+                activePageId: payload.pageId,
+            }
+        }
         return {
             ...state,
             viewport: {
                 ...state.viewport,
-                skipTabRemoval: true
+                skipTabRemoval: true,
+                ports: newPorts,
             }
         };
     }
@@ -83,7 +91,7 @@ export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStat
                 activePageId: payload.pageId,
             }
         };
-        
+
         return {
             ...state,
             viewport: {
