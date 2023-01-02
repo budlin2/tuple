@@ -39,7 +39,7 @@ const Root = ({
 
     const getRootlets = (): RootletDisplayT[] => {
         //TODO: Implement local storage fetching
-        const [rootlets, setRootlets] = useLocalStorage<StoragePorts>('ports', null);
+        const [rootlets, _] = useLocalStorage<StoragePorts>('ports', null);
         console.log(rootlets);
         // const rootlets = get_storage_ports();
         if (rootlets) {
