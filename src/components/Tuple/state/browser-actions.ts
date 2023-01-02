@@ -3,7 +3,7 @@ import { ID, StoragePort, StoragePorts } from "../TupleTypes";
 import { PortsT, PortT, ViewT } from "../Viewport/ViewportTypes";
 
 
-const STORAGE_ID = 'ports';
+export const STORAGE_ID = 'ports';
 const DRAGGED_TO_DIFF_VP_ID = 'dragged_to_tuple';
 const VIEWPORT_QUERY_ID = 'p';
 
@@ -31,7 +31,6 @@ export const get_storage_port = (id: ID): StoragePort | null => {
     return null
 };
 
-
 //---------------------------------------------------------------------------------------------------------------------
 export const set_storage_port = (portId: ID, ports: PortsT, rootId: ID, open: boolean) => {
     const storagePorts: StoragePorts = get_storage_ports() || {};
@@ -44,6 +43,36 @@ export const set_storage_port = (portId: ID, ports: PortsT, rootId: ID, open: bo
     localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
 }
 
+export const remove_storage_port_key = (portId: ID) => {
+    const storagePorts: StoragePorts = get_storage_ports();
+    if (storagePorts) {
+        delete storagePorts[portId];
+    }
+
+    localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// Returns true if successfully renamed; false otherwise
+export const rename_storage_port_key = (oldKey: ID, newKey: ID): boolean => {
+    const storagePorts: StoragePorts = get_storage_ports();
+    if (storagePorts[oldKey]) {
+        const { ports, rootId, open }: StoragePort = storagePorts[oldKey];
+
+        if (open) {
+            alert('Please close this viewport before renaming');
+            return false;
+        }
+
+        if (ports) {
+            set_storage_port(newKey, ports, rootId, false);
+            remove_storage_port_key(oldKey);
+            return true;
+        }
+    }
+
+    return false;
+};
 
 //---------------------------------------------------------------------------------------------------------------------
 // Creates a new single-view viewport inside storage and returns its ID

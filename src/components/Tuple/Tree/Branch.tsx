@@ -2,6 +2,7 @@ import {
     ReactNode,
     useState,
     CSSProperties,
+    Children,
 } from 'react';
 
 import _classes from './tree.module.css';
@@ -28,7 +29,10 @@ const Branch = ({
     branchStyle={},
     branchesStyle={},
 }: Props) => {
-    const onClick = () => setExpanded(cur => !cur);
+    const onClick = () => {
+        if (Children.count(children))
+            setExpanded(cur => !cur);
+    }
 
     const [expanded, setExpanded] = useState(open);
 

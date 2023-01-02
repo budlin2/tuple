@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
+import { STORAGE_ID } from '../state/browser-actions';
 import { StoragePorts, TupleContextT } from '../TupleTypes';
 import { default as Taproot } from './Branch'
 import Rootlet from './Rootlet';
@@ -37,7 +38,7 @@ const Root = ({
 
     const getRootlets = (): RootletDisplayT[] => {
         //TODO: Implement local storage fetching
-        const [rootlets, _] = useLocalStorage<StoragePorts>('ports', null);
+        const [rootlets, _] = useLocalStorage<StoragePorts>(STORAGE_ID, null);
         if (rootlets) {
             return Object.entries(rootlets).map(rootlet => ({
                 text: rootlet[0] as string,
@@ -47,7 +48,8 @@ const Root = ({
         return [];
     }
 
-    const rootlets = getRootlets();
+    let rootlets = getRootlets();
+    rootlets = rootlets.filter((r: RootletDisplayT) => r.text !== 'root');
 
     return (
         <Taproot text={rootName}
@@ -57,7 +59,7 @@ const Root = ({
             branchesStyle={styles.rootlets}
         >
             { rootlets.map( r => (
-                <Rootlet text={r.text} treeId={r.text} open={r.open} />
+                <Rootlet text={r.text} open={r.open} />
             ))}
         </Taproot>
     );
