@@ -15,7 +15,7 @@ import {
 
 import { ViewportStateT } from "../Viewport/ViewportTypes";
 import { _add_new_view, _add_tab, _add_view, _change_active_view, _remove_tab, _remove_view } from "./actions";
-import { get_viewport_id_from_query_params, set_storage_ports } from "./browser-actions";
+import { get_viewport_id_from_query_params, set_storage_port } from "./browser-actions";
 
 
 export const initialViewport: ViewportStateT = { root: '', ports: {}, skipTabRemoval: false }
@@ -24,7 +24,7 @@ export const initialViewport: ViewportStateT = { root: '', ports: {}, skipTabRem
 const _with_storage_update = (state: TupleStateT) => {
     const portId = get_viewport_id_from_query_params() || ROOT_PORT_ID;
     const { ports, root } = state?.viewport;
-    set_storage_ports(portId, ports, root, true);
+    set_storage_port(portId, ports, root, true);
 
     return state;
 }

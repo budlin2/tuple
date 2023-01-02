@@ -1,7 +1,8 @@
-import { CSSProperties, useContext } from 'react'
+import { CSSProperties, ReactNode, useContext } from 'react'
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
+import { open_new_viewport_window } from '../state/browser-actions';
 import { ID, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
@@ -43,15 +44,19 @@ const Rootlet = ({
         ${template?.draggable || ''}
         ${classes?.draggable || ''}`;
 
+
     const dragStartHandler = (e: any) => {
-        // TODO:
+        setCustomDragImage(e, text, draggableClass, styles.draggable);
     };
 
     const onClickHandler = (e: any) => {
         //TODO: Also need to implement this for Leaf... Should be trivial getting topLeft leaf. Just keep traversing the heads of each Port until you get it...
     }
 
-    const dragEndHandler = (e: any) => cleanupDraggable();
+    const dragEndHandler = (e: any) => {
+        cleanupDraggable();
+        open_new_viewport_window(text);
+    }
 
     
 
@@ -64,7 +69,7 @@ const Rootlet = ({
             onDragStart={dragStartHandler}
             onDragEnd={dragEndHandler}>
             <>  {/* TODO: Why do I need this? */}
-                <div className={_classes.symbolContainer}>
+                <div className={symbolContainerClassName}>
                     { open ? openSymbol : closeSymbol }
                 </div>
 

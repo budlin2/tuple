@@ -102,6 +102,7 @@ export interface StoragePorts { [key: ID]: StoragePort }
 export interface TupleStateT {
     pages: PagesT,
     viewport: ViewportStateT,
+    viewportId: string,
     tree: TreeT,
     styles: TupleStylesT,
     classes: TupleClassesT,

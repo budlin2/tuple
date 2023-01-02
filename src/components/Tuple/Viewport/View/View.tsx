@@ -13,6 +13,7 @@ import { validateDraggable } from '../../state';
 import _classes from './view.module.css';
 import ScrollPane from '../../../ScrollPane';
 import DropZone from '../../../Dropzone';
+import { set_dragged_to_different_viewport } from '../../state/browser-actions';
 
 interface Props {
     portId: ID,
@@ -31,7 +32,7 @@ const View = ({
     const viewRef = useRef<HTMLDivElement>();
     const {
         dispatch,
-        state: { pages, styles, classes, template }
+        state: { pages, styles, classes, template, viewportId }
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
@@ -51,13 +52,24 @@ const View = ({
     const dropSideHandler = (e: DragEvent<Element>, side: DropSideT) => {
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+        const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
+
+        if (dragViewportId !== viewportId) {
+            set_dragged_to_different_viewport(true);
+        }
 
         addView(dispatch, portId, dragPortId, dragPageId, side);
     }
 
     const dropCenterHandler = (e: DragEvent<Element>) => {
+        // TODO: Better interface for getting dataTransfer data
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+        const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
+
+        if (dragViewportId !== viewportId) {
+            set_dragged_to_different_viewport(true);
+        }
 
         addTab(dispatch, portId, dragPortId, dragPageId);
     }

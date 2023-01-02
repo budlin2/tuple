@@ -40,7 +40,7 @@ import {
     get_storage_port,
     get_storage_ports,
     get_viewport_id_from_query_params,
-    set_storage_ports,
+    set_storage_port,
     set_storage_port_open,
 } from './state/browser-actions';
 
@@ -63,11 +63,12 @@ export const TupleContext = createContext({
     state: {
         pages: {},
         viewport: initialViewport,
+        viewportId: '',
+        tree: {},
         styles: {},
         classes: {},
         template: null,
         events: {},
-        tree: {},
     }
 } as TupleContextT);
 
@@ -110,6 +111,8 @@ const Tuple = ({
     events,
 }: TupleProps) => {
     validateProps({ pages, views, tree });
+
+    const viewportId = get_viewport_id_from_query_params();
 
     //------------------------------------------------------------------------------------------------------------------
     const buildPortMapHelper = (
@@ -160,8 +163,9 @@ const Tuple = ({
 
     //------------------------------------------------------------------------------------------------------------------
     const getPortMap = (): PortMapT | null => {
+        const emptyPortMap: PortMapT = { ports: {}, rootId: '' };
+
         // Query Paramater
-        const viewportId = get_viewport_id_from_query_params();
         if (viewportId) {
             const urlParamPorts: StoragePort = get_storage_port(viewportId);
             if (urlParamPorts?.ports && urlParamPorts?.rootId) {
@@ -171,7 +175,7 @@ const Tuple = ({
             }
 
             // TODO: Add ID to storage?
-            return null;  // ID found in URL Query paramaters, but not in storage
+            return emptyPortMap;  // ID found in URL Query paramaters, but not in storage
         }
 
         // Storage
@@ -187,13 +191,13 @@ const Tuple = ({
         // Props
         if (views) {
             const { ports, rootId } = buildPortMap(views);
-            set_storage_ports(ROOT_PORT_ID, ports, rootId, true);
+            set_storage_port(ROOT_PORT_ID, ports, rootId, true);
             return { ports, rootId };
         }
 
         // No ports found. Create new root
-        set_storage_ports(ROOT_PORT_ID, null, null, true);
-        return null;
+        set_storage_port(ROOT_PORT_ID, null, null, true);
+        return emptyPortMap;
     };
 
     //------------------------------------------------------------------------------------------------------------------
@@ -203,6 +207,7 @@ const Tuple = ({
     const initState: TupleStateT = {
         pages,
         viewport: initViewportState,
+        viewportId,
         tree,
         styles: styles || {},
         classes: classes || {},

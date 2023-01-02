@@ -30,7 +30,7 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
 
         if (!page)
             throw `Page ID not found within "pages": [${page}]`;
-        
+
         return <Leaf text={page.name} pageId={id} />;
     }
 
@@ -40,7 +40,7 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
         ${_classes?.branch || ''}
         ${template?.branch || ''}
         ${classes?.branch || ''}`
-        
+
     return (
         <Branch text={branch.label}
             className={branchClassName}

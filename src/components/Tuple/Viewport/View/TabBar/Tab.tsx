@@ -11,6 +11,13 @@ import {
 import { TupleContext } from '../../..';
 import { cleanupDraggable, setCustomDragImage } from '../../../../Draggable';
 import { validateDraggable } from '../../../state';
+import {
+    get_dragged_to_different_viewport,
+    open_new_viewport_window,
+    outside_window,
+    set_dragged_to_different_viewport,
+    set_storage_port_from_page_id,
+} from '../../../state/browser-actions';
 import { addTab, changeView, removeTab } from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
 
@@ -31,7 +38,7 @@ export const Tab = ({
 }: TabProps) => {
     const {
         dispatch,
-        state:{ pages, classes, styles, template, viewport },
+        state:{ pages, classes, styles, template, viewport, viewportId },
     }: TupleContextT = useContext(TupleContext);
 
     useEffect(() => {
@@ -89,6 +96,7 @@ export const Tab = ({
         setCustomDragImage(e, label, draggableClass, styles.draggable);
         e.dataTransfer && e.dataTransfer.setData('pageId', pageId.toString());
         e.dataTransfer && e.dataTransfer.setData('portId', portId.toString());
+        e.dataTransfer && e.dataTransfer.setData('viewportId', viewportId.toString());
     };
 
     const dropHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -102,6 +110,11 @@ export const Tab = ({
 
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+        const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
+
+        if (dragViewportId !== viewportId) {
+            set_dragged_to_different_viewport(true);
+        }
 
         addTab(dispatch, portId, dragPortId, dragPageId, index+1);
     }
@@ -123,12 +136,20 @@ export const Tab = ({
             tabRef.current.style.opacity = '1';
     }
 
-    const dragEndHandler = (e: DragEvent<HTMLDivElement>) => {
+    const dragEndHandler = async (e: DragEvent<HTMLDivElement>) => {
         // e.preventDefault();
         // e.stopPropagation();
 
         cleanupDraggable();
         removeTabHandler();
+
+        const { clientX: x, clientY: y } = e;
+        if (outside_window(x, y)) {
+            if (!( await get_dragged_to_different_viewport() )) {
+                const newViewportId = set_storage_port_from_page_id(pageId);
+                open_new_viewport_window(newViewportId);
+            }
+        }
     }
 
     const onCloseClickHandler = (e: rMouseEvent) => {

@@ -1,8 +1,10 @@
+import { getUniqueId } from "../../../utils";
 import { ID, StoragePort, StoragePorts } from "../TupleTypes";
-import { PortsT } from "../Viewport/ViewportTypes";
+import { PortsT, PortT, ViewT } from "../Viewport/ViewportTypes";
 
 
 const STORAGE_ID = 'ports';
+const DRAGGED_TO_DIFF_VP_ID = 'dragged_to_tuple';
 const VIEWPORT_QUERY_ID = 'p';
 
 
@@ -22,16 +24,16 @@ export const get_storage_ports = (): StoragePorts | null => {
 
 //---------------------------------------------------------------------------------------------------------------------
 export const get_storage_port = (id: ID): StoragePort | null => {
-    const storagePorts = localStorage.getItem(STORAGE_ID);
-    if (storagePorts && storagePorts[id])
-        return JSON.parse(storagePorts[id]) as StoragePort;
+    const storage = JSON.parse(localStorage.getItem(STORAGE_ID)) as StoragePort;
+    if (storage && storage[id])
+        return storage[id];
 
     return null
 };
 
 
 //---------------------------------------------------------------------------------------------------------------------
-export const set_storage_ports = (portId: ID, ports: PortsT, rootId: ID, open: boolean) => {
+export const set_storage_port = (portId: ID, ports: PortsT, rootId: ID, open: boolean) => {
     const storagePorts: StoragePorts = get_storage_ports() || {};
     storagePorts[portId] = {
         open,
@@ -40,6 +42,40 @@ export const set_storage_ports = (portId: ID, ports: PortsT, rootId: ID, open: b
     } as StoragePort;
 
     localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Creates a new single-view viewport inside storage and returns its ID
+export const set_storage_port_from_page_id = (pageId: ID): ID => {
+    const viewportId = getUniqueId();
+    const portId = getUniqueId();
+    const storagePorts: StoragePorts = get_storage_ports() || {};
+
+    const newPort: PortT = {
+        parentId: null,
+        isSplitView: false,
+        pageIds: [pageId],
+        activePageId: pageId,
+        direction: null,
+        headId: null,
+        tailId: null,
+        isHead: null,
+    };
+
+    const newPorts: PortsT = {
+        [portId]: newPort
+    }
+
+    storagePorts[viewportId] = {
+        open: false,
+        ports: newPorts,
+        rootId: portId,
+    } as StoragePort;
+
+    localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
+
+    return viewportId;
 }
 
 
@@ -75,7 +111,37 @@ export const open_new_viewport_window = (viewportId: string | number) => {
 // Calling function should handle all this
 export const get_viewport_id_from_query_params = (): string | null => {
     const urlParams = new URLSearchParams(location.search);
-    const viewportId = urlParams[VIEWPORT_QUERY_ID];
+    const viewportId = urlParams.get(VIEWPORT_QUERY_ID);
+
+    return viewportId || '';
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// Checks if coordinates are outside window. Use e.clientX and e.clientY for pointer events
+export const outside_window = (x: number, y: number) => x < 0 || x > window.outerWidth || y < 0 || y > window.outerWidth;
+
+//---------------------------------------------------------------------------------------------------------------------
+// On drop operations we need to know if we dropped the draggable on
+// a different viewport than the one the draggable originated from
+export const get_dragged_to_different_viewport = async (timeout: number = 100): Promise<boolean> => {
+    let ret = false;
+    const draggedToDifferentViewport = JSON.parse(
+        localStorage.getItem(DRAGGED_TO_DIFF_VP_ID)
+    );
+
+    set_dragged_to_different_viewport(false);  // cleanup
+
+    if (draggedToDifferentViewport)
+        ret = !!draggedToDifferentViewport;
+
+    return new Promise((resolve, reject) => setTimeout(
+        () => { resolve(ret); },
+        timeout,
+    ));
     
-    return viewportId || null;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+export const set_dragged_to_different_viewport = (draggedToDifferentViewport: boolean) => {
+    localStorage.setItem(DRAGGED_TO_DIFF_VP_ID, JSON.stringify(draggedToDifferentViewport));
 }

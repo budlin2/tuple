@@ -8,6 +8,7 @@ import _classes from './tabbar.module.css';
 import _global_classes from '../../../../styles.module.css';
 import { validateDraggable } from '../../../state';
 import { addTab } from '../../../state/dispatchers';
+import { set_dragged_to_different_viewport } from '../../../state/browser-actions';
 
 
 interface Props {
@@ -22,7 +23,7 @@ const TabBar = ({
 }: Props) => {
     const {
         dispatch,
-        state:{ classes, styles, template }
+        state:{ classes, styles, template, viewportId }
     }: TupleContextT = useContext(TupleContext);
     
     const tabBarClassName = `
@@ -44,6 +45,11 @@ const TabBar = ({
 
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
+        const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
+
+        if (dragViewportId !== viewportId) {
+            set_dragged_to_different_viewport(true);
+        }
 
         addTab(dispatch, portId, dragPortId, dragPageId, pageIds.length);
     }
