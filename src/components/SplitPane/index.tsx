@@ -32,6 +32,7 @@ export interface Props {
     height?: number | string,
     resizerPos?: number | string,
     resizable?: boolean,
+    paneStyle?: CSSProperties
     children: ReactNode,
     onResize?: ((e: MouseEvent) => null) | null,
 }
@@ -43,6 +44,7 @@ const SplitPane = ({
     height='100%',
     resizerPos='50%',
     resizable=true,
+    paneStyle={},
     children,
     onResize=null,
 }: Props) => {
@@ -116,13 +118,22 @@ const SplitPane = ({
         e.preventDefault();
     };
 
-    const containerStyle: CSSProperties = { width, height };
-    let headStyle: CSSProperties = {};
+    let containerClassName = _classes.container;
+    let resizerClassName = _classes.resizer;
 
-    let containerClassName: string = _classes.container;
-    const headClassName: string = `${_global_classes.noScrollbar} ${_classes.pane} ${_classes.paneHead}`;
-    let resizerClassName: string = _classes.resizer;
-    const tailClassName: string = `${_global_classes.noScrollbar} ${_classes.pane} ${_classes.paneTail}`;
+    const headClassName= `
+        ${_global_classes.noScrollbar}
+        ${_classes.pane}
+        ${_classes.paneHead}`;
+
+    const tailClassName = `
+        ${_global_classes.noScrollbar}
+        ${_classes.pane}
+        ${_classes.paneTail}`;
+
+    const containerStyle = { width, height };
+    let headStyle = paneStyle;
+    const tailStyle = paneStyle;
 
     switch(dir) {
         case 'horizontal':
@@ -159,7 +170,7 @@ const SplitPane = ({
                 }
 
             </div>
-            <div className={tailClassName}
+            <div className={tailClassName} style={tailStyle}
                 ref={tailRef as MutableRefObject<HTMLDivElement>}>
 
                 { dir !== 'none' && childrenArr && childrenArr[1] }

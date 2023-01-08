@@ -20,7 +20,7 @@ interface PortProps { id: ID }
 const Port = ({ id }: PortProps): JSX.Element => {
     const {
         dispatch,
-        state: { viewport }
+        state: { viewport, tabBarHeight }
     }: TupleContextT = useContext(TupleContext);
 
     const port: PortT = viewport.ports[id];  // TODO: Should this be in useEffect hook?
@@ -53,6 +53,7 @@ const Port = ({ id }: PortProps): JSX.Element => {
 
         return (
             <SplitPane
+                paneStyle={{ minWidth: tabBarHeight, minHeight: tabBarHeight }}
                 dir={port.direction as DirectionT}
                 resizerPos='50%'>
                 {/* TODO: add resizerPos to SplitViewT */}
