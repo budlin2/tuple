@@ -49,7 +49,7 @@ const DropZone = ({
     useEffect(() => {
         const pHeight = rootRef.current.parentElement.offsetHeight;
         setParentHeight(pHeight);
-    }, [rootRef, offsetHeight])
+    }, [rootRef, offsetHeight, rootRef?.current?.parentElement?.offsetHeight])
 
     const onDropCenterHandler = (e: DragEvent<Element>) => {
         setDropZonesActive(false);
