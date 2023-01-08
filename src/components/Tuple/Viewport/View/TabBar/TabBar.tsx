@@ -1,4 +1,4 @@
-import { useContext, DragEvent } from 'react';
+import { useContext, DragEvent, useRef, useEffect } from 'react';
 
 import { TupleContext } from '../../..';
 import { ID, TupleContextT } from '../../../TupleTypes';
@@ -7,7 +7,7 @@ import Tab from './Tab';
 import _classes from './tabbar.module.css';
 import _global_classes from '../../../../styles.module.css';
 import { validateDraggable } from '../../../state';
-import { addTab } from '../../../state/dispatchers';
+import { addTab, setTabBarHeight } from '../../../state/dispatchers';
 import { set_dragged_to_different_viewport } from '../../../state/browser-actions';
 
 
@@ -21,6 +21,8 @@ const TabBar = ({
     portId,
     pageIds,
 }: Props) => {
+    const tabBarRef = useRef();
+
     const {
         dispatch,
         state:{ classes, styles, template, viewportId }
@@ -31,6 +33,11 @@ const TabBar = ({
         ${_classes?.tabBar || ''}
         ${template?.tabBar || ''}
         ${classes?.tabBar  || ''}`;
+
+    useEffect(() => {
+        const { offsetHeight: height } = tabBarRef?.current as HTMLDivElement;
+        setTabBarHeight(dispatch, height);
+    }, [tabBarRef, setTabBarHeight, dispatch]);
 
     const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -55,7 +62,7 @@ const TabBar = ({
     }
 
     return (
-        <div
+        <div ref={tabBarRef}
             className={tabBarClassName}
             style={styles?.tabBar}
             onDragOver={dragOverHandler}

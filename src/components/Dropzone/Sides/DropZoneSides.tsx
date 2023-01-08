@@ -15,6 +15,7 @@ export interface Props {
     onDragLeaveCB?      : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
     onDropCB?           : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
     validateDraggable?  : ((e: DragEvent<Element>) => boolean) | null,
+    hoverThickness?     : number,
     dropZoneActive?     : boolean | null,  // parent component may want to control when dropzone is active
     className?          : string | null,
     style?              : CSSProperties | null,
@@ -27,6 +28,7 @@ const DropZoneSides = ({
     onDragLeaveCB=null,
     onDropCB=null,
     validateDraggable=null,
+    hoverThickness=30,
     dropZoneActive=true,  // default behavior is to always have dropzone available. Parent may override this
     className=null,
     style=null,
@@ -38,6 +40,49 @@ const DropZoneSides = ({
     const [rightVisible     , setRightVisible]      = useState(false);
 
     const withCustomClass = (_className: string) => `${_className} ${className}`;
+
+
+    //------------------------------------------------------------------------------------------------------------------
+    const dropZoneTopStyle: CSSProperties = {
+        ...style,
+        // background: 'yellow',
+        position: 'absolute',
+        top: 0,
+        height: hoverThickness,
+        width: '100%',
+        zIndex: 2,
+    };
+
+    const dropZoneRightStyle: CSSProperties = {
+        ...style,
+        // background: 'orange',
+        position: 'absolute',
+        right: 0,
+        width: hoverThickness,
+        height: '100%',
+        zIndex: 2,
+    }
+
+    const dropZoneBottomStyle: CSSProperties = {
+        ...style,
+        // background: 'blue',
+        position: 'absolute',
+        bottom: 0,
+        height: hoverThickness,
+        width: '100%',
+        zIndex: 2,
+    }
+
+    const dropZoneLeftStyle: CSSProperties = {
+        ...style,
+        // background: 'green',
+        position: 'absolute',
+        left: 0,
+        top: hoverThickness,
+        height: '100%',
+        width: hoverThickness,
+        zIndex: 2,
+    }
 
     // DropZone Event Handlers
     const onDragOverHandler = (e: DragEvent<Element>, side: DropSideT) => {
@@ -89,37 +134,33 @@ const DropZoneSides = ({
         <div className={_classes.root}>
             {/* ACTUAL DROP ZONE */}
             { dropZoneActive && (
-                <div className={_classes.dropZoneTop}
-                    style       = { style || {} }
+                <div style      = { dropZoneTopStyle }
                     onDragOver  = { e => onDragOverHandler(e, DropSideT.TOP) }
                     onDragLeave = { e => onDragLeaveHandler(e, DropSideT.TOP) }
                     onDrop      = { e => onDropHandler(e, DropSideT.TOP) } />
             )}
 
             { dropZoneActive && (
-                <div className={_classes.dropZoneRight}
-                    style       = { style || {} }
+                <div style      = { dropZoneRightStyle }
                     onDragOver  = { e => onDragOverHandler(e, DropSideT.RIGHT) }
                     onDragLeave = { e => onDragLeaveHandler(e, DropSideT.RIGHT) }
                     onDrop      = { e => onDropHandler(e, DropSideT.RIGHT) } />
             )}
 
             { dropZoneActive && (
-                <div className={_classes.dropZoneBottom}
-                    style       = { style || {} }
+                <div style      = { dropZoneBottomStyle }
                     onDragOver  = { e => onDragOverHandler(e, DropSideT.BOTTOM) }
                     onDragLeave = { e => onDragLeaveHandler(e, DropSideT.BOTTOM) }
                     onDrop      = { e => onDropHandler(e, DropSideT.BOTTOM) } />
             )}
 
             { dropZoneActive && (
-                <div className={_classes.dropZoneLeft}
-                    style       = { style || {} }
+                <div style      = { dropZoneLeftStyle }
                     onDragOver  = { e => onDragOverHandler(e, DropSideT.LEFT) }
                     onDragLeave = { e => onDragLeaveHandler(e, DropSideT.LEFT) }
                     onDrop      = { e => onDropHandler(e, DropSideT.LEFT) } />
             )}
-            
+
             {/* DROP ZONE DISPLAYED TO USER */}
             { topVisible    && <div className={withCustomClass(_classes.dropZoneDisplayTop)}    style={style || {}} /> }
             { rightVisible  && <div className={withCustomClass(_classes.dropZoneDisplayRight)}  style={style || {}} /> }

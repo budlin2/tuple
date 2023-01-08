@@ -4,20 +4,21 @@ import {
     useRef,
     DragEvent,
     ReactElement,
-    MouseEvent as rMouseEvent
+    MouseEvent as rMouseEvent,
+    useEffect
 } from 'react';
 
 import DropZoneCenter from './Center/DropZoneCenter';
 import { DropSideT } from './DropZoneTypes';
 import DropZoneSides from './Sides/DropZoneSides';
 
-import _classes from './DropZone.module.css';
 
 export interface Props {
     centerDropZoneStyle?        : CSSProperties,
     sidesDropZoneStyle?         : CSSProperties,
     centerDropZoneClassName?    : string,
     sidesDropZoneClassName?     : string,
+    offsetHeight?               : number,  // possible offset for dropzone due to a sibling component (e.g. tabBar)
     dropCenterCb?               : ((e: DragEvent<Element>) => void) | null,
     dropSidesCb?                : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
     validateDraggable?          : ((e: DragEvent<Element>) => boolean) | null,
@@ -30,13 +31,25 @@ const DropZone = ({
     sidesDropZoneStyle=null,
     centerDropZoneClassName=null,
     sidesDropZoneClassName=null,
+    offsetHeight=0,
     dropCenterCb=null,
     dropSidesCb=null,
     validateDraggable=null,
     children,
 }: Props) => {
     const rootRef = useRef<HTMLDivElement>();
+    const [parentHeight, setParentHeight] = useState<number>(0);
     const [dropZonesActive, setDropZonesActive] = useState(false);
+
+    const rootStyle: CSSProperties = {
+        width: '100%',
+        height: parentHeight - offsetHeight,
+    }
+
+    useEffect(() => {
+        const pHeight = rootRef.current.parentElement.offsetHeight;
+        setParentHeight(pHeight);
+    }, [rootRef, offsetHeight])
 
     const onDropCenterHandler = (e: DragEvent<Element>) => {
         setDropZonesActive(false);
@@ -72,7 +85,7 @@ const DropZone = ({
 
     return (
         <div ref={rootRef} 
-            className={_classes.root}
+            style={rootStyle}
             onDragOver={onDragOverHandler}
             onDragLeave={onDragLeaveHandler}>
 
@@ -87,6 +100,7 @@ const DropZone = ({
                     style={sidesDropZoneStyle}
                     className={sidesDropZoneClassName}
                     dropZoneActive={dropZonesActive}
+                    hoverThickness={parentHeight * 0.2}
                     onDropCB={onDropSidesHandler}
                     validateDraggable={validateDraggable}>
 

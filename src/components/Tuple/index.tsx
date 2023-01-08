@@ -69,6 +69,7 @@ export const TupleContext = createContext({
         classes: {},
         template: null,
         events: {},
+        tabBarHeight: 0,
     }
 } as TupleContextT);
 
@@ -220,6 +221,7 @@ const Tuple = ({
         classes: classes || {},
         template: getTemplateCss(template),
         events: events || {},
+        tabHeight: 0,
     };
 
 

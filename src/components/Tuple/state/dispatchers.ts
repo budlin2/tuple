@@ -1,7 +1,20 @@
 import { Dispatch } from "react";
 import { DropSideT } from "../../Dropzone/DropZoneTypes";
 import { SideT } from "../../SplitPane/SplitPaneTypes";
-import { AddNewViewActionT, AddNewViewPayloadT, AddTabActionT, AddViewActionT, AddViewPayloadT, ChangeActiveViewActionT, ID, RemoveTabActionT, RemoveViewActionT, TupleActionKind, TupleActionT } from "../TupleTypes";
+import {
+    AddNewViewActionT,
+    AddNewViewPayloadT,
+    AddTabActionT,
+    AddViewActionT,
+    AddViewPayloadT,
+    ChangeActiveViewActionT,
+    ID,
+    RemoveTabActionT,
+    RemoveViewActionT,
+    SetTabBarHeightActionT,
+    TupleActionKind,
+    TupleActionT,
+} from "../TupleTypes";
 
 
 //------------------------------------------------------------------------------------------------------------------
@@ -127,4 +140,18 @@ export const changeView = (
     };
 
     dispatch(changeActiveViewAction); 
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+export const setTabBarHeight = (
+    dispatch: Dispatch<TupleActionT>,
+    height: number,
+) => {
+    const setTabBarHeightAction: SetTabBarHeightActionT = {
+        type: TupleActionKind.SET_TAB_BAR_HEIGHT,
+        payload: { height }
+    };
+
+    dispatch(setTabBarHeightAction);
 }

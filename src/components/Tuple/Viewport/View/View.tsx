@@ -32,7 +32,7 @@ const View = ({
 
     const {
         dispatch,
-        state: { pages, styles, classes, template, viewportId }
+        state: { pages, styles, classes, template, viewportId, tabBarHeight }
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
@@ -90,6 +90,7 @@ const View = ({
                 sidesDropZoneStyle      = {styles.dropZoneSide}
                 centerDropZoneClassName = {classes.dropZoneCenter}
                 sidesDropZoneClassName  = {classes.dropZoneSide}
+                offsetHeight            = {tabBarHeight}
                 dropCenterCb            = {dropCenterHandler}
                 dropSidesCb             = {dropSideHandler}
                 validateDraggable       = {validateDraggable}>

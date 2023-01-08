@@ -9,6 +9,7 @@ import {
     ID,
     RemoveTabPayloadT,
     RemoveViewPayloadT,
+    SetTabBarHeightPayloadT,
     TupleStateT
 } from "../TupleTypes";
 
@@ -17,9 +18,6 @@ import {
     PortsT,
     ViewportStateT,
     PortT,
-    SplitViewT,
-    ViewportT,
-    ViewT
 } from "../Viewport/ViewportTypes";
 
 
@@ -383,4 +381,13 @@ export const _change_active_view = (state: TupleStateT, payload: ChangeActiveVie
     } as TupleStateT;
 
     return newState; 
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+export const _set_tab_bar_height = (state: TupleStateT, payload: SetTabBarHeightPayloadT): TupleStateT => {
+    return {
+        ...state,
+        tabBarHeight: payload.height,
+    };
 }
