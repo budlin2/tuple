@@ -37,6 +37,7 @@ export interface TupleStylesT {
     rootletTextBox?: CSSProperties,
     rootletContainer?: CSSProperties,
     symbolContainer?: CSSProperties,
+    trashcan?: CSSProperties,
 
     tabBar?: CSSProperties,
     tabBarDragOver?: CSSProperties,
@@ -71,6 +72,7 @@ export interface TupleClassesT {
     rootletTextBox?: string,
     rootletContainer?: string,
     symbolContainer?: string,
+    trashcan?: string,
 
     tabBar?: string,
     tabBarDragOver?: string,

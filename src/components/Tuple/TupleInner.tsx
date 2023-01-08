@@ -14,7 +14,11 @@ import _classes from './tuple.module.css';
 import { get_viewport_id_from_query_params } from './state/browser-actions';
 
 
-const TupleInner = () => {
+interface TupleInnerProps {
+    enableTrashcan: boolean,
+}
+
+const TupleInner = ({ enableTrashcan }: TupleInnerProps) => {
     const { state: {
         styles,
         classes,
@@ -38,7 +42,7 @@ const TupleInner = () => {
     return (
         <div className={tupleClassName} style={styles.tuple}>
             <SplitPane resizerPos='25%'>
-                <Tree />
+                <Tree enableTrashcan={enableTrashcan} />
                 <Viewport defaultView={DefaultView} />
             </SplitPane>
         </div>

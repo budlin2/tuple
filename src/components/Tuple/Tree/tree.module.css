@@ -64,7 +64,7 @@
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
-    width: 75%;
+    width: 100%;
 }
 
 .rootletTextBox {
@@ -76,6 +76,7 @@
     padding: 0.2rem;
     border: 1px solid transparent;
     cursor: pointer;
+    width: 75%;
 }
 
 .rootletTextBox:hover {
@@ -91,4 +92,25 @@
 .symbolContainer {
     margin-left: var(--PADDING_HORIZONTAL);
     padding-right: var(--PADDING_HORIZONTAL);
+}
+
+.trashcan {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0,0,0, 0.5);
+    color: white;
+
+    height: 10rem;
+    width: 100%;
+    bottom: 0;
+
+    font-size: 4rem;
+}
+
+.trashcanHover {
+    background: rgba(0,0,0, 0.75);
+    font-size: 5rem;
 }

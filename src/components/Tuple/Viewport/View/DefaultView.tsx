@@ -3,6 +3,7 @@ import { TupleContext } from '../..';
 
 import DropZoneCenter from '../../../Dropzone/Center/DropZoneCenter';
 import { validateDraggable } from '../../state';
+import { set_dragged_to_different_viewport } from '../../state/browser-actions';
 import { addNewView } from '../../state/dispatchers';
 import { TupleContextT } from '../../TupleTypes';
 
@@ -12,11 +13,18 @@ interface Props {}
 const DefaultView = ({}: Props) => {
     const {
         dispatch,
-        state: { styles, classes }
+        state: { styles, classes, viewportId }
     }: TupleContextT = useContext(TupleContext);
 
     const dropHandler = (e: DragEvent<Element>) => {
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+
+        const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
+
+        if (dragViewportId !== viewportId) {
+            set_dragged_to_different_viewport(true);
+        }
+
         addNewView(dispatch, dragPageId);
     }
 
@@ -29,7 +37,7 @@ const DefaultView = ({}: Props) => {
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
                 }}>
                     Welcome to Tuple!
                 </div>

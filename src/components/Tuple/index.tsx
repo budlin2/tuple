@@ -82,6 +82,8 @@ export interface TupleProps {
     classes?: TupleClassesT,
     template?: string,
     events?: EventsT,
+
+    enableTrashcan?: boolean,
 };
 
 
@@ -109,6 +111,7 @@ const Tuple = ({
     classes,
     template,
     events,
+    enableTrashcan=false,
 }: TupleProps) => {
     validateProps({ pages, views, tree });
 
@@ -228,7 +231,7 @@ const Tuple = ({
     return (
         <TupleContext.Provider value={context}>
             {/* <TupleInner showTree={false} /> */}
-            <TupleInner />
+            <TupleInner enableTrashcan={enableTrashcan} />
         </TupleContext.Provider>
     );
 }

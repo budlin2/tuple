@@ -1,7 +1,9 @@
 import { CSSProperties, useContext } from 'react'
+import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
+import { DRAGGING_ID } from '../state/browser-actions';
 import { addTab } from '../state/dispatchers';
 import { ID, TupleContextT } from '../TupleTypes';
 import { PortsT } from '../Viewport/ViewportTypes';
@@ -30,6 +32,8 @@ const Leaf = ({
             template,
         }
     }: TupleContextT = useContext(TupleContext);
+
+    const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
 
     const leafClassName = `
         ${_classes?.leaf || ''}
@@ -60,9 +64,13 @@ const Leaf = ({
     const dragStartHandler = (e: any) => {
         setCustomDragImage(e, text, draggableClass, styles.draggable);
         e.dataTransfer.setData('pageId', pageId);
+        setDragging(true);
     };
 
-    const dragEndHandler = (e: any) => cleanupDraggable();
+    const dragEndHandler = () => {
+        cleanupDraggable();
+        setDragging(false);
+    }
     const onClickHandler = () => {
         const topLeftPortId = getTopLeftPortId();
         addTab(dispatch, topLeftPortId, '', pageId);

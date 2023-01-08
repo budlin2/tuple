@@ -4,8 +4,6 @@ import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../..';
 import { ID, PageT, TupleContextT } from '../../TupleTypes';
 
-import DropZoneSides from '../../../Dropzone/Sides/DropZoneSides';
-import DropZoneCenter from '../../../Dropzone/Center/DropZoneCenter';
 import { DropSideT } from '../../../Dropzone/DropZoneTypes';
 import { addTab, addView } from '../../state/dispatchers';
 import { validateDraggable } from '../../state';
@@ -13,7 +11,8 @@ import { validateDraggable } from '../../state';
 import _classes from './view.module.css';
 import ScrollPane from '../../../ScrollPane';
 import DropZone from '../../../Dropzone';
-import { set_dragged_to_different_viewport } from '../../state/browser-actions';
+import { DRAGGING_ID, set_dragged_to_different_viewport } from '../../state/browser-actions';
+import { useLocalStorage } from 'usehooks-ts';
 
 interface Props {
     portId: ID,
@@ -30,12 +29,14 @@ const View = ({
     if (pageIds && pageIds.length <= 0) return null;
 
     const viewRef = useRef<HTMLDivElement>();
+
     const {
         dispatch,
         state: { pages, styles, classes, template, viewportId }
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
+    const [_, setDragging] = useLocalStorage(DRAGGING_ID, false)
 
     const viewClassName = `
         ${_classes?.view || ''}
@@ -54,6 +55,8 @@ const View = ({
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
         const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
 
+        setDragging(false);
+
         if (dragViewportId !== viewportId) {
             set_dragged_to_different_viewport(true);
         }
@@ -66,6 +69,8 @@ const View = ({
         const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
         const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
+
+        setDragging(false);
 
         if (dragViewportId !== viewportId) {
             set_dragged_to_different_viewport(true);

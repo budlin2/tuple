@@ -6,6 +6,7 @@ import { PortsT, PortT, ViewT } from "../Viewport/ViewportTypes";
 export const STORAGE_ID = 'ports';
 const DRAGGED_TO_DIFF_VP_ID = 'dragged_to_tuple';
 const VIEWPORT_QUERY_ID = 'p';
+export const DRAGGING_ID = 'dragging';
 
 
 //---------------------------------------------------------------------------------------------------------------------

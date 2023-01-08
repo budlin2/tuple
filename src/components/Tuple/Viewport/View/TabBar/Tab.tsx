@@ -7,11 +7,13 @@ import {
     useEffect,
     MouseEvent as rMouseEvent,
 } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '../../..';
 import { cleanupDraggable, setCustomDragImage } from '../../../../Draggable';
 import { validateDraggable } from '../../../state';
 import {
+    DRAGGING_ID,
     get_dragged_to_different_viewport,
     open_new_viewport_window,
     outside_window,
@@ -47,6 +49,7 @@ export const Tab = ({
 
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
+    const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
 
     const label = pages[pageId].name;
     const port = viewport.ports[portId];
@@ -94,6 +97,8 @@ export const Tab = ({
     const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
         setCloseVisible(false);
         setCustomDragImage(e, label, draggableClass, styles.draggable);
+        setDragging(true);
+
         e.dataTransfer && e.dataTransfer.setData('pageId', pageId.toString());
         e.dataTransfer && e.dataTransfer.setData('portId', portId.toString());
         e.dataTransfer && e.dataTransfer.setData('viewportId', viewportId.toString());
@@ -140,6 +145,7 @@ export const Tab = ({
         // e.preventDefault();
         // e.stopPropagation();
 
+        setDragging(false);
         cleanupDraggable();
         removeTabHandler();
 

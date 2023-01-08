@@ -8,6 +8,7 @@ import { BranchT } from './TreeTypes';
 import { ID, isID, PageT, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
+import Trashcan from './Trashcan';
 
 
 interface BranchesProps {
@@ -62,7 +63,9 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
 };
 
 
-const Tree = () => {
+interface TreeProps { enableTrashcan: boolean };
+
+const Tree = ({ enableTrashcan }: TreeProps) => {
     const { state: {
         tree,
         classes,
@@ -83,6 +86,9 @@ const Tree = () => {
             { tree.map( (bid, index) => (
                 <Branches key={index} branchOrLeafId ={bid}/>
             ))}
+            { enableTrashcan && (
+                <Trashcan symbol='' dragOverSymbol=''/> 
+            )}
         </div>
     );
 }
