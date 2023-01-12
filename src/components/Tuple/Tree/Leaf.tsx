@@ -4,7 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
 import { DRAGGING_ID } from '../state/browser-actions';
-import { addTab } from '../state/dispatchers';
+import { addTab, addNewView } from '../state/dispatchers';
 import { ID, TupleContextT } from '../TupleTypes';
 import { PortsT } from '../Viewport/ViewportTypes';
 
@@ -26,7 +26,7 @@ const Leaf = ({
         dispatch,
         state: {
             viewport,
-            viewportId,
+            pages,
             classes,
             styles,
             template,
@@ -72,6 +72,10 @@ const Leaf = ({
         setDragging(false);
     }
     const onClickHandler = () => {
+        if (Object.keys(pages).length <= 0) {
+            addNewView(dispatch, pageId)
+        }
+
         const topLeftPortId = getTopLeftPortId();
         addTab(dispatch, topLeftPortId, '', pageId);
     }
