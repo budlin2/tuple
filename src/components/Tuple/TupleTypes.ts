@@ -102,7 +102,7 @@ export interface EventsT {
         e: DragEvent,
         destinationItem: string,
         path: string[],
-        sourceItem: string, 
+        sourceItem: string,
         sourceType: DragSourceT,
         destinationType: DropDestinationT,
     ) => void
@@ -131,7 +131,6 @@ export interface TupleStateT {
     tree: TreeT,
     styles: TupleStylesT,
     classes: TupleClassesT,
-    template: CSSModuleClasses | null,
     events: EventsT,
     tabBarHeight: number,  // kinda gross, but a lot of styling is dependent on the tab bar height
 }

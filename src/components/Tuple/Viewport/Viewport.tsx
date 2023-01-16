@@ -19,12 +19,10 @@ const Viewport = ({ defaultView }: Props) => {
         viewport,
         styles,
         classes,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     const viewportClassName = `
         ${_classes?.viewport || ''}
-        ${template?.viewport || ''}
         ${classes?.viewport  || ''}`;
 
     // TODO: Show defaultView

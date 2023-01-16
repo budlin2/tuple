@@ -22,14 +22,12 @@ const TupleInner = ({ enableTrashcan }: TupleInnerProps) => {
     const { state: {
         styles,
         classes,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     const isRootViewport = get_viewport_id_from_query_params() === '';
 
     const tupleClassName = `
         ${_classes?.tuple || ''}
-        ${template?.tuple || ''}
         ${classes?.tuple  || ''}`;
 
     // TODO: This needs to be better

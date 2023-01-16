@@ -3,10 +3,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 import {
     createContext,
-    ReactNode,
     useMemo,
     useReducer,
-    useEffect,
 } from 'react';
 import { getUniqueId, isObject } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
@@ -55,7 +53,6 @@ export const TupleContext = createContext({
         tree: {},
         styles: {},
         classes: {},
-        template: null,
         events: {},
         tabBarHeight: 0,
     }
@@ -69,7 +66,6 @@ export interface TupleProps {
     views?: ViewportT,
     styles?: TupleStylesT,
     classes?: TupleClassesT,
-    template?: string,
     events?: EventsT,
 
     enableTrashcan?: boolean,
@@ -98,7 +94,6 @@ const Tuple = ({
     tree,
     styles,
     classes,
-    template,
     events,
     enableTrashcan=false,
 }: TupleProps) => {
@@ -207,7 +202,6 @@ const Tuple = ({
         tree,
         styles: styles || {},
         classes: classes || {},
-        template: null,
         events: events || {},
         tabBarHeight: 0,
     };

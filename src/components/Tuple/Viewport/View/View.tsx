@@ -32,7 +32,7 @@ const View = ({
 
     const {
         dispatch,
-        state: { pages, styles, classes, template, viewportId, tabBarHeight }
+        state: { pages, styles, classes, viewportId, tabBarHeight }
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
@@ -40,7 +40,6 @@ const View = ({
 
     const viewClassName = `
         ${_classes?.view || ''}
-        ${template?.view || ''}
         ${classes?.view  || ''}`;
 
     const scrollPaneClassName = `

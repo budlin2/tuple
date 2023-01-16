@@ -23,7 +23,6 @@ const Branches = ({branchOrLeafId, path, bid='b'}: BranchesProps, ) => {
         pages,
         classes,
         styles,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     if (isID(branchOrLeafId)) {
@@ -40,12 +39,10 @@ const Branches = ({branchOrLeafId, path, bid='b'}: BranchesProps, ) => {
     // Define these here, because root uses branch component with different styles
     const branchClassName = `
         ${_classes?.branch || ''}
-        ${template?.branch || ''}
         ${classes?.branch || ''}`
 
     const branchesClassName = `
         ${_classes?.branches || ''}
-        ${template?.branches || ''}
         ${classes?.branches  || ''}`;
 
     return (
@@ -71,12 +68,10 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
         tree,
         classes,
         styles,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     const treeClassName = `
         ${_classes?.tree || ''}
-        ${template?.tree || ''}
         ${classes?.tree  || ''}`;
 
     // TODO: Need better key than index

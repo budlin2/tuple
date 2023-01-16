@@ -22,18 +22,15 @@ const Root = ({
     const { state: {
         classes,
         styles,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     const rootClassName = `
         ${_classes?.root || ''}
-        ${template?.root || ''}
         ${classes?.root  || ''}`;
 
 
     const rootletsClassName = `
         ${_classes?.rootlets || ''}
-        ${template?.rootlets || ''}
         ${classes?.rootlets  || ''}`;
 
     const getRootlets = (): RootletDisplayT[] => {

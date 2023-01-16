@@ -30,7 +30,6 @@ const Leaf = ({
             viewport,
             classes,
             styles,
-            template,
             events,
         }
     }: TupleContextT = useContext(TupleContext);
@@ -39,12 +38,9 @@ const Leaf = ({
 
     const leafClassName = `
         ${_classes?.leaf || ''}
-        ${template?.leaf || ''}
         ${classes?.leaf  || ''}`;
 
-    const draggableClass = `
-        ${template?.draggable || ''}
-        ${classes?.draggable || ''}`;
+    const draggableClass = classes?.draggable || '';
 
 
     const getTopLeftPortIdHelper = (ports: PortsT, curPortId: ID): ID => {

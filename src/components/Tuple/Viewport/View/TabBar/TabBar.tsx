@@ -25,13 +25,12 @@ const TabBar = ({
 
     const {
         dispatch,
-        state:{ classes, styles, template, viewportId }
+        state:{ classes, styles, viewportId }
     }: TupleContextT = useContext(TupleContext);
     
     const tabBarClassName = `
         ${_global_classes.noScrollbar}
         ${_classes?.tabBar || ''}
-        ${template?.tabBar || ''}
         ${classes?.tabBar  || ''}`;
 
     useEffect(() => {

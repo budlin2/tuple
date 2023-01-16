@@ -24,12 +24,10 @@ const Trashcan = ({
     const { state: {
         classes,
         styles,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     const trashcanClassName = `
         ${_classes?.trashcan || ''}
-        ${template?.trashcan || ''}
         ${classes?.trashcan  || ''}
         ${draggingOver ? _classes.trashcanHover : ''}`;
 

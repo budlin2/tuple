@@ -40,7 +40,7 @@ export const Tab = ({
 }: TabProps) => {
     const {
         dispatch,
-        state:{ pages, classes, styles, template, viewport, viewportId },
+        state:{ pages, classes, styles, viewport, viewportId },
     }: TupleContextT = useContext(TupleContext);
 
     useEffect(() => {
@@ -57,13 +57,11 @@ export const Tab = ({
 
     const inactiveTabClassName = `
         ${_classes?.tab || ''}
-        ${template?.tab || ''}
         ${classes?.tab  || ''}`;
 
     const activeTabClassName = `
         ${inactiveTabClassName}
         ${_classes?.tabActive || ''}
-        ${template?.tabActive || ''}
         ${classes?.tabActive  || ''}`;
 
     const tabClassName = isActiveTab
@@ -72,17 +70,13 @@ export const Tab = ({
 
     const tabLabelClassName = `
         ${_classes?.tabLabel || ''}
-        ${template?.tabLabel || ''}
         ${classes?.tabLabel  || ''}`;
 
     const tabCloseClassName = `
         ${_classes?.tabClose || ''}
-        ${template?.tabClose || ''}
         ${classes?.tabClose  || ''}`;
 
-    const draggableClass = `
-        ${template?.draggable || ''}
-        ${classes?.draggable || ''}`;
+    const draggableClass = classes?.draggable || '';
 
     const tabStyle = isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab;
 

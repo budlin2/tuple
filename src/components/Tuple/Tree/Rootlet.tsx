@@ -42,27 +42,22 @@ const Rootlet = ({
     const { state: {
         classes,
         styles,
-        template,
     }}: TupleContextT = useContext(TupleContext);
 
     const rootletClassName = `
         ${_classes?.rootlet || ''}
-        ${template?.rootlet || ''}
         ${classes?.rootlet  || ''}`;
 
     const symbolContainerClassName = `
         ${_classes?.symbolContainer}
-        ${template?.symbolContainer || ''}
         ${classes?.symbolContainer  || ''}`
 
     const rootletTextBoxClassName = `
         ${_classes?.rootletTextBox}
-        ${template?.rootletTextBox || ''}
+
         ${classes?.rootletTextBox  || ''}`
 
-    const draggableClass = `
-        ${template?.draggable || ''}
-        ${classes?.draggable || ''}`;
+    const draggableClass = classes?.draggable || '';
 
 
     const dragStartHandler = (e: DragEvent) => {
