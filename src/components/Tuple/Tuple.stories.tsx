@@ -89,6 +89,30 @@ const tree: TreeT = [
                 'ferrari',
                 'gm',
                 'honda',
+                { id: 4, label: 'cars', branches: [
+                    'ford',
+                    'jeep',
+                    'chrysler',
+                    'ferrari',
+                    'gm',
+                    'honda',
+                    { id: 5, label: 'cars', branches: [
+                        'ford',
+                        'jeep',
+                        'chrysler',
+                        'ferrari',
+                        'gm',
+                        'honda',
+                        { id: 6, label: 'cars', branches: [
+                            'ford',
+                            'jeep',
+                            'chrysler',
+                            'ferrari',
+                            'gm',
+                            'honda',
+                        ]}
+                    ]}
+                ]}
             ]}
         ]}
     ]},

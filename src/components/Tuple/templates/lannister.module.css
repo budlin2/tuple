@@ -50,7 +50,7 @@
 
 .leaf {
     padding: 0.1rem;
-    padding-left: var(--LANNISTER_PADDING_HORIZONTAL);
+    padding-left: var(--PADDING_HORIZONTAL);
 }
 
 .leaf:hover {

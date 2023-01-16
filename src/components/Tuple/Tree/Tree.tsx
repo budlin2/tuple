@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import Leaf from './Leaf';
 import Branch from './Branch';
@@ -9,6 +9,7 @@ import { ID, isID, PageT, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 import Trashcan from './Trashcan';
+import ScrollPane from '../../ScrollPane';
 
 
 interface BranchesProps {
@@ -64,24 +65,50 @@ const Branches = ({branchOrLeafId, path, bid='b'}: BranchesProps, ) => {
 interface TreeProps { enableTrashcan: boolean };
 
 const Tree = ({ enableTrashcan }: TreeProps) => {
+    const treeRef = useRef<HTMLDivElement>();
+    const rootContainerRef = useRef<HTMLDivElement>();
+
     const { state: {
         tree,
         classes,
         styles,
     }}: TupleContextT = useContext(TupleContext);
 
+    const [scrollPaneHeight, setScrollPaneHeight] = useState<number>(0);
+
     const treeClassName = `
         ${_classes?.tree || ''}
         ${classes?.tree  || ''}`;
 
+    const scrollPaneClassName = `
+        ${_classes.contentContainer}
+        ${classes.scrollPane}`;
+
+    useEffect(() => {
+        const treeHeight = treeRef.current.clientHeight;
+        const rootHeight = rootContainerRef.current.clientHeight;
+
+        setScrollPaneHeight(treeHeight - rootHeight);
+    }, [treeRef, rootContainerRef, setScrollPaneHeight]);
+
+    const scrollPaneStyle = { ...styles?.scrollPane, height: scrollPaneHeight }
+
     // TODO: Need better key than index
     // https://reactjs.org/docs/lists-and-keys.html#:~:text=We%20don%E2%80%99t%20recommend%20using%20indexes%20for%20keys%20if%20the%20order%20of%20items%20may%20change.
     return (
-        <div className={treeClassName} style={styles.tree}>
-            <Root rootName='Tuple' />
-            { tree.map( (bid, index) => (
-                <Branches key={index} branchOrLeafId={bid} path={[]}/>
-            ))}
+        <div ref={treeRef} className={treeClassName} style={styles.tree}>
+            <div ref={rootContainerRef}>
+                <Root rootName='Tuple' />
+            </div>
+
+            <ScrollPane className={scrollPaneClassName} style={scrollPaneStyle}>
+                <>
+                    { tree.map( (bid, index) => (
+                        <Branches key={index} branchOrLeafId={bid} path={[]}/>
+                    ))}
+                </>
+            </ScrollPane>
+
             { enableTrashcan && (
                 <Trashcan symbol='' dragOverSymbol=''/> 
             )}

@@ -43,7 +43,7 @@
 .root {
     font-size: 1.2rem;
     height: calc(var(--TAB-HEIGHT) + 1px);
-    padding-left: var(--PADDING_MEDIUM);
+    padding-left: var(--PADDING_HORIZONTAL);
     border-bottom: 1px solid black;
     display: flex;
     align-items: center;
