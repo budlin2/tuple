@@ -41,7 +41,7 @@ export interface ViewportStateT {
     skipTabRemoval: boolean,  // Not graceful, but necessart because dataTransfer object not available onDragEnd
 };
 
-export interface IdPortTupleT {  // TODO: This name leaves something to be desired
+export interface IdPortPairT {
     id: ID,
     port: PortT,
 };

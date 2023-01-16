@@ -14,7 +14,7 @@ import {
 } from "../TupleTypes";
 
 import {
-    IdPortTupleT,
+    IdPortPairT,
     PortsT,
     ViewportStateT,
     PortT,
@@ -36,12 +36,11 @@ export const _get_port_copy = (ports: PortsT, id: ID): PortT => {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-// TODO: Better named types... e.g. PortStateT is poorly named now...
-export const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPortTupleT | null => {
+export const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPortPairT | null => {
     const port: PortT = viewportState.ports[id];
     if (!port) return null;
 
-    const isRoot: boolean = port.parentId == null;  // TODO: Do I really need root in PortStateT
+    const isRoot: boolean = port.parentId == null;
     if (isRoot) return null;
 
     const parent: PortT = viewportState.ports[port.parentId as ID];
@@ -53,7 +52,7 @@ export const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPo
     return {
         id: sisterId,
         port: sister,
-    } as IdPortTupleT;
+    } as IdPortPairT;
 }
 
 

@@ -30,18 +30,15 @@ const TupleInner = ({ enableTrashcan }: TupleInnerProps) => {
         ${_classes?.tuple || ''}
         ${classes?.tuple  || ''}`;
 
-    // TODO: This needs to be better
-    const DefaultView = <>No Views. SAD!</>
-
     if (!isRootViewport) {
-        return <Viewport defaultView={DefaultView} />;
+        return <Viewport />;
     }
 
     return (
         <div className={tupleClassName} style={styles.tuple}>
             <SplitPane resizerPos='25%'>
                 <Tree enableTrashcan={enableTrashcan} />
-                <Viewport defaultView={DefaultView} />
+                <Viewport />
             </SplitPane>
         </div>
     );

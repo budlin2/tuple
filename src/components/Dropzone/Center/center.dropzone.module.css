@@ -8,9 +8,6 @@
     justify-content: center;
 
     position: relative;
-    /* TODO: Gotta figure out this TAB-HEIGHT issue...
-    Should calculate this in javascript code and pass
-    it into classes that need it as a style */
     height: 100%;
     width: 100%;
 }

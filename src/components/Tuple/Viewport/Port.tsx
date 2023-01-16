@@ -23,7 +23,7 @@ const Port = ({ id }: PortProps): JSX.Element => {
         state: { viewport, tabBarHeight }
     }: TupleContextT = useContext(TupleContext);
 
-    const port: PortT = viewport.ports[id];  // TODO: Should this be in useEffect hook?
+    const port: PortT = viewport.ports[id];
 
     useEffect(() => {  // When list becomes empty
         if (port && port.pageIds && port.pageIds.length <= 0) {

@@ -9,12 +9,11 @@ import _classes from './viewport.module.css';
 
 
 export interface Props {
-    defaultView?: ReactNode
     // noDuplicates: boolean // TODO: Specify whether duplicates are allowed in viewport
 }
 
 
-const Viewport = ({ defaultView }: Props) => {
+const Viewport = () => {
     const { state: {
         viewport,
         styles,
@@ -25,7 +24,7 @@ const Viewport = ({ defaultView }: Props) => {
         ${_classes?.viewport || ''}
         ${classes?.viewport  || ''}`;
 
-    // TODO: Show defaultView
+    // TODO: Custom Default Views?
     if (viewport.root == '') {
         return <DefaultView />
     }

@@ -32,8 +32,6 @@ export const addTab = (
         payload: { portId, pageId: dragPageId, dragPortId, index: index },
     };
 
-    // TODO: update local storage
-
     dispatch(addTabAction);
 }
 
