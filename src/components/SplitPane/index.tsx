@@ -60,8 +60,8 @@ const SplitPane = ({
     const [headLength, setHeadLength] = useState<number | string>(resizerPos);
     const [mousePos, setMousePos] = useState<number>(0);
 
+    // After first render, make sure headLength is number
     useEffect(() => {
-        // After first render, make sure headLength is number
         const headLen = dir === 'horizontal'
             ? headRef.current?.offsetWidth as number
             : headRef.current?.offsetHeight as number;
@@ -93,12 +93,15 @@ const SplitPane = ({
             const deltaX = e.clientX - mousePos;
             const offsetWidth = containerRef.current?.offsetWidth as number;
             const newHeadLength = (((headLength as number) + deltaX) * 100) / offsetWidth;
+
             container.style.cursor = 'w-resize';
             head.style.width = `${newHeadLength}%`;
+
         } else if (dir === 'vertical') {
             const deltaY = e.clientY - mousePos;
             const offsetHeight = containerRef.current?.offsetHeight as number;
             const newHeadLength = (((headLength as number) + deltaY) * 100) / offsetHeight;
+
             container.style.cursor = 'n-resize';
             head.style.height = `${newHeadLength}%`;
         }

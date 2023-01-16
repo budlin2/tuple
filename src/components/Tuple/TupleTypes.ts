@@ -1,4 +1,4 @@
-import { CSSProperties, Dispatch } from "react";
+import { CSSProperties, Dispatch, DragEvent } from "react";
 import { DirectionT, SideT } from "../SplitPane/SplitPaneTypes";
 import { TreeT } from "./Tree/TreeTypes";
 import { PortsT, ViewportStateT, ViewportT } from "./Viewport/ViewportTypes";
@@ -91,7 +91,22 @@ export interface TupleClassesT {
 }
 
 
-export interface EventsT {}  // TODO: Implement this
+//----------------------------------------------------------------------------------------------------------------------
+// Events
+//----------------------------------------------------------------------------------------------------------------------
+export type DragSourceT = 'tree' | 'viewport';
+export type DropDestinationT = 'branch' | 'leaf';
+
+export interface EventsT {
+    onTreeDrop?: (
+        e: DragEvent,
+        destinationItem: string,
+        path: string[],
+        sourceItem: string, 
+        sourceType: DragSourceT,
+        destinationType: DropDestinationT,
+    ) => void
+}
 
 
 //----------------------------------------------------------------------------------------------------------------------

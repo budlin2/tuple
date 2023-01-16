@@ -221,7 +221,7 @@ const Tuple = ({
         classes: classes || {},
         template: getTemplateCss(template),
         events: events || {},
-        tabHeight: 0,
+        tabBarHeight: 0,
     };
 
 

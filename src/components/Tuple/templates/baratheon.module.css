@@ -1,0 +1,128 @@
+/* Global CSS Variables */
+:root {
+    --COLOR_PRIMARY: #ff8080;
+    --COLOR_PRIMARY_DARK: #120D31;
+    --COLOR_SECONDARY: #e0e0e0;
+    --COLOR_WHITE:  #FAFAFF;
+    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
+    --BORDER: 1px solid var(--COLOR_PRIMARY_DARK);
+    --BORDER_DASHED: 1px dashed var(--COLOR_PRIMARY_DARK);
+    --BORDER_RADIUS: 15px 0 0 15px;
+}
+
+
+.tuple {
+    background-color: var(--COLOR_PRIMARY);
+}
+
+.draggable {
+    border: 1px solid var(--COLOR_WHITE);
+    background-color: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+}
+
+/***********************************************************************************************************************
+ * Tree
+ ***********************************************************************************************************************/
+
+.tree {
+    box-shadow:  inset 13px 13px 22px #644545,
+    inset -13px -13px 22px #ffdbdb;
+    color: var(--COLOR_PRIMARY_DARK);
+    top: 0;
+}
+
+.branch {
+    background: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+    border-bottom: none;
+    border-radius: var(--BORDER_RADIUS);
+    margin-left: 0.2rem;
+}
+
+.branch:hover {
+    cursor: pointer;
+    background: var(--HOVER_COLOR);
+}
+
+.branches {
+    border-left: var(--BORDER_DASHED);
+    margin-left: 0.8rem;
+}
+
+.leaf {
+    padding: 0.1rem;
+    padding-left: var(--PADDING_HORIZONTAL);
+}
+
+.leaf:hover {
+    background: var(--HOVER_COLOR);
+    cursor: pointer;
+    border-radius: var(--BORDER_RADIUS);
+}
+
+.root {
+    box-shadow:  13px 13px 22px #7a3d3d,
+                -13px -13px 22px #ffc3c3;
+    border-radius: 48px;
+    border: none;
+    margin: 0.5rem;
+    margin-top: 0;
+}
+
+.rootlets {
+    background: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+    margin-left: 0.5rem;
+    border-radius: 0 0 0 10px;
+}
+
+.rootletTextBox {
+    color: var(--COLOR_WHITE);
+}
+
+.rootletTextBox:hover {
+    border-bottom: 1px solid var(--COLOR_WHITE);
+}
+
+.rootletTextBox:focus {
+    border: 1px solid var(--COLOR_WHITE);
+    border-radius: 5px;
+}
+
+/***********************************************************************************************************************
+ * Viewport
+ ***********************************************************************************************************************/
+
+.view {
+    border-left: var(--BORDER);
+    border-top: var(--BORDER);
+}
+
+.tabBar {
+    background-color: var(--COLOR_SECONDARY);
+    color: var(--COLOR_PRIMARY_DARK);
+}
+
+.tabClose:hover {
+    background: var(--HOVER_COLOR);
+}
+
+.tab {
+    border-right: var(--BORDER);
+}
+
+.tab:hover {
+    background: var(--HOVER_COLOR);
+}
+
+.tabActive {
+    background: var(--COLOR_PRIMARY);
+    color: var(--COLOR_WHITE);
+    border-radius: 0px 10px 0 0;
+}
+
+.tabActive .tabClose:hover {
+    background: var(--COLOR_WHITE);
+    color: var(--COLOR_PRIMARY);
+}

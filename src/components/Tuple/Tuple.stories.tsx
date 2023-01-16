@@ -211,3 +211,13 @@ Lannister.args = {
     tree,
     template: 'lannister',
 };
+
+//----------------------------------------------------------------------------------------------------------------------
+// Six Views - Baratheon
+export const Baratheon = Template.bind({});
+Baratheon.args = {
+    pages,
+    views: __SixViews,
+    tree,
+    template: 'baratheon',
+};

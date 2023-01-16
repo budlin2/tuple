@@ -28,6 +28,8 @@ const _log_action = (label: string, state: any, payload: any) => {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
+// Viewport State actions
+//---------------------------------------------------------------------------------------------------------------------
 export const _get_port_copy = (ports: PortsT, id: ID): PortT => {
     const port = { ...ports[id] };
     return port || null;
@@ -384,6 +386,8 @@ export const _change_active_view = (state: TupleStateT, payload: ChangeActiveVie
 }
 
 
+//---------------------------------------------------------------------------------------------------------------------
+// Other State modifiers
 //---------------------------------------------------------------------------------------------------------------------
 export const _set_tab_bar_height = (state: TupleStateT, payload: SetTabBarHeightPayloadT): TupleStateT => {
     return {

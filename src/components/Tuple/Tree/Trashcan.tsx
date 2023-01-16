@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useState } from 'react';
+import { CSSProperties, DragEvent, useContext, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { TupleContext } from '..';
 import { DRAGGING_ID } from '../state/browser-actions';
@@ -34,8 +34,13 @@ const Trashcan = ({
         ${draggingOver ? _classes.trashcanHover : ''}`;
 
 
-    const dragOverHandler = () => setDraggingOver(true);
+    const dragOverHandler = (e: DragEvent) => {
+        e.preventDefault();
+        setDraggingOver(true);
+    }
+
     const dragLeaveHandler = () => setDraggingOver(false);
+
     const dropHandler = () => {
         setVisible(false);
         setDraggingOver(false);

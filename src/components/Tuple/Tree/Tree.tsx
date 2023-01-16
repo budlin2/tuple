@@ -13,11 +13,12 @@ import Trashcan from './Trashcan';
 
 interface BranchesProps {
     branchOrLeafId: BranchT | ID,
+    path: string[],
     bid?: ID,
 }
 
 // Recursive tree component
-const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
+const Branches = ({branchOrLeafId, path, bid='b'}: BranchesProps, ) => {
     const { state: {
         pages,
         classes,
@@ -32,7 +33,7 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
         if (!page)
             throw `Page ID not found within "pages": [${page}]`;
 
-        return <Leaf text={page.name} pageId={id} />;
+        return <Leaf text={page.name} pageId={id} path={path} />;
     }
 
     const branch: BranchT = branchOrLeafId as BranchT;
@@ -55,7 +56,7 @@ const Branches = ({branchOrLeafId, bid='b'}: BranchesProps, ) => {
             branchesStyle={styles.branches}
         >
             { branch.branches.map((b, i) => (
-                <Branches key={`${bid}${i}`} branchOrLeafId={b}/>
+                <Branches key={`${bid}${i}`} branchOrLeafId={b} path={path.concat(branch.label)}/>
             ))}
 
         </Branch>
@@ -84,7 +85,7 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
         <div className={treeClassName} style={styles.tree}>
             <Root rootName='Tuple' />
             { tree.map( (bid, index) => (
-                <Branches key={index} branchOrLeafId ={bid}/>
+                <Branches key={index} branchOrLeafId={bid} path={[]}/>
             ))}
             { enableTrashcan && (
                 <Trashcan symbol='' dragOverSymbol=''/> 

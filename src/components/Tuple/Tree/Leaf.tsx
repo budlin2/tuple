@@ -1,11 +1,11 @@
-import { CSSProperties, useContext } from 'react'
+import { CSSProperties, DragEvent, useContext } from 'react'
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
 import { DRAGGING_ID } from '../state/browser-actions';
 import { addTab, addNewView } from '../state/dispatchers';
-import { ID, TupleContextT } from '../TupleTypes';
+import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { PortsT } from '../Viewport/ViewportTypes';
 
 import _classes from './tree.module.css';
@@ -14,22 +14,24 @@ import _classes from './tree.module.css';
 interface Props {
     text: string,
     pageId: ID,
-    style?: CSSProperties,
+    path: string[],
 }
 
 
 const Leaf = ({
     text,
     pageId,
+    path,
 }: Props) => {
     const {
         dispatch,
         state: {
-            viewport,
             pages,
+            viewport,
             classes,
             styles,
             template,
+            events,
         }
     }: TupleContextT = useContext(TupleContext);
 
@@ -71,6 +73,24 @@ const Leaf = ({
         cleanupDraggable();
         setDragging(false);
     }
+
+    const dragOverHandler = (e: DragEvent) => {
+        if (events?.onTreeDrop)
+            e.preventDefault();
+    }
+
+    const dropHandler = (e: DragEvent) => {
+        if (events?.onTreeDrop) {
+            const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+            const draggableName = pages[dragPageId].name;
+
+            const portId = e.dataTransfer && e.dataTransfer.getData('portId');
+            const source: DragSourceT = !!portId ? 'viewport' : 'tree';
+
+            events.onTreeDrop(e, text, path, draggableName, source, 'leaf');
+        }
+    }
+
     const onClickHandler = () => {
         if (Object.keys(pages).length <= 0) {
             addNewView(dispatch, pageId)
@@ -87,6 +107,8 @@ const Leaf = ({
             draggable
             onDragStart={dragStartHandler}
             onDragEnd={dragEndHandler}
+            onDragOver={dragOverHandler}
+            onDrop={dropHandler}
             onClick={onClickHandler}>
             { text }
         </div>
