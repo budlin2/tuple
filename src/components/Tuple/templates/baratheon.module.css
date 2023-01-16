@@ -1,7 +1,8 @@
 /* Global CSS Variables */
 :root {
     --BARATHEON_COLOR_PRIMARY: #ff8080;
-    --BARATHEON_COLOR_PRIMARY_DARK: #120D31;
+    --BARATHEON_COLOR_PRIMARY_DARK: #7a3d3d;
+    --BARATHEON_COLOR_PRIMARY_LIGHT: #ffc3c3;
     --BARATHEON_COLOR_SECONDARY: #e0e0e0;
     --BARATHEON_COLOR_WHITE:  #FAFAFF;
     --BARATHEON_HOVER_COLOR: rgba(10, 10, 10, 0.5);
@@ -26,10 +27,15 @@
  ***********************************************************************************************************************/
 
 .tree {
-    box-shadow:  inset 13px 13px 22px #644545,
-    inset -13px -13px 22px #ffdbdb;
+    background: linear-gradient(145deg, #ff8989, #e67373);
+    box-shadow:  10px 10px 15px #b35a5a,
+                -10px -10px 15px #ffa6a6;
     color: var(--BARATHEON_COLOR_PRIMARY_DARK);
-    top: 0;
+    border: none;
+    margin: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 48px;
+    overflow: hidden;
 }
 
 .branch {
@@ -62,12 +68,11 @@
 }
 
 .root {
-    box-shadow:  13px 13px 22px #7a3d3d,
-                -13px -13px 22px #ffc3c3;
     border-radius: 48px;
     border: none;
     margin: 0.5rem;
-    margin-top: 0;
+    margin: 1rem;
+    margin-bottom: 0rem;
 }
 
 .rootlets {
@@ -100,7 +105,7 @@
 }
 
 .tabBar {
-    background-color: var(--BARATHEON_COLOR_SECONDARY);
+    background-color: transparent;
     color: var(--BARATHEON_COLOR_PRIMARY_DARK);
 }
 
@@ -109,7 +114,11 @@
 }
 
 .tab {
+    background: var(--BARATHEON_COLOR_PRIMARY);
     border-right: var(--BARATHEON_BORDER);
+    box-shadow: inset 10px 10px 16px #d96d6d,
+    inset -10px -10px 16px #ff9393;
+    border-radius: 10px 10px 0 0;
 }
 
 .tab:hover {
@@ -117,9 +126,9 @@
 }
 
 .tabActive {
-    background: var(--BARATHEON_COLOR_PRIMARY);
-    color: var(--BARATHEON_COLOR_WHITE);
-    border-radius: 0px 10px 0 0;
+    background: linear-gradient(145deg, #ff8989, #e67373);
+    box-shadow:  10px 10px 16px #d96d6d,
+                -10px -10px 16px #ff9393;
 }
 
 .tabActive .tabClose:hover {
