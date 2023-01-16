@@ -44,19 +44,7 @@ import {
     set_storage_port_open,
 } from './state/browser-actions';
 
-
-import lannister from './templates/lannister.module.css';
-
-
 export const ROOT_PORT_ID = 'root';
-
-
-const getTemplateCss = (template: string | null): CSSModuleClasses | null => {
-    switch(template) {
-        case 'lannister': return lannister;
-        default: return null;
-    }
-}
 
 export const TupleContext = createContext({
     // dispatch: null,  TODO: do I need to initialize dispatch
@@ -219,7 +207,7 @@ const Tuple = ({
         tree,
         styles: styles || {},
         classes: classes || {},
-        template: getTemplateCss(template),
+        template: null,
         events: events || {},
         tabBarHeight: 0,
     };

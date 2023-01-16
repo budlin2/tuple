@@ -1,24 +1,23 @@
 /* Global CSS Variables */
 :root {
-    --COLOR_PRIMARY: #231A61;
-    --COLOR_PRIMARY_DARK: #120D31;
-    --COLOR_SECONDARY: #F2F2FC;
-    --COLOR_WHITE:  #FAFAFF;
-    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
-    --BORDER:        1px solid var(--COLOR_PRIMARY_DARK);
-    --BORDER_DASHED: 1px dashed var(--COLOR_PRIMARY_DARK);
-    --BORDER_RADIUS: 15px 0 0 15px;
+    --LANNISTER_COLOR_PRIMARY: #231A61;
+    --LANNISTER_COLOR_PRIMARY_DARK: #120D31;
+    --LANNISTER_COLOR_SECONDARY: #F2F2FC;
+    --LANNISTER_COLOR_WHITE:  #FAFAFF;
+    --LANNISTER_HOVER_COLOR: rgba(10, 10, 10, 0.5);
+    --LANNISTER_BORDER:        1px solid var(--LANNISTER_COLOR_PRIMARY_DARK);
+    --LANNISTER_BORDER_DASHED: 1px dashed var(--LANNISTER_COLOR_PRIMARY_DARK);
+    --LANNISTER_BORDER_RADIUS: 15px 0 0 15px;
 }
 
-
 .tuple {
-    background-color: var(--COLOR_WHITE);
+    background-color: var(--LANNISTER_COLOR_WHITE);
 }
 
 .draggable {
-    border: 1px solid var(--COLOR_WHITE);
-    background-color: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    border: 1px solid var(--LANNISTER_COLOR_WHITE);
+    background-color: var(--LANNISTER_COLOR_PRIMARY);
+    color: var(--LANNISTER_COLOR_WHITE);
 }
 
 /***********************************************************************************************************************
@@ -26,57 +25,57 @@
  ***********************************************************************************************************************/
 
 .tree {
-    border-right: var(--BORDER);
-    background-color: var(--COLOR_SECONDARY);
-    color: var(--COLOR_PRIMARY_DARK);
+    border-right: var(--LANNISTER_BORDER);
+    background-color: var(--LANNISTER_COLOR_SECONDARY);
+    color: var(--LANNISTER_COLOR_PRIMARY_DARK);
 }
 
 .branch {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    background: var(--LANNISTER_COLOR_PRIMARY);
+    color: var(--LANNISTER_COLOR_WHITE);
     border-bottom: none;
-    border-radius: var(--BORDER_RADIUS);
+    border-radius: var(--LANNISTER_BORDER_RADIUS);
     margin-left: 0.2rem;
 }
 
 .branch:hover {
     cursor: pointer;
-    background: var(--HOVER_COLOR);
+    background: var(--LANNISTER_HOVER_COLOR);
 }
 
 .branches {
-    border-left: var(--BORDER_DASHED);
+    border-left: var(--LANNISTER_BORDER_DASHED);
     margin-left: 0.8rem;
 }
 
 .leaf {
     padding: 0.1rem;
-    padding-left: var(--PADDING_HORIZONTAL);
+    padding-left: var(--LANNISTER_PADDING_HORIZONTAL);
 }
 
 .leaf:hover {
-    background: var(--HOVER_COLOR);
+    background: var(--LANNISTER_HOVER_COLOR);
     cursor: pointer;
-    border-radius: var(--BORDER_RADIUS);
+    border-radius: var(--LANNISTER_BORDER_RADIUS);
 }
 
 .rootlets {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    background: var(--LANNISTER_COLOR_PRIMARY);
+    color: var(--LANNISTER_COLOR_WHITE);
     margin-left: 0.5rem;
     border-radius: 0 0 0 10px;
 }
 
 .rootletTextBox {
-    color: var(--COLOR_WHITE);
+    color: var(--LANNISTER_COLOR_WHITE);
 }
 
 .rootletTextBox:hover {
-    border-bottom: 1px solid var(--COLOR_WHITE);
+    border-bottom: 1px solid var(--LANNISTER_COLOR_WHITE);
 }
 
 .rootletTextBox:focus {
-    border: 1px solid var(--COLOR_WHITE);
+    border: 1px solid var(--LANNISTER_COLOR_WHITE);
     border-radius: 5px;
 }
 
@@ -85,34 +84,34 @@
  ***********************************************************************************************************************/
 
 .view {
-    border-left: var(--BORDER);
-    border-top: var(--BORDER);
+    border-left: var(--LANNISTER_BORDER);
+    border-top: var(--LANNISTER_BORDER);
 }
 
 .tabBar {
-    background-color: var(--COLOR_SECONDARY);
-    color: var(--COLOR_PRIMARY_DARK);
+    background-color: var(--LANNISTER_COLOR_SECONDARY);
+    color: var(--LANNISTER_COLOR_PRIMARY_DARK);
 }
 
 .tabClose:hover {
-    background: var(--HOVER_COLOR);
+    background: var(--LANNISTER_HOVER_COLOR);
 }
 
 .tab {
-    border-right: var(--BORDER);
+    border-right: var(--LANNISTER_BORDER);
 }
 
 .tab:hover {
-    background: var(--HOVER_COLOR);
+    background: var(--LANNISTER_HOVER_COLOR);
 }
 
 .tabActive {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    background: var(--LANNISTER_COLOR_PRIMARY);
+    color: var(--LANNISTER_COLOR_WHITE);
     border-radius: 0px 10px 0 0;
 }
 
 .tabActive .tabClose:hover {
-    background: var(--COLOR_WHITE);
-    color: var(--COLOR_PRIMARY);
+    background: var(--LANNISTER_COLOR_WHITE);
+    color: var(--LANNISTER_COLOR_PRIMARY);
 }

@@ -1,24 +1,24 @@
 /* Global CSS Variables */
 :root {
-    --COLOR_PRIMARY: #ff8080;
-    --COLOR_PRIMARY_DARK: #120D31;
-    --COLOR_SECONDARY: #e0e0e0;
-    --COLOR_WHITE:  #FAFAFF;
-    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
-    --BORDER: 1px solid var(--COLOR_PRIMARY_DARK);
-    --BORDER_DASHED: 1px dashed var(--COLOR_PRIMARY_DARK);
-    --BORDER_RADIUS: 15px 0 0 15px;
+    --BARATHEON_COLOR_PRIMARY: #ff8080;
+    --BARATHEON_COLOR_PRIMARY_DARK: #120D31;
+    --BARATHEON_COLOR_SECONDARY: #e0e0e0;
+    --BARATHEON_COLOR_WHITE:  #FAFAFF;
+    --BARATHEON_HOVER_COLOR: rgba(10, 10, 10, 0.5);
+    --BARATHEON_BORDER: 1px solid var(--BARATHEON_COLOR_PRIMARY_DARK);
+    --BARATHEON_BORDER_DASHED: 1px dashed var(--BARATHEON_COLOR_PRIMARY_DARK);
+    --BARATHEON_BORDER_RADIUS: 15px 0 0 15px;
 }
 
 
 .tuple {
-    background-color: var(--COLOR_PRIMARY);
+    background-color: var(--BARATHEON_COLOR_PRIMARY);
 }
 
 .draggable {
-    border: 1px solid var(--COLOR_WHITE);
-    background-color: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    border: 1px solid var(--BARATHEON_COLOR_WHITE);
+    background-color: var(--BARATHEON_COLOR_PRIMARY);
+    color: var(--BARATHEON_COLOR_WHITE);
 }
 
 /***********************************************************************************************************************
@@ -28,37 +28,37 @@
 .tree {
     box-shadow:  inset 13px 13px 22px #644545,
     inset -13px -13px 22px #ffdbdb;
-    color: var(--COLOR_PRIMARY_DARK);
+    color: var(--BARATHEON_COLOR_PRIMARY_DARK);
     top: 0;
 }
 
 .branch {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    background: var(--BARATHEON_COLOR_PRIMARY);
+    color: var(--BARATHEON_COLOR_WHITE);
     border-bottom: none;
-    border-radius: var(--BORDER_RADIUS);
+    border-radius: var(--BARATHEON_BORDER_RADIUS);
     margin-left: 0.2rem;
 }
 
 .branch:hover {
     cursor: pointer;
-    background: var(--HOVER_COLOR);
+    background: var(--BARATHEON_HOVER_COLOR);
 }
 
 .branches {
-    border-left: var(--BORDER_DASHED);
+    border-left: var(--BARATHEON_BORDER_DASHED);
     margin-left: 0.8rem;
 }
 
 .leaf {
     padding: 0.1rem;
-    padding-left: var(--PADDING_HORIZONTAL);
+    padding-left: var(--BARATHEON_PADDING_HORIZONTAL);
 }
 
 .leaf:hover {
-    background: var(--HOVER_COLOR);
+    background: var(--BARATHEON_HOVER_COLOR);
     cursor: pointer;
-    border-radius: var(--BORDER_RADIUS);
+    border-radius: var(--BARATHEON_BORDER_RADIUS);
 }
 
 .root {
@@ -71,22 +71,22 @@
 }
 
 .rootlets {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    background: var(--BARATHEON_COLOR_PRIMARY);
+    color: var(--BARATHEON_COLOR_WHITE);
     margin-left: 0.5rem;
     border-radius: 0 0 0 10px;
 }
 
 .rootletTextBox {
-    color: var(--COLOR_WHITE);
+    color: var(--BARATHEON_COLOR_WHITE);
 }
 
 .rootletTextBox:hover {
-    border-bottom: 1px solid var(--COLOR_WHITE);
+    border-bottom: 1px solid var(--BARATHEON_COLOR_WHITE);
 }
 
 .rootletTextBox:focus {
-    border: 1px solid var(--COLOR_WHITE);
+    border: 1px solid var(--BARATHEON_COLOR_WHITE);
     border-radius: 5px;
 }
 
@@ -95,34 +95,34 @@
  ***********************************************************************************************************************/
 
 .view {
-    border-left: var(--BORDER);
-    border-top: var(--BORDER);
+    border-left: var(--BARATHEON_BORDER);
+    border-top: var(--BARATHEON_BORDER);
 }
 
 .tabBar {
-    background-color: var(--COLOR_SECONDARY);
-    color: var(--COLOR_PRIMARY_DARK);
+    background-color: var(--BARATHEON_COLOR_SECONDARY);
+    color: var(--BARATHEON_COLOR_PRIMARY_DARK);
 }
 
 .tabClose:hover {
-    background: var(--HOVER_COLOR);
+    background: var(--BARATHEON_HOVER_COLOR);
 }
 
 .tab {
-    border-right: var(--BORDER);
+    border-right: var(--BARATHEON_BORDER);
 }
 
 .tab:hover {
-    background: var(--HOVER_COLOR);
+    background: var(--BARATHEON_HOVER_COLOR);
 }
 
 .tabActive {
-    background: var(--COLOR_PRIMARY);
-    color: var(--COLOR_WHITE);
+    background: var(--BARATHEON_COLOR_PRIMARY);
+    color: var(--BARATHEON_COLOR_WHITE);
     border-radius: 0px 10px 0 0;
 }
 
 .tabActive .tabClose:hover {
-    background: var(--COLOR_WHITE);
-    color: var(--COLOR_PRIMARY);
+    background: var(--BARATHEON_COLOR_WHITE);
+    color: var(--BARATHEON_COLOR_PRIMARY);
 }

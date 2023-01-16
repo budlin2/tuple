@@ -1,6 +1,7 @@
 .root {
     --HOVER_THICKNESS: 20%;
     --HOVER_THICKNESS_DIFF: 80%; /* 100 - HOVER_THICKNESS */
+    --HOVER_COLOR: rgba(10, 10, 10, 0.5);
 }
 
 .root {
@@ -16,7 +17,6 @@
 
 
 /* DropZone Display */
-/* TODO: offset by TAB-HEIGHT */
 .dropZoneDisplayTop {
     position: absolute;
     top: 0;
@@ -35,7 +35,6 @@
     background: var(--HOVER_COLOR);
 }
 
-/* TODO: offset by TAB-HEIGHT */
 .dropZoneDisplayBottom {
     position: absolute;
     bottom: 0;

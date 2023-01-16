@@ -2,12 +2,14 @@ import { Meta, Story } from "@storybook/react";
 
 import Tuple, { TupleProps } from '.';
 
-import classes from './tuple.stories.module.css';
 import { TreeT } from "./Tree/TreeTypes";
 import { SplitViewT, ViewT } from "./Viewport/ViewportTypes";
 import { PagesT } from "./TupleTypes";
 import Page from "../Page";
 
+import classes from './tuple.stories.module.css';
+import LannisterCss from './templates/lannister.module.css';
+import BaratheonCss from './templates/baratheon.module.css';
 
 export default {
     title: 'Components/Tuple',
@@ -209,7 +211,7 @@ Lannister.args = {
     pages,
     views: __SixViews,
     tree,
-    template: 'lannister',
+    classes: LannisterCss,
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -219,5 +221,5 @@ Baratheon.args = {
     pages,
     views: __SixViews,
     tree,
-    template: 'baratheon',
+    classes: BaratheonCss,
 };
