@@ -29,11 +29,11 @@
 
 .tree {
     background: linear-gradient(145deg, #ff8989, #e67373);
-    box-shadow:  10px 10px 15px #b35a5a,
-                -10px -10px 15px #ffa6a6;
+    box-shadow:  8px 8px 12px #b35a5a,
+                -8px -8px 12px #ffa6a6;
     color: var(--BARATHEON_COLOR_PRIMARY_DARK);
     border: none;
-    margin: 1.2rem;
+    margin: 1.4rem;
     height: calc(100% - 2.4rem);
     border-radius: 48px;
     overflow: hidden;
@@ -45,7 +45,7 @@
 }
 
 .branch {
-    background: var(--BARATHEON_COLOR_PRIMARY);
+    background: transparent;
     color: var(--BARATHEON_COLOR_WHITE);
     border-bottom: none;
     border-radius: var(--BARATHEON_BORDER_RADIUS);
@@ -82,10 +82,11 @@
 }
 
 .rootlets {
-    background: var(--BARATHEON_COLOR_PRIMARY);
+    background: transparent;
     color: var(--BARATHEON_COLOR_WHITE);
-    margin-left: 0.5rem;
     border-radius: 0 0 0 10px;
+    box-shadow: inset 8px 8px 17px #df7a7a,
+                inset -8px -8px 17px #ff9898;
 }
 
 .rootletTextBox {
@@ -107,17 +108,22 @@
 
 .view {
     border: none;
+    margin: 0.5rem;
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
 }
 
 .page {
     box-shadow: inset 8px 8px 17px #df7a7a,
                 inset -8px -8px 17px #ff9898;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    overflow: hidden;
 }
 
 .tabBar {
-    background-color: transparent;
+    background-color: var(--BARATHEON_COLOR_PRIMARY);
     color: var(--BARATHEON_COLOR_WHITE);
-    padding-top: 0.25rem;
+    padding-top: 1rem;
     border: none;
 }
 
@@ -132,6 +138,12 @@
     border-radius: 10px 10px 0 0;
     border: none;
     z-index: 2;
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
+}
+
+.tab:first-child {
+    margin-left: 0;
 }
 
 .tab:hover {
@@ -140,9 +152,9 @@
 }
 
 .tabActive {
-    background: linear-gradient(145deg, #ff8989, #e67373);
-    box-shadow:  10px 10px 16px #d96d6d,
-                -10px -10px 16px #ff9393;
+    background: linear-gradient(145deg, #e06a6a, #ff7e7e);
+    box-shadow:  4px 4px 20px #c25c5c,
+                -4px -4px 20px #ff9090;
     z-index: 1;
 }
 
