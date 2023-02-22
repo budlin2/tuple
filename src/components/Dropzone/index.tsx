@@ -17,8 +17,10 @@ import DropZoneSides from './Sides/DropZoneSides';
 
 export interface Props {
     parentRef                   : MutableRefObject<HTMLDivElement>,
+    dropZoneRootStyle?          : CSSProperties
     centerDropZoneStyle?        : CSSProperties,
     sidesDropZoneStyle?         : CSSProperties,
+    dropZoneRootClassName?      : string
     centerDropZoneClassName?    : string,
     sidesDropZoneClassName?     : string,
     offsetHeight?               : number,  // possible offset for dropzone due to a sibling component (e.g. tabBar)
@@ -31,8 +33,10 @@ export interface Props {
 
 const DropZone = ({
     parentRef,
+    dropZoneRootStyle,
     centerDropZoneStyle=null,
     sidesDropZoneStyle=null,
+    dropZoneRootClassName,
     centerDropZoneClassName=null,
     sidesDropZoneClassName=null,
     offsetHeight=0,
@@ -46,9 +50,10 @@ const DropZone = ({
     const [dropZonesActive, setDropZonesActive] = useState(false);
 
     const rootStyle: CSSProperties = {
+        ...dropZoneRootStyle,
         width: '100%',
         height: parentHeight - offsetHeight,
-    }
+    };
 
     //------------------------------------------------------------------------------------------------------------------
     // Parent Height Observer
@@ -100,8 +105,9 @@ const DropZone = ({
     }
 
     return (
-        <div ref={rootRef} 
+        <div ref={rootRef}
             style={rootStyle}
+            className={dropZoneRootClassName}
             onDragOver={onDragOverHandler}
             onDragLeave={onDragLeaveHandler}>
 

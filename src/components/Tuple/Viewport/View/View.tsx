@@ -1,4 +1,5 @@
 import { useContext, useRef, MutableRefObject, DragEvent } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import TabBar from './TabBar/TabBar';
 import { TupleContext } from '../..';
@@ -7,12 +8,12 @@ import { ID, PageT, TupleContextT } from '../../TupleTypes';
 import { DropSideT } from '../../../Dropzone/DropZoneTypes';
 import { addTab, addView } from '../../state/dispatchers';
 import { validateDraggable } from '../../state';
-
-import _classes from './view.module.css';
 import ScrollPane from '../../../ScrollPane';
 import DropZone from '../../../Dropzone';
 import { DRAGGING_ID, set_dragged_to_different_viewport } from '../../state/browser-actions';
-import { useLocalStorage } from 'usehooks-ts';
+
+import _classes from './view.module.css';
+
 
 interface Props {
     portId: ID,
@@ -45,6 +46,10 @@ const View = ({
     const scrollPaneClassName = `
         ${_classes.contentContainer}
         ${classes.scrollPane}`;
+
+    const pageClassName = `
+        ${_classes.page}
+        ${classes.page}`;
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -86,8 +91,10 @@ const View = ({
             <TabBar portId={portId} pageIds={pageIds} />
             <DropZone
                 parentRef               = {viewRef}
+                dropZoneRootStyle       = {styles.page}
                 centerDropZoneStyle     = {styles.dropZoneCenter}
                 sidesDropZoneStyle      = {styles.dropZoneSide}
+                dropZoneRootClassName   = {classes.page}
                 centerDropZoneClassName = {classes.dropZoneCenter}
                 sidesDropZoneClassName  = {classes.dropZoneSide}
                 offsetHeight            = {tabBarHeight}

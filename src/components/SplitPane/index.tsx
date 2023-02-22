@@ -15,8 +15,11 @@ import { DirectionT } from './SplitPaneTypes';
 
 
 const validateSplitPane = (direction: DirectionT, children: Array<ReactNode>) => {
-    if (children.length > 2) throw new Error('SplitPane can only take a maximum of two children');
-    if (children.length < 1) throw new Error('SplitPane needs at least one child');
+    if (children.length > 2)
+        throw new Error('SplitPane can only take a maximum of two children');
+
+    if (children.length < 1)
+        throw new Error('SplitPane needs at least one child');
 
     if (direction == 'none' && children.length !== 1)
         console.warn('Views with diection "none" should have one and only one child.');

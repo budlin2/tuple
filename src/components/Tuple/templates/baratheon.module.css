@@ -1,6 +1,7 @@
 /* Global CSS Variables */
 :root {
     --BARATHEON_COLOR_PRIMARY: #ff8080;
+    --BARATHRON_COLOR_PRIMARY_UNFOCUSED: #fb8989;
     --BARATHEON_COLOR_PRIMARY_DARK: #7a3d3d;
     --BARATHEON_COLOR_PRIMARY_LIGHT: #ffc3c3;
     --BARATHEON_COLOR_SECONDARY: #e0e0e0;
@@ -32,10 +33,15 @@
                 -10px -10px 15px #ffa6a6;
     color: var(--BARATHEON_COLOR_PRIMARY_DARK);
     border: none;
-    margin: 2rem;
-    margin-bottom: 2rem;
+    margin: 1.2rem;
+    height: calc(100% - 2.4rem);
     border-radius: 48px;
     overflow: hidden;
+}
+
+.tree .scrollpane {
+    box-shadow: inset 8px 8px 17px #df7a7a,
+                inset -8px -8px 17px #ff9898;
 }
 
 .branch {
@@ -100,13 +106,19 @@
  ***********************************************************************************************************************/
 
 .view {
-    border-left: var(--BARATHEON_BORDER);
-    border-top: var(--BARATHEON_BORDER);
+    border: none;
+}
+
+.page {
+    box-shadow: inset 8px 8px 17px #df7a7a,
+                inset -8px -8px 17px #ff9898;
 }
 
 .tabBar {
     background-color: transparent;
-    color: var(--BARATHEON_COLOR_PRIMARY_DARK);
+    color: var(--BARATHEON_COLOR_WHITE);
+    padding-top: 0.25rem;
+    border: none;
 }
 
 .tabClose:hover {
@@ -114,21 +126,24 @@
 }
 
 .tab {
-    background: var(--BARATHEON_COLOR_PRIMARY);
-    border-right: var(--BARATHEON_BORDER);
-    box-shadow: inset 10px 10px 16px #d96d6d,
-    inset -10px -10px 16px #ff9393;
+    background: var(--BARATHRON_COLOR_PRIMARY_UNFOCUSED);
+    box-shadow: inset 8px 8px 17px #df7a7a,
+                inset -8px -8px 17px #ff9898;
     border-radius: 10px 10px 0 0;
+    border: none;
+    z-index: 2;
 }
 
 .tab:hover {
     background: var(--BARATHEON_HOVER_COLOR);
+    box-shadow: none;
 }
 
 .tabActive {
     background: linear-gradient(145deg, #ff8989, #e67373);
     box-shadow:  10px 10px 16px #d96d6d,
                 -10px -10px 16px #ff9393;
+    z-index: 1;
 }
 
 .tabActive .tabClose:hover {
