@@ -10,7 +10,7 @@
     --LANNISTER_BORDER_RADIUS: 15px 0 0 15px;
 }
 
-.tuple {
+.tuple, .viewport {
     background-color: var(--LANNISTER_COLOR_WHITE);
 }
 

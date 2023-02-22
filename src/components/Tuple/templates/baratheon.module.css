@@ -13,7 +13,7 @@
 }
 
 
-.tuple {
+.tuple, .viewport {
     background-color: var(--BARATHEON_COLOR_PRIMARY);
 }
 
