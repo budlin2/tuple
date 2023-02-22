@@ -85,6 +85,7 @@ const View = ({
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
             <DropZone
+                parentRef               = {viewRef}
                 centerDropZoneStyle     = {styles.dropZoneCenter}
                 sidesDropZoneStyle      = {styles.dropZoneSide}
                 centerDropZoneClassName = {classes.dropZoneCenter}

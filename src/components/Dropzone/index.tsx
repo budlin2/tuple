@@ -5,7 +5,9 @@ import {
     DragEvent,
     ReactElement,
     MouseEvent as rMouseEvent,
-    useEffect
+    useEffect,
+    useCallback,
+    MutableRefObject
 } from 'react';
 
 import DropZoneCenter from './Center/DropZoneCenter';
@@ -14,6 +16,7 @@ import DropZoneSides from './Sides/DropZoneSides';
 
 
 export interface Props {
+    parentRef                   : MutableRefObject<HTMLDivElement>,
     centerDropZoneStyle?        : CSSProperties,
     sidesDropZoneStyle?         : CSSProperties,
     centerDropZoneClassName?    : string,
@@ -27,6 +30,7 @@ export interface Props {
 
 
 const DropZone = ({
+    parentRef,
     centerDropZoneStyle=null,
     sidesDropZoneStyle=null,
     centerDropZoneClassName=null,
@@ -46,11 +50,23 @@ const DropZone = ({
         height: parentHeight - offsetHeight,
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    // Parent Height Observer
+    //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {
-        const pHeight = rootRef.current.parentElement.offsetHeight;
-        setParentHeight(pHeight);
-    }, [rootRef, offsetHeight, rootRef?.current?.parentElement?.offsetHeight])
+        const resizeObserver = new ResizeObserver(() => {
+            const pHeight = parentRef?.current?.offsetHeight;
+            setParentHeight(pHeight);
+        });
 
+        resizeObserver.observe(parentRef?.current);
+
+        return () => resizeObserver.disconnect(); // clean up
+    }, [parentRef]);
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
     const onDropCenterHandler = (e: DragEvent<Element>) => {
         setDropZonesActive(false);
         dropCenterCb && dropCenterCb(e);
