@@ -15,6 +15,7 @@
 
 .tuple, .viewport {
     background-color: var(--BARATHEON_COLOR_PRIMARY);
+    color: var(--BARATHEON_COLOR_WHITE)
 }
 
 .draggable {
@@ -35,7 +36,7 @@
     border: none;
     margin: 1.4rem;
     height: calc(100% - 2.4rem);
-    border-radius: 48px;
+    border-radius: 2rem;
     overflow: hidden;
 }
 
@@ -47,9 +48,8 @@
 .branch {
     background: transparent;
     color: var(--BARATHEON_COLOR_WHITE);
-    border-bottom: none;
-    border-radius: var(--BARATHEON_BORDER_RADIUS);
-    margin-left: 0.2rem;
+    border-bottom: 1px solid var(--BARATHEON_COLOR_WHITE);
+    border-radius: 0;
 }
 
 .branch:hover {
@@ -58,13 +58,14 @@
 }
 
 .branches {
-    border-left: var(--BARATHEON_BORDER_DASHED);
+    border-left: none;
     margin-left: 0.8rem;
 }
 
 .leaf {
     padding: 0.1rem;
     padding-left: var(--PADDING_HORIZONTAL);
+    color: var(--BARATHEON_COLOR_WHITE);
 }
 
 .leaf:hover {
@@ -75,10 +76,12 @@
 
 .root {
     border-radius: 48px;
-    border: none;
+    border: 1px solid var(--BARATHEON_COLOR_PRIMARY_LIGHT);
+    color: var(--BARATHEON_COLOR_WHITE);
     margin: 0.5rem;
     margin: 1rem;
     margin-bottom: 0rem;
+    justify-content: center;
 }
 
 .rootlets {
@@ -138,8 +141,6 @@
     border-radius: 10px 10px 0 0;
     border: none;
     z-index: 2;
-    margin-left: 0.1rem;
-    margin-right: 0.1rem;
 }
 
 .tab:first-child {
