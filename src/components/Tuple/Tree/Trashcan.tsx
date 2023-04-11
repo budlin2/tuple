@@ -1,4 +1,4 @@
-import { CSSProperties, DragEvent, useContext, useState } from 'react';
+import { DragEvent, useContext, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { TupleContext } from '..';
 import { DRAGGING_ID } from '../state/browser-actions';

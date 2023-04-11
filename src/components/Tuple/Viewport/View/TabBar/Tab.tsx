@@ -10,8 +10,7 @@ import {
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '../../..';
-import { cleanupDraggable, setCustomDragImage } from '../../../../Draggable';
-import { validateDraggable } from '../../../state';
+import { cleanupDraggable, setCustomDragImage, validateDraggable } from '../../../../Draggable';
 import {
     DRAGGING_ID,
     get_dragged_to_different_viewport,

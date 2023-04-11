@@ -38,7 +38,7 @@
     /* background: blue; */
     position: absolute;
     bottom: 0;
-    height: var(--HOVER_THICKNESS);  /* calc(var(--HOVER_THICKNESS) + var(--TAB-BAR-HEIGHT)); */
+    height: var(--HOVER_THICKNESS);  /* calc(var(--HOVER_THICKNESS) + var(--TAB-HEIGHT)); */
     width: 100%;
     z-index: 2;
 }

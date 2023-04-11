@@ -2,10 +2,10 @@ import { useContext, DragEvent } from 'react';
 import { TupleContext } from '../..';
 
 import DropZoneCenter from '../../../Dropzone/Center/DropZoneCenter';
-import { validateDraggable } from '../../state';
 import { set_dragged_to_different_viewport } from '../../state/browser-actions';
 import { addNewView } from '../../state/dispatchers';
 import { TupleContextT } from '../../TupleTypes';
+import { validateDraggable } from '../../../Draggable';
 
 interface Props {}
 

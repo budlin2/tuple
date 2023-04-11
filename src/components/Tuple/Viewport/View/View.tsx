@@ -7,10 +7,10 @@ import { ID, PageT, TupleContextT } from '../../TupleTypes';
 
 import { DropSideT } from '../../../Dropzone/DropZoneTypes';
 import { addTab, addView } from '../../state/dispatchers';
-import { validateDraggable } from '../../state';
 import ScrollPane from '../../../ScrollPane';
 import DropZone from '../../../Dropzone';
 import { DRAGGING_ID, set_dragged_to_different_viewport } from '../../state/browser-actions';
+import { validateDraggable } from '../../../Draggable';
 
 import _classes from './view.module.css';
 

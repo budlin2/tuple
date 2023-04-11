@@ -3,12 +3,12 @@ import { useContext, DragEvent as rDragEvent } from 'react';
 import { TupleContext } from '../../..';
 import { ID, TupleContextT } from '../../../TupleTypes';
 import Tab from './Tab';
-import { validateDraggable } from '../../../state';
 import { addTab } from '../../../state/dispatchers';
 import { set_dragged_to_different_viewport } from '../../../state/browser-actions';
 
 import _classes from './tabbar.module.css';
 import _global_classes from '../../../../styles.module.css';
+import { validateDraggable } from '../../../../Draggable';
 
 
 interface Props {

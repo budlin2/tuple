@@ -24,7 +24,7 @@
     min-width: 5rem;
     max-width: 8rem;
     flex-shrink: 0;
-    height: var(--TAB-BAR-HEIGHT);
+    height: var(--TAB-HEIGHT);
 
     cursor: pointer;
 

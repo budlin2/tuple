@@ -9,7 +9,7 @@ import {
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
-import { open_new_viewport_window, rename_storage_port_key, set_storage_port_open } from '../state/browser-actions';
+import { open_new_viewport_window, rename_storage_port_key } from '../state/browser-actions';
 import { TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';

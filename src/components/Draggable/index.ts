@@ -35,3 +35,9 @@ export const cleanupDraggable = () => {
     if (draggable?.parentNode)
         draggable.parentNode.removeChild(draggable);
 }
+
+
+export const validateDraggable = (e: DragEvent<Element>): boolean => {
+    const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
+    return !!dragPageId;
+}
