@@ -1,9 +1,4 @@
-import {
-    useContext,
-    useEffect,
-    useRef,
-    DragEvent as rDragEvent
-} from 'react';
+import { useContext, DragEvent as rDragEvent } from 'react';
 
 import { TupleContext } from '../../..';
 import { ID, TupleContextT } from '../../../TupleTypes';
@@ -26,7 +21,6 @@ const TabBar = ({
     portId,
     pageIds,
 }: Props) => {
-    const tabbarRef = useRef<HTMLDivElement>();
     const {
         dispatch,
         state:{ classes, styles, viewportId }
@@ -36,14 +30,6 @@ const TabBar = ({
         ${_global_classes.noScrollbar}
         ${_classes?.tabBar || ''}
         ${classes?.tabBar  || ''}`;
-
-    // Note: Unfortunate, but much of Tuple's CSS relies on tabbar height.
-    //       This is a hack in case the user changes it in their custom CSS.
-    useEffect(() => {
-        const rootCSS = document.querySelector(':root') as HTMLDivElement;
-        const tabbarHeight = tabbarRef.current?.clientHeight;
-        rootCSS.style.setProperty('--TAB-BAR-HEIGHT', `${tabbarHeight.toString()}px`);
-    }, [tabbarRef]);
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -71,8 +57,7 @@ const TabBar = ({
     }
 
     return (
-        <div ref={tabbarRef} 
-            className={tabBarClassName}
+        <div className={tabBarClassName}
             style={styles?.tabBar}
             onDragOver={dragOverHandler}
             onDrop={dropHandler}

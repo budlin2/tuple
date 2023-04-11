@@ -78,7 +78,17 @@ export const Tab = ({
 
     const draggableClass = classes?.draggable || '';
 
-    const tabStyle = isActiveTab ? {...styles.tab, ...styles.tabActive} : styles.tab;
+    const tabStyle = isActiveTab
+            ? {...styles.tab, ...styles.tabActive}
+            : styles.tab;
+
+    // Note: Unfortunate, but much of Tuple's CSS relies on tab height.
+    //       This is a hack in case the user changes it in their custom CSS.
+    useEffect(() => {
+        const rootCSS = document.querySelector(':root') as HTMLDivElement;
+        const tabbarHeight = tabRef.current?.clientHeight;
+        rootCSS.style.setProperty('--TAB-HEIGHT', `${tabbarHeight.toString()}px`);
+    }, [tabRef]);
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
