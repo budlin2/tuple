@@ -46,10 +46,6 @@ const View = ({
         ${_classes.contentContainer}
         ${classes.scrollPane}`;
 
-    const pageClassName = `
-        ${_classes.page}
-        ${classes.page}`;
-
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
@@ -88,10 +84,10 @@ const View = ({
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
             <DropZone
-                dropZoneRootStyle       = {styles.page}
+                dropZoneRootStyle       = {styles.pane}
                 centerDropZoneStyle     = {styles.dropZoneCenter}
                 sidesDropZoneStyle      = {styles.dropZoneSide}
-                dropZoneRootClassName   = {classes.page}
+                dropZoneRootClassName   = {classes.pane}
                 centerDropZoneClassName = {classes.dropZoneCenter}
                 sidesDropZoneClassName  = {classes.dropZoneSide}
                 dropCenterCb            = {dropCenterHandler}
