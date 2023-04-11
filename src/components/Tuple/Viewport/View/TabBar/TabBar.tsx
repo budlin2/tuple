@@ -41,7 +41,7 @@ const TabBar = ({
     //       This is a hack in case the user changes it in their custom CSS.
     useEffect(() => {
         const rootCSS = document.querySelector(':root') as HTMLDivElement;
-        const tabbarHeight = tabbarRef.current?.offsetHeight;
+        const tabbarHeight = tabbarRef.current?.clientHeight;
         rootCSS.style.setProperty('--TAB-BAR-HEIGHT', `${tabbarHeight.toString()}px`);
     }, [tabbarRef]);
 
