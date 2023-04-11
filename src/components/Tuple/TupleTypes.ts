@@ -1,7 +1,7 @@
 import { CSSProperties, Dispatch, DragEvent } from "react";
 import { DirectionT, SideT } from "../SplitPane/SplitPaneTypes";
 import { TreeT } from "./Tree/TreeTypes";
-import { PortsT, ViewportStateT, ViewportT } from "./Viewport/ViewportTypes";
+import { PortsT, ViewportStateT } from "./Viewport/ViewportTypes";
 
 
 export type ID = number | string;
@@ -134,7 +134,6 @@ export interface TupleStateT {
     styles: TupleStylesT,
     classes: TupleClassesT,
     events: EventsT,
-    tabBarHeight: number,  // kinda gross, but a lot of styling is dependent on the tab bar height
 }
 
 export interface TupleContextT {
@@ -150,8 +149,6 @@ export enum TupleActionKind {
     ADD_VIEW="ADD_VIEW",
     REMOVE_VIEW="REMOVE_VIEW",
     CHANGE_ACTIVE_VIEW="CHANGE_ACTIVE_VIEW",
-
-    SET_TAB_BAR_HEIGHT="SET_TAB_BAR_HEIGHT",
 }
 
 export interface AddTabPayloadT { portId: ID, pageId: ID, dragPortId: ID, index: number };
@@ -172,13 +169,9 @@ export interface RemoveViewActionT { type: TupleActionKind.REMOVE_VIEW, payload:
 export interface ChangeActiveViewPayloadT { portId: ID, pageId: ID };
 export interface ChangeActiveViewActionT { type: TupleActionKind.CHANGE_ACTIVE_VIEW, payload: ChangeActiveViewPayloadT };
 
-export interface SetTabBarHeightPayloadT { height: number };
-export interface SetTabBarHeightActionT { type: TupleActionKind.SET_TAB_BAR_HEIGHT, payload: SetTabBarHeightPayloadT };
-
 export type TupleActionT = AddTabActionT
                          | RemoveTabActionT
                          | AddNewViewActionT
                          | AddViewActionT
                          | RemoveViewActionT
-                         | ChangeActiveViewActionT
-                         | SetTabBarHeightActionT;
+                         | ChangeActiveViewActionT;

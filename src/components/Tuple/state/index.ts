@@ -8,7 +8,6 @@ import {
     ChangeActiveViewPayloadT,
     RemoveTabPayloadT,
     RemoveViewPayloadT,
-    SetTabBarHeightPayloadT,
     TupleActionKind,
     TupleActionT,
     TupleStateT
@@ -22,7 +21,6 @@ import {
     _change_active_view,
     _remove_tab,
     _remove_view,
-    _set_tab_bar_height,
 } from "./actions";
 import { get_viewport_id_from_query_params, set_storage_port } from "./browser-actions";
 
@@ -53,8 +51,6 @@ export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT =
             return _with_storage_update(_remove_view(state, action.payload as RemoveViewPayloadT));
         case TupleActionKind.CHANGE_ACTIVE_VIEW:
             return _with_storage_update(_change_active_view(state, action.payload as ChangeActiveViewPayloadT));
-        case TupleActionKind.SET_TAB_BAR_HEIGHT:
-            return _set_tab_bar_height(state, action.payload as SetTabBarHeightPayloadT);
         default:
             return state;
     }

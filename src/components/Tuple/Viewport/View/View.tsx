@@ -1,4 +1,4 @@
-import { useContext, useRef, MutableRefObject, DragEvent } from 'react';
+import { useContext, DragEvent } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 import TabBar from './TabBar/TabBar';
@@ -27,13 +27,12 @@ const View = ({
     pageIds,
     activePageId,
 }: Props) => {
-    if (pageIds && pageIds.length <= 0) return null;
-
-    const viewRef = useRef<HTMLDivElement>();
+    if (pageIds && pageIds.length <= 0)
+        return null;
 
     const {
         dispatch,
-        state: { pages, styles, classes, viewportId, tabBarHeight }
+        state: { pages, styles, classes, viewportId }
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
@@ -85,19 +84,16 @@ const View = ({
 
     return (
         <div
-            ref={viewRef as MutableRefObject<HTMLDivElement>}
             className={viewClassName}
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
             <DropZone
-                parentRef               = {viewRef}
                 dropZoneRootStyle       = {styles.page}
                 centerDropZoneStyle     = {styles.dropZoneCenter}
                 sidesDropZoneStyle      = {styles.dropZoneSide}
                 dropZoneRootClassName   = {classes.page}
                 centerDropZoneClassName = {classes.dropZoneCenter}
                 sidesDropZoneClassName  = {classes.dropZoneSide}
-                offsetHeight            = {tabBarHeight}
                 dropCenterCb            = {dropCenterHandler}
                 dropSidesCb             = {dropSideHandler}
                 validateDraggable       = {validateDraggable}>

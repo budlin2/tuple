@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------------------------------------------------------
-// Both the entry point to Tuple, but also a 'Provider' component
+// Both the entry point to Tuple, but also a context 'Provider' component
 //----------------------------------------------------------------------------------------------------------------------
 import {
     createContext,
@@ -54,7 +54,6 @@ export const TupleContext = createContext({
         styles: {},
         classes: {},
         events: {},
-        tabBarHeight: 0,
     }
 } as TupleContextT);
 
@@ -203,7 +202,6 @@ const Tuple = ({
         styles: styles || {},
         classes: classes || {},
         events: events || {},
-        tabBarHeight: 0,
     };
 
 

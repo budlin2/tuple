@@ -1,14 +1,19 @@
-import { useContext, DragEvent, useRef, useEffect } from 'react';
+import {
+    useContext,
+    useEffect,
+    useRef,
+    DragEvent as rDragEvent
+} from 'react';
 
 import { TupleContext } from '../../..';
 import { ID, TupleContextT } from '../../../TupleTypes';
 import Tab from './Tab';
+import { validateDraggable } from '../../../state';
+import { addTab } from '../../../state/dispatchers';
+import { set_dragged_to_different_viewport } from '../../../state/browser-actions';
 
 import _classes from './tabbar.module.css';
 import _global_classes from '../../../../styles.module.css';
-import { validateDraggable } from '../../../state';
-import { addTab, setTabBarHeight } from '../../../state/dispatchers';
-import { set_dragged_to_different_viewport } from '../../../state/browser-actions';
 
 
 interface Props {
@@ -21,8 +26,7 @@ const TabBar = ({
     portId,
     pageIds,
 }: Props) => {
-    const tabBarRef = useRef();
-
+    const tabbarRef = useRef<HTMLDivElement>();
     const {
         dispatch,
         state:{ classes, styles, viewportId }
@@ -33,17 +37,23 @@ const TabBar = ({
         ${_classes?.tabBar || ''}
         ${classes?.tabBar  || ''}`;
 
+    // Note: Unfortunate, but much of Tuple's CSS relies on tabbar height.
+    //       This is a hack in case the user changes it in their custom CSS.
     useEffect(() => {
-        const { offsetHeight: height } = tabBarRef?.current as HTMLDivElement;
-        setTabBarHeight(dispatch, height);
-    }, [tabBarRef, setTabBarHeight, dispatch]);
+        const rootCSS = document.querySelector(':root') as HTMLDivElement;
+        const tabbarHeight = tabbarRef.current?.offsetHeight;
+        rootCSS.style.setProperty('--TAB-BAR-HEIGHT', `${tabbarHeight.toString()}px`);
+    }, [tabbarRef]);
 
-    const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const dragOverHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
     }
 
-    const dropHandler = (e: DragEvent<HTMLDivElement>) => {
+    const dropHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -61,7 +71,7 @@ const TabBar = ({
     }
 
     return (
-        <div ref={tabBarRef}
+        <div ref={tabbarRef} 
             className={tabBarClassName}
             style={styles?.tabBar}
             onDragOver={dragOverHandler}

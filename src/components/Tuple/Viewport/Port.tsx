@@ -20,7 +20,7 @@ interface PortProps { id: ID }
 const Port = ({ id }: PortProps): JSX.Element => {
     const {
         dispatch,
-        state: { viewport, tabBarHeight }
+        state: { viewport }
     }: TupleContextT = useContext(TupleContext);
 
     const port: PortT = viewport.ports[id];
@@ -53,7 +53,6 @@ const Port = ({ id }: PortProps): JSX.Element => {
 
         return (
             <SplitPane
-                paneStyle={{ minWidth: tabBarHeight, minHeight: tabBarHeight }}
                 dir={port.direction as DirectionT}
                 resizerPos='50%'>
                 {/* TODO: add resizerPos to SplitViewT */}

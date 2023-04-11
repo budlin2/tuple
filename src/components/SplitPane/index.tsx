@@ -36,6 +36,7 @@ export interface Props {
     resizerPos?: number | string,
     resizable?: boolean,
     paneStyle?: CSSProperties
+    paneClassName?: string,
     children: ReactNode,
     onResize?: ((e: MouseEvent) => null) | null,
 }
@@ -48,6 +49,7 @@ const SplitPane = ({
     resizerPos='50%',
     resizable=true,
     paneStyle={},
+    paneClassName='',
     children,
     onResize=null,
 }: Props) => {
@@ -65,17 +67,20 @@ const SplitPane = ({
 
     // After first render, make sure headLength is number
     useEffect(() => {
-        const headLen = dir === 'horizontal'
-            ? headRef.current?.offsetWidth as number
-            : headRef.current?.offsetHeight as number;
+        const headLen: number = (dir === 'horizontal')
+            ? headRef.current?.offsetWidth
+            : headRef.current?.offsetHeight;
         setHeadLength(headLen);
     }, [resizerPos, headRef, setHeadLength]);
 
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
     const mouseDownHandler = (e: MouseEvent) => {
         if (dir === 'horizontal') {
             setResizing(true);
             setMousePos(e.clientX);
-            setHeadLength(headRef.current?.offsetWidth as number);
+            setHeadLength(headRef.current?.offsetWidth);
         } else if (dir === 'vertical') {
             setResizing(true);
             setMousePos(e.clientY);
@@ -124,32 +129,37 @@ const SplitPane = ({
         e.preventDefault();
     };
 
-    let containerClassName = _classes.container;
-    let resizerClassName = _classes.resizer;
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
+    let containerClassName  = _classes.container;
+    let resizerClassName    = _classes.resizer;
 
     const headClassName= `
         ${_global_classes.noScrollbar}
         ${_classes.pane}
-        ${_classes.paneHead}`;
+        ${_classes.paneHead}
+        ${paneClassName}`;
 
     const tailClassName = `
         ${_global_classes.noScrollbar}
         ${_classes.pane}
-        ${_classes.paneTail}`;
+        ${_classes.paneTail}
+        ${paneClassName}`;
 
-    const containerStyle = { width, height };
-    let headStyle = paneStyle;
-    const tailStyle = paneStyle;
+    const containerStyle: CSSProperties = { width, height };
+    const tailStyle: CSSProperties      = paneStyle;
+    let headStyle: CSSProperties        = paneStyle;
 
     switch(dir) {
         case 'horizontal':
-            headStyle = { ...headStyle, width: headLength };
-            resizerClassName = `${resizerClassName} ${_classes.resizerHorizontal}`;
+            headStyle           = { ...headStyle, width: headLength };
+            resizerClassName    = `${resizerClassName} ${_classes.resizerHorizontal}`;
             break;
         case 'vertical':
-            containerClassName = `${_classes.container} ${_classes.containerVertical}`;
-            headStyle = { ...headStyle, height: headLength };
-            resizerClassName = `${resizerClassName} ${_classes.resizerVertical}`;
+            containerClassName  = `${_classes.container} ${_classes.containerVertical}`;
+            headStyle           = { ...headStyle, height: headLength };
+            resizerClassName    = `${resizerClassName} ${_classes.resizerVertical}`;
             break;
         case 'none':
         default:

@@ -11,7 +11,6 @@ import {
     ID,
     RemoveTabActionT,
     RemoveViewActionT,
-    SetTabBarHeightActionT,
     TupleActionKind,
     TupleActionT,
 } from "../TupleTypes";
@@ -138,18 +137,4 @@ export const changeView = (
     };
 
     dispatch(changeActiveViewAction); 
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------
-export const setTabBarHeight = (
-    dispatch: Dispatch<TupleActionT>,
-    height: number,
-) => {
-    const setTabBarHeightAction: SetTabBarHeightActionT = {
-        type: TupleActionKind.SET_TAB_BAR_HEIGHT,
-        payload: { height }
-    };
-
-    dispatch(setTabBarHeightAction);
 }

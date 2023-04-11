@@ -1,6 +1,6 @@
 :root {
     --GOOD_FONT: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    --TAB-HEIGHT: 2rem;
+    --TAB-BAR-HEIGHT: 2rem;
 }
 
 .noScrollbar {
@@ -26,4 +26,4 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-  }
+}

@@ -1,0 +1,4 @@
+.root {
+    height: calc(100% - var(--TAB-BAR-HEIGHT));
+    width: 100%;
+}

@@ -5,25 +5,21 @@ import {
     DragEvent,
     ReactElement,
     MouseEvent as rMouseEvent,
-    useEffect,
-    useCallback,
-    MutableRefObject
 } from 'react';
 
 import DropZoneCenter from './Center/DropZoneCenter';
 import { DropSideT } from './DropZoneTypes';
 import DropZoneSides from './Sides/DropZoneSides';
 
+import _classes from './DropZone.module.css';
 
 export interface Props {
-    parentRef                   : MutableRefObject<HTMLDivElement>,
     dropZoneRootStyle?          : CSSProperties
     centerDropZoneStyle?        : CSSProperties,
     sidesDropZoneStyle?         : CSSProperties,
     dropZoneRootClassName?      : string
     centerDropZoneClassName?    : string,
     sidesDropZoneClassName?     : string,
-    offsetHeight?               : number,  // possible offset for dropzone due to a sibling component (e.g. tabBar)
     dropCenterCb?               : ((e: DragEvent<Element>) => void) | null,
     dropSidesCb?                : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
     validateDraggable?          : ((e: DragEvent<Element>) => boolean) | null,
@@ -32,42 +28,23 @@ export interface Props {
 
 
 const DropZone = ({
-    parentRef,
     dropZoneRootStyle,
     centerDropZoneStyle=null,
     sidesDropZoneStyle=null,
     dropZoneRootClassName,
     centerDropZoneClassName=null,
     sidesDropZoneClassName=null,
-    offsetHeight=0,
     dropCenterCb=null,
     dropSidesCb=null,
     validateDraggable=null,
     children,
 }: Props) => {
     const rootRef = useRef<HTMLDivElement>();
-    const [parentHeight, setParentHeight] = useState<number>(0);
     const [dropZonesActive, setDropZonesActive] = useState(false);
 
-    const rootStyle: CSSProperties = {
-        ...dropZoneRootStyle,
-        width: '100%',
-        height: parentHeight - offsetHeight,
-    };
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Parent Height Observer
-    //------------------------------------------------------------------------------------------------------------------
-    useEffect(() => {
-        const resizeObserver = new ResizeObserver(() => {
-            const pHeight = parentRef?.current?.offsetHeight;
-            setParentHeight(pHeight);
-        });
-
-        resizeObserver.observe(parentRef?.current);
-
-        return () => resizeObserver.disconnect(); // clean up
-    }, [parentRef]);
+    const rootClassName = `
+        ${_classes.root}
+        ${dropZoneRootClassName}`;
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -106,8 +83,8 @@ const DropZone = ({
 
     return (
         <div ref={rootRef}
-            style={rootStyle}
-            className={dropZoneRootClassName}
+            className={rootClassName}
+            style={dropZoneRootStyle}
             onDragOver={onDragOverHandler}
             onDragLeave={onDragLeaveHandler}>
 
@@ -122,7 +99,6 @@ const DropZone = ({
                     style={sidesDropZoneStyle}
                     className={sidesDropZoneClassName}
                     dropZoneActive={dropZonesActive}
-                    hoverThickness={parentHeight * 0.2}
                     onDropCB={onDropSidesHandler}
                     validateDraggable={validateDraggable}>
 

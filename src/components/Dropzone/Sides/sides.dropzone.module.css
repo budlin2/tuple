@@ -15,6 +15,43 @@
     /* z-index: 1; */
 }
 
+/* DropZone */
+.dropZoneTop {
+    /* background: red; */
+    position: absolute;
+    top: 0;
+    height: var(--HOVER_THICKNESS);
+    width: 100%;
+    z-index: 2;
+}
+
+.dropZoneRight {
+    /* background: orange; */
+    position: absolute;
+    right: 0;
+    width: var(--HOVER_THICKNESS);
+    height: 100%;
+    z-index: 2;
+}
+
+.dropZoneBottom {
+    /* background: blue; */
+    position: absolute;
+    bottom: 0;
+    height: var(--HOVER_THICKNESS);  /* calc(var(--HOVER_THICKNESS) + var(--TAB-BAR-HEIGHT)); */
+    width: 100%;
+    z-index: 2;
+}
+
+.dropZoneLeft {
+    /* background: green; */
+    position: absolute;
+    left: 0;
+    top: var(--HOVER_THICKNESS);
+    width: var(--HOVER_THICKNESS);
+    height: var(--HOVER_THICKNESS_DIFF);
+    z-index: 2;
+}
 
 /* DropZone Display */
 .dropZoneDisplayTop {
