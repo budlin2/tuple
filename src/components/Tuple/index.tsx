@@ -70,7 +70,8 @@ export interface TupleProps {
     enableTrashcan?: boolean,
 };
 
-
+// TODO: Check that every pageId in the tree is in the pages object
+// The user should be able to disbale the check as it may be expensive
 const validateProps = ({
     pages,
     tree,
