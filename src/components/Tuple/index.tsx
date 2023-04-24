@@ -83,7 +83,7 @@ const validateProps = ({
     if (!Array.isArray(tree))
         throw Error('"tree" prop must be an array.');
 
-    if (!(isViewT(views) || isSplitViewT(views)))
+    if (views && !(isViewT(views) || isSplitViewT(views)))
         throw Error('"views" props should be of type - ViewT or SplitViewT.');
 }
 
