@@ -25,7 +25,7 @@ const Viewport = () => {
         ${classes?.viewport  || ''}`;
 
     // TODO: Custom Default Views?
-    if (viewport.root == '') {
+    if (!viewport.root) {
         return <DefaultView />
     }
 

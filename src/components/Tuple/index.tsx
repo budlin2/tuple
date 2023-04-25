@@ -187,7 +187,7 @@ const Tuple = ({
         }
 
         // No ports found. Create new root
-        set_storage_port(ROOT_PORT_ID, null, null, true);
+        set_storage_port(ROOT_PORT_ID, {}, null, true);
         return emptyPortMap;
     };
 

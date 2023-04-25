@@ -23,7 +23,7 @@ const Port = ({ id }: PortProps): JSX.Element => {
         state: { viewport }
     }: TupleContextT = useContext(TupleContext);
 
-    const port: PortT = viewport.ports[id];
+    const port: PortT = viewport?.ports && viewport?.ports[id];
 
     useEffect(() => {  // When list becomes empty
         if (port && port.pageIds && port.pageIds.length <= 0) {

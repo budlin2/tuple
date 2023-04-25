@@ -197,17 +197,10 @@ const Orange: ViewT = {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// Six Views
-const SixViewsTopRight: SplitViewT = { head: Cars, tail: Carpe, direction: 'vertical' };
-const SixViewsTop: SplitViewT = { head: HelloWorld, tail: SixViewsTopRight, direction: 'horizontal' };
-const SixViewsBottomLeft: SplitViewT = { head: Apple, tail: Banana, direction: 'horizontal' };
-const SixViewsBottom: SplitViewT = { head: SixViewsBottomLeft, tail: Diem, direction: 'horizontal' };
-const _SixViews: SplitViewT = { head: SixViewsTop, tail: SixViewsBottom, direction: 'vertical' };
-
-export const SixViews = Template.bind({});
-SixViews.args = {
+// No Views
+export const NoViews = Template.bind({});
+NoViews.args = {
     pages,
-    views: _SixViews,
     tree,
     classes,
 };
