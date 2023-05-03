@@ -22,11 +22,12 @@
     padding-left: var(--PADDING_MEDIUM);
     padding-right: var(--PADDING_SMALL);
     min-width: 5rem;
-    max-width: 8rem;
+    max-width: 12rem;
     flex-shrink: 0;
     height: var(--TAB-HEIGHT);
 
     cursor: pointer;
+    font-size: 0.85rem;
 
     border-right: 1px solid black;
 }
