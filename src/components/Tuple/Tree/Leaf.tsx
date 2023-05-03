@@ -43,10 +43,10 @@ const Leaf = ({
     const draggableClass = classes?.draggable || '';
 
 
-    const getTopLeftPortIdHelper = (ports: PortsT, curPortId: ID): ID => {
+    const getTopLeftPortIdHelper = (ports: PortsT, curPortId: ID): ID | null => {
         const currentPort = ports[curPortId];
         if (!currentPort)
-            throw Error(`ID, ${curPortId}, missing from "ports"`);
+            return null;
 
         if (!ports[curPortId].isSplitView)
             return curPortId;
@@ -54,7 +54,7 @@ const Leaf = ({
         return getTopLeftPortIdHelper(ports, currentPort.headId);
     }
 
-    const getTopLeftPortId = (): ID => {
+    const getTopLeftPortId = (): ID | null => {
         const {root, ports} = viewport;
         return getTopLeftPortIdHelper(ports, root);
     }
@@ -93,7 +93,11 @@ const Leaf = ({
         }
 
         const topLeftPortId = getTopLeftPortId();
-        addTab(dispatch, topLeftPortId, '', pageId);
+        if (topLeftPortId) {
+            addTab(dispatch, topLeftPortId, '', pageId);
+        } else {
+            addNewView(dispatch, pageId);
+        }
     }
 
     return (
