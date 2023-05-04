@@ -41,3 +41,7 @@ export const validateDraggable = (e: DragEvent<Element>): boolean => {
     const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
     return !!dragPageId;
 }
+
+//---------------------------------------------------------------------------------------------------------------------
+// Checks if coordinates are outside window. Use e.clientX and e.clientY for pointer events
+export const outsideWindow = (x: number, y: number) => x < 0 || x > window.outerWidth || y < 0 || y > window.outerHeight;

@@ -1,9 +1,14 @@
-import { CSSProperties, DragEvent, useContext } from 'react'
+import { DragEvent, useContext } from 'react'
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
-import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
-import { DRAGGING_ID } from '../state/browser-actions';
+import { cleanupDraggable, outsideWindow, setCustomDragImage } from '../../Draggable';
+import {
+    DRAGGING_ID,
+    get_dragged_to_different_viewport,
+    open_new_viewport_window,
+    set_storage_port_from_page_id
+} from '../state/browser-actions';
 import { addTab, addNewView } from '../state/dispatchers';
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { PortsT } from '../Viewport/ViewportTypes';
@@ -65,9 +70,17 @@ const Leaf = ({
         setDragging(true);
     };
 
-    const dragEndHandler = () => {
+    const dragEndHandler = async (e: DragEvent) => {
         cleanupDraggable();
         setDragging(false);
+
+        const { clientX: x, clientY: y } = e;
+        if (outsideWindow(x, y)) {
+            if (!( await get_dragged_to_different_viewport() )) {
+                const newViewportId = set_storage_port_from_page_id(pageId);
+                open_new_viewport_window(newViewportId);
+            }
+        }
     }
 
     const dragOverHandler = (e: DragEvent) => {

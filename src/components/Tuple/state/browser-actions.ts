@@ -150,10 +150,6 @@ export const get_viewport_id_from_query_params = (): string => {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-// Checks if coordinates are outside window. Use e.clientX and e.clientY for pointer events
-export const outside_window = (x: number, y: number) => x < 0 || x > window.outerWidth || y < 0 || y > window.outerWidth;
-
-//---------------------------------------------------------------------------------------------------------------------
 // On drop operations we need to know if we dropped the draggable on
 // a different viewport than the one the draggable originated from
 export const get_dragged_to_different_viewport = async (timeout: number = 0): Promise<boolean> => {

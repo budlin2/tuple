@@ -10,12 +10,16 @@ import {
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '../../..';
-import { cleanupDraggable, setCustomDragImage, validateDraggable } from '../../../../Draggable';
+import {
+    cleanupDraggable,
+    outsideWindow,
+    setCustomDragImage,
+    validateDraggable
+} from '../../../../Draggable';
 import {
     DRAGGING_ID,
     get_dragged_to_different_viewport,
     open_new_viewport_window,
-    outside_window,
     set_dragged_to_different_viewport,
     set_storage_port_from_page_id,
 } from '../../../state/browser-actions';
@@ -145,15 +149,12 @@ export const Tab = ({
     }
 
     const dragEndHandler = async (e: DragEvent<HTMLDivElement>) => {
-        // e.preventDefault();
-        // e.stopPropagation();
-
         setDragging(false);
         cleanupDraggable();
         removeTabHandler();
 
         const { clientX: x, clientY: y } = e;
-        if (outside_window(x, y)) {
+        if (outsideWindow(x, y)) {
             if (!( await get_dragged_to_different_viewport() )) {
                 const newViewportId = set_storage_port_from_page_id(pageId);
                 open_new_viewport_window(newViewportId);
