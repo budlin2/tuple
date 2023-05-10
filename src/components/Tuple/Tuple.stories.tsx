@@ -50,74 +50,65 @@ const tomato = <div>tomato</div>;
 const orange = <div>orange</div>;
 
 const pages: PagesT = {
-    'hello':    { name: 'lorem'     , component: () => <Page>{lorem}</Page> },
-    'world':    { name: 'HELLO'     , component: () => <Page>{world}</Page> },
-    'ford':     { name: 'ford'      , component: () => <Page>{ford}</Page> },
-    'jeep':     { name: 'jeep'      , component: () => <Page>{jeep}</Page> },
-    'chrysler': { name: 'chrysler'  , component: () => <Page>{chrysler}</Page> },
-    'ferrari':  { name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
-    'gm':       { name: 'gm'        , component: () => <Page>{gm}</Page> },
-    'honda':    { name: 'honda'     , component: () => <Page>{honda}</Page> },
-    'carpe':    { name: 'carpe'     , component: () => <Page>{carpe}</Page> },
-    'diem':     { name: 'diem'      , component: () => <Page>{diem}</Page> },
-    'monkey':   { name: 'monkey'    , component: () => <Page>{monkey}</Page> },
-    'pox':      { name: 'pox'       , component: () => <Page>{pox}</Page> },
-    'apple':    { name: 'apple'     , component: () => <Page>{apple}</Page> },
-    'banana':   { name: 'banana'    , component: () => <Page>{banana}</Page> },
-    'carrot':   { name: 'carrot'    , component: () => <Page>{carrot}</Page> },
-    'brocoli':  { name: 'brocoli'   , component: () => <Page>{brocoli}</Page> },
-    'tomato':   { name: 'tomato'    , component: () => <Page>{tomato}</Page> },
-    'orange':   { name: 'orange'    , component: () => <Page>{orange}</Page> },
+    'lorem':    { id: 10, name: 'lorem'     , component: () => <Page>{lorem}</Page> },
+    'world':    { id: 11, name: 'world'     , component: () => <Page>{world}</Page> },
+    'ford':     { id: 12, name: 'ford'      , component: () => <Page>{ford}</Page> },
+    'jeep':     { id: 13, name: 'jeep'      , component: () => <Page>{jeep}</Page> },
+    'chrysler': { id: 14, name: 'chrysler'  , component: () => <Page>{chrysler}</Page> },
+    'ferrari':  { id: 15, name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
+    'gm':       { id: 16, name: 'gm'        , component: () => <Page>{gm}</Page> },
+    'honda':    { id: 17, name: 'honda'     , component: () => <Page>{honda}</Page> },
+    'carpe':    { id: 18, name: 'carpe'     , component: () => <Page>{carpe}</Page> },
+    'diem':     { id: 19, name: 'diem'      , component: () => <Page>{diem}</Page> },
+    'monkey':   { id: 20, name: 'monkey'    , component: () => <Page>{monkey}</Page> },
+    'pox':      { id: 21, name: 'pox'       , component: () => <Page>{pox}</Page> },
+    'apple':    { id: 22, name: 'apple'     , component: () => <Page>{apple}</Page> },
+    'banana':   { id: 23, name: 'banana'    , component: () => <Page>{banana}</Page> },
+    'carrot':   { id: 24, name: 'carrot'    , component: () => <Page>{carrot}</Page> },
+    'brocoli':  { id: 25, name: 'brocoli'   , component: () => <Page>{brocoli}</Page> },
+    'tomato':   { id: 26, name: 'tomato'    , component: () => <Page>{tomato}</Page> },
+    'orange':   { id: 27, name: 'orange'    , component: () => <Page>{orange}</Page> },
 };
 
 //----------------------------------------------------------------------------------------------------------------------
 // TREE
 //----------------------------------------------------------------------------------------------------------------------
 const tree: TreeT = [
-    'hello',
-    'world',
+    { id: 10, pageId: 'lorem' },
+    { id: 11, pageId: 'world' },
     { id: 1, label: 'yolo', branches: [
-        'carpe',
-        'diem',
+        { id: 12, pageId: 'carpe' },
+        { id: 13, pageId: 'diem' },
         { id: 2, label: 'hello again', branches: [
-            'hello',
-            'world',
+            { id: 14, pageId: 'world' },
             { id: 3, label: 'cars', branches: [
-                'ford',
-                'jeep',
-                'chrysler',
-                'ferrari',
-                'gm',
-                'honda',
+                { id: 15, pageId: 'ford' },
+                { id: 16, pageId: 'jeep' },
+                { id: 17, pageId: 'chrysler' },
+                { id: 18, pageId: 'ferrari' } ,
+                { id: 19, pageId: 'gm' },
+                { id: 20, pageId: 'honda' },
                 { id: 4, label: 'cars', branches: [
-                    'ford',
-                    'jeep',
-                    'chrysler',
-                    'ferrari',
-                    'gm',
-                    'honda',
+                    { id: 21, pageId: 'ford' },
+                    { id: 22, pageId: 'jeep' },
+                    { id: 23, pageId: 'chrysler' },
+                    { id: 24, pageId: 'ferrari' },
+                    { id: 25, pageId: 'gm' },
+                    { id: 26, pageId: 'honda' },
                     { id: 5, label: 'cars', branches: [
-                        'ford',
-                        'jeep',
-                        'chrysler',
-                        'ferrari',
-                        'gm',
-                        'honda',
-                        { id: 6, label: 'cars', branches: [
-                            'ford',
-                            'jeep',
-                            'chrysler',
-                            'ferrari',
-                            'gm',
-                            'honda',
-                        ]}
+                        { id: 27, pageId: 'ford' },
+                        { id: 28, pageId: 'jeep' },
+                        { id: 29, pageId: 'chrysler' },
+                        { id: 30, pageId: 'ferrari' },
+                        { id: 31, pageId: 'gm' },
+                        { id: 32, pageId: 'honda' },
                     ]}
                 ]}
             ]}
         ]}
     ]},
-    'monkey',
-    'pox',
+    { id: 33, pageId: 'monkey' },
+    { id: 34, pageId: 'pox' },
 ];
 
 

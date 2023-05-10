@@ -213,7 +213,6 @@ const Tuple = ({
 
     return (
         <TupleContext.Provider value={context}>
-            {/* <TupleInner showTree={false} /> */}
             <TupleInner enableTrashcan={enableTrashcan} />
         </TupleContext.Provider>
     );

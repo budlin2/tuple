@@ -59,22 +59,14 @@ const Rootlet = ({
 
     const draggableClass = classes?.draggable || '';
 
-
-    const dragStartHandler = (e: DragEvent) => {
-        setCustomDragImage(e, _text, draggableClass, styles.draggable);
-    };
-
-    const dragEndHandler = () => {
-        cleanupDraggable();
-        open_new_viewport_window(_text);
-    }
-
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
     const mouseEnterHandler = () => setHoveringSymbol(true);
     const mouseLeaveHandler = () => setHoveringSymbol(false);
 
-    const doubleClickHandler = () => {
-        open_new_viewport_window(_text);
-    }
+    const doubleClickHandler = () => open_new_viewport_window(_text);
+    const textDoubleClickHandler = (e: rMouseEvent) => e.stopPropagation();
 
     const textChangeHandler = (e: any) => {
         const { value: newText } = e.target;
@@ -83,32 +75,36 @@ const Rootlet = ({
             setText(newText);
     }
 
-    const textDoubleClickHandler = (e: rMouseEvent) => e.stopPropagation();
+    const dragStartHandler = (e: DragEvent) => {
+        setCustomDragImage(e, _text, draggableClass, styles.draggable);
+    }
+
+    const dragEndHandler = () => {
+        cleanupDraggable();
+        open_new_viewport_window(_text);
+    }
 
     return (
-        <div
-            style={styles.rootlet}
-            className={rootletClassName}
-            draggable
-            onDoubleClick={doubleClickHandler}
-            onDragStart={dragStartHandler}
-            onDragEnd={dragEndHandler}
-            onMouseEnter={mouseEnterHandler}
-            onMouseLeave={mouseLeaveHandler}>
+        <div draggable className={ rootletClassName }
+            style           ={ styles.rootlet }
+            onDoubleClick   ={ doubleClickHandler }
+            onDragStart     ={ dragStartHandler }
+            onDragEnd       ={ dragEndHandler }
+            onMouseEnter    ={ mouseEnterHandler }
+            onMouseLeave    ={ mouseLeaveHandler }>
             <>
                 <div className={symbolContainerClassName} style={styles.symbolContainer}>
                     { displaySymbol }
                 </div>
 
-                <input type="text"
-                    ref={textboxRef}
-                    className={rootletTextBoxClassName}
-                    style={styles.rootletTextBox}
-                    id={_text}
-                    name={_text}
-                    value={_text}
-                    onDoubleClick={textDoubleClickHandler}
-                    onChange={textChangeHandler}
+                <input type="text" ref={ textboxRef }
+                    id              ={ _text }
+                    name            ={ _text }
+                    value           ={ _text }
+                    className       ={ rootletTextBoxClassName }
+                    style           ={ styles.rootletTextBox }
+                    onDoubleClick   ={ textDoubleClickHandler }
+                    onChange        ={ textChangeHandler }
                 />
             </>
         </div>

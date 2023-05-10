@@ -15,6 +15,7 @@
     cursor: pointer;
     background: black;
     color: white;
+    z-index: 999;
 }
 
 .bubbleHidden {

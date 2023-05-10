@@ -1,7 +1,7 @@
 // https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
 export const getUniqueId = () => {
     return getRandomWord() + Date.now().toString(36) + Math.floor(
-        Math.pow(10, 12) + Math.random() * 9*Math.pow(10, 12)
+        Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)
     ).toString(36);
 }
 

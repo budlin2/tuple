@@ -4,8 +4,8 @@ import Leaf from './Leaf';
 import Branch from './Branch';
 import Root from './Root';
 import { TupleContext } from '..';
-import { BranchT } from './TreeTypes';
-import { ID, isID, PageT, TupleContextT } from '../TupleTypes';
+import { BranchT, LeafT, isLeaf } from './TreeTypes';
+import { ID, PageT, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 import Trashcan from './Trashcan';
@@ -13,50 +13,50 @@ import ScrollPane from '../../ScrollPane';
 
 
 interface BranchesProps {
-    branchOrLeafId: BranchT | ID,
+    node: BranchT | LeafT,
     path: string[],
-    bid?: ID,
 }
 
 // Recursive tree component
-const Branches = ({branchOrLeafId, path, bid='b'}: BranchesProps, ) => {
+const Branches = ({ node, path }: BranchesProps, ) => {
     const { state: {
         pages,
         classes,
         styles,
     }}: TupleContextT = useContext(TupleContext);
 
-    if (isID(branchOrLeafId)) {
-        const id: ID = branchOrLeafId as ID;
-        const page: PageT = pages[id];
+    if (isLeaf(node)) {
+        const leaf = node as LeafT;
+        const page: PageT = pages[leaf.pageId];
 
         if (!page)
-            throw `Page ID not found within "pages": [${page}]`;
+            throw `Page ID not found within "pages": [${ leaf.pageId }]`;
 
-        return <Leaf text={page.name} pageId={id} path={path} />;
+        return <Leaf text={page.name} pageId={leaf.pageId} path={path} />;
     }
 
-    const branch: BranchT = branchOrLeafId as BranchT;
-    // Define these here, because root uses branch component with different styles
-    const branchClassName = `
-        ${_classes?.branch || ''}
-        ${classes?.branch || ''}`
+    const branch = node as BranchT;
 
-    const branchesClassName = `
-        ${_classes?.branches || ''}
-        ${classes?.branches  || ''}`;
+    const branchClassName = `${_classes?.branch || ''} ${classes?.branch || ''}`
+    const branchesClassName = `${_classes?.branches || ''} ${classes?.branches  || ''}`;
+
+    console.log('branch', branch)
 
     return (
-        <Branch text={branch.label}
-            branchClassName={branchClassName}
-            branchesClassName={branchesClassName}
-            branchStyle={styles.branch}
-            branchesStyle={styles.branches}
+        <Branch
+            text                ={ branch.label }
+            branchClassName     ={ branchClassName }
+            branchesClassName   ={ branchesClassName }
+            branchStyle         ={ styles.branch }
+            branchesStyle       ={ styles.branches }
         >
-            { branch.branches.map((b, i) => (
-                <Branches key={`${bid}${i}`} branchOrLeafId={b} path={path.concat(branch.label)}/>
+            { branch.branches.map( _node => (
+                <Branches
+                    key     ={ _node.id }
+                    node    ={ _node }
+                    path    ={ path.concat(`/${branch.label}`) }
+                />
             ))}
-
         </Branch>
     );
 };
@@ -76,25 +76,27 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
 
     const [scrollPaneHeight, setScrollPaneHeight] = useState<number>(0);
 
-    const treeClassName = `
-        ${_classes?.tree || ''}
-        ${classes?.tree  || ''}`;
-
-    const scrollPaneClassName = `
-        ${_classes.contentContainer}
-        ${classes.scrollPane}`;
-
-    useEffect(() => {
+    // TODO: What's going on here?
+    useEffect( () => {
         const treeHeight = treeRef.current.clientHeight;
         const rootHeight = rootContainerRef.current.clientHeight;
 
         setScrollPaneHeight(treeHeight - rootHeight);
-    }, [treeRef, rootContainerRef, setScrollPaneHeight]);
+    }, [ treeRef, rootContainerRef, setScrollPaneHeight ]);
 
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
+    
+    // CSSModules
+    const treeClassName = `${ _classes?.tree || '' } ${ classes?.tree  || '' }`;
+    const scrollPaneClassName = `${_classes.contentContainer} ${classes.scrollPane}`;
+
+    // Styles
     const scrollPaneStyle = { ...styles?.scrollPane, height: scrollPaneHeight }
+    //------------------------------------------------------------------------------------------------------------------
 
-    // TODO: Need better key than index
-    // https://reactjs.org/docs/lists-and-keys.html#:~:text=We%20don%E2%80%99t%20recommend%20using%20indexes%20for%20keys%20if%20the%20order%20of%20items%20may%20change.
     return (
         <div ref={treeRef} className={treeClassName} style={styles.tree}>
             <div ref={rootContainerRef}>
@@ -103,8 +105,11 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
 
             <ScrollPane className={scrollPaneClassName} style={scrollPaneStyle}>
                 <>
-                    { tree.map( (bid, index) => (
-                        <Branches key={index} branchOrLeafId={bid} path={[]}/>
+                    { tree.map( node => (
+                        <Branches
+                            key ={ node.id }
+                            node={ node }
+                            path={ [] }/>
                     ))}
                 </>
             </ScrollPane>

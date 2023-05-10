@@ -43,6 +43,7 @@ const Branch = ({
 
     const [expanded, setExpanded] = useState(open);
 
+    // Branch needs its styling passed in as prop because both branches and roots use this component
     const _branchClassName = `
         ${_global_classes.noHighlight}
         ${branchClassName || ''}`;

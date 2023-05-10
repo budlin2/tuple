@@ -10,6 +10,7 @@ export const isID = (id: any) => typeof(id) === 'string' || typeof(id) === 'numb
 export type ComponentRendererT = (props: any) => JSX.Element;
 
 export interface PageT {
+    id: ID,
     name: string,
     component: ComponentRendererT,
     props?: object,
