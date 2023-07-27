@@ -8,3 +8,5 @@ export const templates = {
     lannister,
     baratheon,
 }
+
+export { getUniqueId } from '../utils';

@@ -88,7 +88,7 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
     //------------------------------------------------------------------------------------------------------------------
     // Styling
     //------------------------------------------------------------------------------------------------------------------
-    
+
     // CSSModules
     const treeClassName = `${ _classes?.tree || '' } ${ classes?.tree  || '' }`;
     const scrollPaneClassName = `${_classes.contentContainer} ${classes.scrollPane}`;
