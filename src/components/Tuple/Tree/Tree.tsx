@@ -98,25 +98,27 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
     //------------------------------------------------------------------------------------------------------------------
 
     return (
-        <div ref={treeRef} className={treeClassName} style={styles.tree}>
-            <div ref={rootContainerRef}>
-                <Root rootName='Tuple' />
+        <div className={_classes.treeContainer}>
+            <div ref={treeRef} className={treeClassName} style={styles.tree}>
+                <div ref={rootContainerRef}>
+                    <Root rootName='Tuple' />
+                </div>
+
+                <ScrollPane className={scrollPaneClassName} style={scrollPaneStyle}>
+                    <>
+                        { tree.map( node => (
+                            <Branches
+                                key ={ node.id }
+                                node={ node }
+                                path={ [] }/>
+                        ))}
+                    </>
+                </ScrollPane>
+
+                { enableTrashcan && (
+                    <Trashcan symbol='' dragOverSymbol=''/> 
+                )}
             </div>
-
-            <ScrollPane className={scrollPaneClassName} style={scrollPaneStyle}>
-                <>
-                    { tree.map( node => (
-                        <Branches
-                            key ={ node.id }
-                            node={ node }
-                            path={ [] }/>
-                    ))}
-                </>
-            </ScrollPane>
-
-            { enableTrashcan && (
-                <Trashcan symbol='' dragOverSymbol=''/> 
-            )}
         </div>
     );
 }

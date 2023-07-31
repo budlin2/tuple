@@ -35,7 +35,7 @@
     color: var(--BARATHEON_COLOR_PRIMARY_DARK);
     border: none;
     margin: 1.4rem;
-    height: calc(100% - 2.4rem);
+    height: 90%;
     border-radius: 2rem;
     overflow: hidden;
 }
