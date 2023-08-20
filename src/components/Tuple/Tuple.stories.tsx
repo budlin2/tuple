@@ -103,20 +103,20 @@ const tree: TreeT = [
                         { id: 31, pageId: 'gm' },
                         { id: 32, pageId: 'honda' },
                         { id: 5, label: 'cars', branches: [
-                            { id: 27, pageId: 'ford' },
-                            { id: 28, pageId: 'jeep' },
-                            { id: 29, pageId: 'chrysler' },
-                            { id: 30, pageId: 'ferrari' },
-                            { id: 31, pageId: 'gm' },
-                            { id: 32, pageId: 'honda' },
+                            { id: 33, pageId: 'ford' },
+                            { id: 34, pageId: 'jeep' },
+                            { id: 35, pageId: 'chrysler' },
+                            { id: 36, pageId: 'ferrari' },
+                            { id: 37, pageId: 'gm' },
+                            { id: 38, pageId: 'honda' },
                         ]},
                     ]}
                 ]}
             ]}
         ]}
     ]},
-    { id: 33, pageId: 'monkey' },
-    { id: 34, pageId: 'pox' },
+    { id: 39, pageId: 'monkey' },
+    { id: 40, pageId: 'pox' },
 ];
 
 
@@ -218,6 +218,7 @@ SixViewsNoStyles.args = {
     pages,
     views: __SixViews,
     tree,
+    enableDynamicTree: true,
 };
 
 //----------------------------------------------------------------------------------------------------------------------

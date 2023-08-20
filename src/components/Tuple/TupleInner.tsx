@@ -16,9 +16,10 @@ import { get_viewport_id_from_query_params } from './state/browser-actions';
 
 interface TupleInnerProps {
     enableTrashcan: boolean,
+    enableDynamicTree: boolean,
 }
 
-const TupleInner = ({ enableTrashcan }: TupleInnerProps) => {
+const TupleInner = ({ enableTrashcan, enableDynamicTree }: TupleInnerProps) => {
     const { state: {
         styles,
         classes,
@@ -37,7 +38,7 @@ const TupleInner = ({ enableTrashcan }: TupleInnerProps) => {
     return (
         <div className={tupleClassName} style={styles.tuple}>
             <SplitPane resizerPos='25%'>
-                <Tree enableTrashcan={enableTrashcan} />
+                <Tree enableTrashcan={ enableTrashcan } isDynamicTree={ enableDynamicTree } />
                 <Viewport />
             </SplitPane>
         </div>

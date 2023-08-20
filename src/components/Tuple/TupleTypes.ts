@@ -29,9 +29,11 @@ export interface TupleStylesT {
 
     tree?: CSSProperties,
     branch?: CSSProperties,
+    branchDragOver?: CSSProperties,
     branches?: CSSProperties,
     leafContainer?: CSSProperties,
     leaf?: CSSProperties,
+    leafDragOver?: CSSProperties,
     root?: CSSProperties,
     rootlet?: CSSProperties,
     rootlets?: CSSProperties,
@@ -65,9 +67,11 @@ export interface TupleClassesT {
 
     tree?: string,
     branch?: string,
+    branchDragOver?: string,
     branches?: string,
     leafContainer?: string,
     leaf?: string,
+    leafDragOver?: string,
     root?: string,
     rootlet?: string,
     rootlets?: string,
@@ -100,6 +104,8 @@ export interface TupleClassesT {
 export type DragSourceT = 'tree' | 'viewport';
 export type DropDestinationT = 'branch' | 'leaf';
 
+// I think we're going to do away with Events...
+// All user really needs is onTreeUpdate, and onViewportUpdate
 export interface EventsT {
     onTreeDrop?: (
         e: DragEvent,

@@ -22,6 +22,8 @@
 
 /**********  BRANCH  **********/
 .branch {
+    display: flex;
+    justify-content: space-between;
     background: black;
     color: white;
     padding-left: var(--PADDING_HORIZONTAL);
@@ -32,9 +34,49 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
+.branchDragOver {
+    background: rgba(0, 0, 0, 0.5);
+}
+
 .branches {
     margin-left: 0.5rem;
     border-left: 1px solid black;
+}
+
+.branchButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 3rem;
+}
+
+.branchButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 5px;
+    width: 1.2rem;
+    height: 1.2rem;
+
+    cursor: pointer;
+    background: transparent;
+    color: transparent;
+}
+
+.branch:hover .branchButton {
+    background: black;
+    color: white;
+}
+
+.branch:hover .branchButton:hover {
+    background: white;
+    color: black;
+}
+
+.branchDragOver {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 /**********  LEAF  **********/
@@ -43,9 +85,29 @@
     padding-left: var(--PADDING_HORIZONTAL);
 }
 
+/* TODO: Styles and classNames should really look like
+    {
+        ...
+        leaf: {
+            base: {
+                ...
+            },
+            hover: {
+                ...
+            },
+            dragOver: {
+                ...
+            }
+        },
+    }
+*/
 .leaf:hover {
     background: rgba(0, 0, 0, 0.5);
     cursor: pointer;
+}
+
+.leafDragOver {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 /**********  ROOT  **********/

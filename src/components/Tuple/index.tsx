@@ -65,9 +65,13 @@ export interface TupleProps {
     views?: ViewportT,
     styles?: TupleStylesT,
     classes?: TupleClassesT,
-    events?: EventsT,
+    events?: EventsT,  // TODO: Remove?
 
     enableTrashcan?: boolean,
+    enableDynamicTree?: boolean,
+
+    onTreeUpdate?: (tree: TreeT) => void,
+    onViewportUpdate?: (viewport: ViewportT) => void,
 };
 
 // TODO: Check that every pageId in the tree is in the pages object
@@ -96,6 +100,7 @@ const Tuple = ({
     classes,
     events,
     enableTrashcan=false,
+    enableDynamicTree=false,
 }: TupleProps) => {
     validateProps({ pages, views, tree });
 
@@ -213,7 +218,7 @@ const Tuple = ({
 
     return (
         <TupleContext.Provider value={context}>
-            <TupleInner enableTrashcan={enableTrashcan} />
+            <TupleInner enableTrashcan={ enableTrashcan } enableDynamicTree={ enableDynamicTree } />
         </TupleContext.Provider>
     );
 }

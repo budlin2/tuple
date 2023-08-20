@@ -15,10 +15,11 @@ import ScrollPane from '../../ScrollPane';
 interface BranchesProps {
     node: BranchT | LeafT,
     path: string[],
+    isDynamicTree: boolean,
 }
 
 // Recursive tree component
-const Branches = ({ node, path }: BranchesProps, ) => {
+const Branches = ({ node, path, isDynamicTree }: BranchesProps, ) => {
     const { state: {
         pages,
         classes,
@@ -32,29 +33,32 @@ const Branches = ({ node, path }: BranchesProps, ) => {
         if (!page)
             throw `Page ID not found within "pages": [${ leaf.pageId }]`;
 
-        return <Leaf text={page.name} pageId={leaf.pageId} path={path} />;
+        return <Leaf text={page.name} pageId={leaf.pageId} path={path} isDynamicTree={isDynamicTree} />;
     }
 
     const branch = node as BranchT;
 
     const branchClassName = `${_classes?.branch || ''} ${classes?.branch || ''}`
+    const branchDragOverClassName = `${_classes?.branchDragOver || ''} ${classes?.branchDragOver || ''}`
     const branchesClassName = `${_classes?.branches || ''} ${classes?.branches  || ''}`;
-
-    console.log('branch', branch)
 
     return (
         <Branch
-            text                ={ branch.label }
-            branchClassName     ={ branchClassName }
-            branchesClassName   ={ branchesClassName }
-            branchStyle         ={ styles.branch }
-            branchesStyle       ={ styles.branches }
+            text                    ={ branch.label }
+            branchClassName         ={ branchClassName }
+            branchDragOverClassName ={ branchDragOverClassName }
+            branchesClassName       ={ branchesClassName }
+            branchStyle             ={ styles.branch }
+            branchDragOverStyle     ={ styles.branchDragOver }
+            branchesStyle           ={ styles.branches }
+            isDynamicTree           ={ isDynamicTree }
         >
             { branch.branches.map( _node => (
                 <Branches
-                    key     ={ _node.id }
-                    node    ={ _node }
-                    path    ={ path.concat(`/${branch.label}`) }
+                    key             ={ _node.id }
+                    node            ={ _node }
+                    path            ={ path.concat(`/${branch.label}`) }
+                    isDynamicTree   ={ isDynamicTree }
                 />
             ))}
         </Branch>
@@ -62,9 +66,12 @@ const Branches = ({ node, path }: BranchesProps, ) => {
 };
 
 
-interface TreeProps { enableTrashcan: boolean };
+interface TreeProps {
+    enableTrashcan: boolean,
+    isDynamicTree: boolean
+};
 
-const Tree = ({ enableTrashcan }: TreeProps) => {
+const Tree = ({ enableTrashcan, isDynamicTree }: TreeProps) => {
     const treeRef = useRef<HTMLDivElement>();
     const rootContainerRef = useRef<HTMLDivElement>();
 
@@ -108,15 +115,16 @@ const Tree = ({ enableTrashcan }: TreeProps) => {
                     <>
                         { tree.map( node => (
                             <Branches
-                                key ={ node.id }
-                                node={ node }
-                                path={ [] }/>
+                                key         ={ node.id }
+                                node        ={ node }
+                                path        ={ [] }
+                                isDynamicTree ={ isDynamicTree }/>
                         ))}
                     </>
                 </ScrollPane>
 
                 { enableTrashcan && (
-                    <Trashcan symbol='' dragOverSymbol=''/> 
+                    <Trashcan symbol='' dragOverSymbol=''/>
                 )}
             </div>
         </div>

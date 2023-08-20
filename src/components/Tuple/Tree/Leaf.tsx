@@ -1,4 +1,4 @@
-import { DragEvent, useContext } from 'react'
+import { DragEvent as rDragEvent, useContext, useState } from 'react'
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
@@ -20,6 +20,7 @@ interface Props {
     text: string,
     pageId: ID,
     path: string[],
+    isDynamicTree: boolean,
 }
 
 
@@ -27,7 +28,11 @@ const Leaf = ({
     text,
     pageId,
     path,
+    isDynamicTree,
 }: Props) => {
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
     const {
         dispatch,
         state: {
@@ -38,16 +43,22 @@ const Leaf = ({
             events,
         }
     }: TupleContextT = useContext(TupleContext);
-
+    const [isDraggedOver, setIsDraggedOver] = useState(false);
     const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
 
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
     const leafClassName = `
         ${_classes?.leaf || ''}
-        ${classes?.leaf  || ''}`;
+        ${classes?.leaf  || ''}
+        ${isDraggedOver ? `${_classes?.leafDragOver} ${classes?.leafDragOver}` : ''}`;
 
     const draggableClass = classes?.draggable || '';
 
-
+    //------------------------------------------------------------------------------------------------------------------
+    // Helper Functions
+    //------------------------------------------------------------------------------------------------------------------
     const getTopLeftPortIdHelper = (ports: PortsT, curPortId: ID): ID | null => {
         const currentPort = ports[curPortId];
         if (!currentPort)
@@ -64,13 +75,16 @@ const Leaf = ({
         return getTopLeftPortIdHelper(ports, root);
     }
 
-    const dragStartHandler = (e: any) => {
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const onDragStartHandler = (e: rDragEvent) => {
         setCustomDragImage(e, text, draggableClass, styles.draggable);
-        e.dataTransfer.setData('pageId', pageId);
+        e.dataTransfer.setData('pageId', pageId as string);
         setDragging(true);
     };
 
-    const dragEndHandler = async (e: DragEvent) => {
+    const onDragEndHandler = async (e: rDragEvent) => {
         cleanupDraggable();
         setDragging(false);
 
@@ -83,12 +97,7 @@ const Leaf = ({
         }
     }
 
-    const dragOverHandler = (e: DragEvent) => {
-        if (events?.onTreeDrop)
-            e.preventDefault();
-    }
-
-    const dropHandler = (e: DragEvent) => {
+    const onDropHandler = (e: rDragEvent) => {
         if (events?.onTreeDrop) {
             const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
             const draggableName = pages[dragPageId].name;
@@ -113,15 +122,26 @@ const Leaf = ({
         }
     }
 
+    const onDragOverHandler = (e: rDragEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        if (isDynamicTree)
+            setIsDraggedOver(true);
+    }
+    const onDragLeaveHandler = (e: rDragEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        setIsDraggedOver(false);
+    }
+
     return (
         <div
             style={styles.leaf}
             className={leafClassName}
             draggable
-            onDragStart={dragStartHandler}
-            onDragEnd={dragEndHandler}
-            onDragOver={dragOverHandler}
-            onDrop={dropHandler}
+            onDragStart={onDragStartHandler}
+            onDragEnd={onDragEndHandler}
+            onDragOver={onDragOverHandler}
+            onDragLeave={onDragLeaveHandler}
+            onDrop={onDropHandler}
             onClick={onClickHandler}>
             { text }
         </div>
