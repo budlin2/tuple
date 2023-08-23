@@ -69,10 +69,10 @@ const Popup = ({
 
                 const itemClassName = classNames(
                     itemClassNameBase,
-                    hoveredId === item.id ? _classes?.itemHover : '',
-                    hoveredId === item.id ? classes?.itemHover : '',
-                    activeId === item.id ? _classes?.itemActive : '',
-                    activeId === item.id ? classes?.itemActive : '',
+                    hoveredId === item.id && _classes?.itemHover,
+                    hoveredId === item.id && classes?.itemHover,
+                    activeId === item.id && _classes?.itemActive,
+                    activeId === item.id && classes?.itemActive,
                 );
 
                 const itemStyle = {
