@@ -18,3 +18,5 @@ const getRandomWord = () => {
 
 
 export const isObject = (obj: any) => typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
+
+export const classNames = (...classNames: string[]): string => classNames.reduce((acc, cur) => acc + (acc ? ' ' : '') + cur, '');

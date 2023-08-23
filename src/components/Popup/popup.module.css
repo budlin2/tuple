@@ -1,0 +1,37 @@
+.popup {
+    display: flex;
+    flex-direction: column;
+    
+    position: absolute;
+    background: white;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+.hr {
+    border: none;
+    height: 1px;
+    width: 100%;
+    margin: 0;
+    background-color: black; /* line color */
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.itemHover {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.itemActive {
+    background: black;
+    color: white;
+}
