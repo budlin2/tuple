@@ -2,25 +2,26 @@
 // The Tuple component tree that is actually displayed
 //----------------------------------------------------------------------------------------------------------------------
 
-import { useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 
-import Tree from './Tree/Tree';
+import Tree, { TreeProps } from './Tree/Tree';
 import Viewport from './Viewport/Viewport';
 import SplitPane from '../SplitPane';
 import { TupleContext } from '.';
 import { TupleContextT } from './TupleTypes';
+import { get_viewport_id_from_query_params } from './state/browser-actions';
 
 import _classes from './tuple.module.css';
-import { get_viewport_id_from_query_params } from './state/browser-actions';
 
 
 interface TupleInnerProps {
     enableTrashcan: boolean,
-    enableDynamicTree: boolean,
+    children?: ReactElement<TreeProps>,
 }
 
-const TupleInner = ({ enableTrashcan, enableDynamicTree }: TupleInnerProps) => {
+const TupleInner = ({ enableTrashcan, children=null }: TupleInnerProps) => {
     const { state: {
+        tree,
         styles,
         classes,
     }}: TupleContextT = useContext(TupleContext);
@@ -38,7 +39,9 @@ const TupleInner = ({ enableTrashcan, enableDynamicTree }: TupleInnerProps) => {
     return (
         <div className={tupleClassName} style={styles.tuple}>
             <SplitPane resizerPos='25%'>
-                <Tree enableTrashcan={ enableTrashcan } isDynamicTree={ enableDynamicTree } />
+                { children || (
+                    <Tree tree={tree} enableTrashcan={ enableTrashcan } />
+                )}
                 <Viewport />
             </SplitPane>
         </div>

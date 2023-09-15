@@ -1,4 +1,9 @@
-import { DragEvent as rDragEvent, useContext, useState } from 'react'
+import {
+    MouseEvent as rMouseEvent,
+    DragEvent as rDragEvent,
+    useContext,
+    useState,
+} from 'react'
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
@@ -12,23 +17,31 @@ import {
 import { addTab, addNewView } from '../state/dispatchers';
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { PortsT } from '../Viewport/ViewportTypes';
+import { PopupItemsT } from '../../Popup/PopupTypes';
+import { PopupDetailsT } from './TreeTypes';
 
 import _classes from './tree.module.css';
 
 
 interface Props {
+    id: ID,
     text: string,
     pageId: ID,
-    path: string[],
-    isDynamicTree: boolean,
+    path: ID[],
+    setPopupDetails?: (details: PopupDetailsT | null) => void,
+    onRename?: (nodeId: ID, path: ID[], newName: string) => void,  // TODO: remove nodeId
+    onDrop?: (e: rDragEvent) => void,
 }
 
 
 const Leaf = ({
+    id,
     text,
     pageId,
     path,
-    isDynamicTree,
+    setPopupDetails = ()=>{},
+    onRename,
+    onDrop,
 }: Props) => {
     //------------------------------------------------------------------------------------------------------------------
     // State
@@ -45,6 +58,11 @@ const Leaf = ({
     }: TupleContextT = useContext(TupleContext);
     const [isDraggedOver, setIsDraggedOver] = useState(false);
     const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
+
+    // Set popup menu items
+    const popupItems: PopupItemsT = [];
+    if (onRename)
+        popupItems.push({ id: 1, label: 'Rename', onClick: () => onRename(id, path, 'foo')});
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling
@@ -124,25 +142,40 @@ const Leaf = ({
 
     const onDragOverHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.stopPropagation();
+        const isDynamicTree = !!onDrop;
         if (isDynamicTree)
             setIsDraggedOver(true);
     }
+
     const onDragLeaveHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsDraggedOver(false);
     }
 
+    const onRightClick = (event: rMouseEvent) => {
+        if (!popupItems.length) return;
+
+        event.preventDefault();
+        const { clientX: x, clientY: y } = event;
+
+        setPopupDetails({
+            items: popupItems,
+            pos: { x, y }
+        });
+    };
+
     return (
-        <div
-            style={styles.leaf}
-            className={leafClassName}
-            draggable
-            onDragStart={onDragStartHandler}
-            onDragEnd={onDragEndHandler}
-            onDragOver={onDragOverHandler}
-            onDragLeave={onDragLeaveHandler}
-            onDrop={onDropHandler}
-            onClick={onClickHandler}>
+        <div draggable
+            style           ={ styles.leaf }
+            className       ={ leafClassName }
+            onDragStart     ={ onDragStartHandler }
+            onDragEnd       ={ onDragEndHandler }
+            onDragOver      ={ onDragOverHandler }
+            onDragLeave     ={ onDragLeaveHandler }
+            onDrop          ={ onDropHandler }
+            onClick         ={ onClickHandler }
+            onContextMenu   ={ onRightClick }
+        >
             { text }
         </div>
     );

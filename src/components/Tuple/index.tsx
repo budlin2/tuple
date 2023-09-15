@@ -5,6 +5,9 @@ import {
     createContext,
     useMemo,
     useReducer,
+    ReactElement,
+    useState,
+    useEffect,
 } from 'react';
 import { getUniqueId, isObject } from '../../utils';
 import { TreeT } from './Tree/TreeTypes';
@@ -41,11 +44,11 @@ import {
     set_storage_port,
     set_storage_port_open,
 } from './state/browser-actions';
+import { TreeProps } from './Tree/Tree';
 
 export const ROOT_PORT_ID = 'root';
 
 export const TupleContext = createContext({
-    // dispatch: null,  TODO: do I need to initialize dispatch
     state: {
         pages: {},
         viewport: initialViewport,
@@ -60,7 +63,8 @@ export const TupleContext = createContext({
 
 export interface TupleProps {
     pages: PagesT,
-    tree: TreeT,
+    tree?: TreeT,
+    children?: ReactElement<TreeProps>,
 
     views?: ViewportT,
     styles?: TupleStylesT,
@@ -68,7 +72,6 @@ export interface TupleProps {
     events?: EventsT,  // TODO: Remove?
 
     enableTrashcan?: boolean,
-    enableDynamicTree?: boolean,
 
     onTreeUpdate?: (tree: TreeT) => void,
     onViewportUpdate?: (viewport: ViewportT) => void,
@@ -79,16 +82,23 @@ export interface TupleProps {
 const validateProps = ({
     pages,
     tree,
-    views
+    views,
+    children,
 } : TupleProps) => {
     if (!isObject(pages))
         throw Error('"pages" props should be of the form, PagesT.');
 
-    if (!Array.isArray(tree))
-        throw Error('"tree" prop must be an array.');
-
     if (views && !(isViewT(views) || isSplitViewT(views)))
         throw Error('"views" props should be of type - ViewT or SplitViewT.');
+
+    if (tree && children)
+        console.warn('Both "tree" and "children" props were passed to Tuple. "tree" will be ignored.');
+
+    if (!tree && !children)
+        throw Error('Either "tree" or "children" props must be passed to Tuple.');
+
+    if (tree && !Array.isArray(tree))
+        throw Error('"tree" prop must be an array.');
 }
 
 
@@ -100,9 +110,9 @@ const Tuple = ({
     classes,
     events,
     enableTrashcan=false,
-    enableDynamicTree=false,
+    children=null,
 }: TupleProps) => {
-    validateProps({ pages, views, tree });
+    validateProps({ pages, views, tree, children });
 
     const viewportId = get_viewport_id_from_query_params();
 
@@ -196,12 +206,19 @@ const Tuple = ({
         return emptyPortMap;
     };
 
-    //------------------------------------------------------------------------------------------------------------------
     const { ports, rootId } = getPortMap();
     const initViewportState: ViewportStateT = { ...initialViewport, root: rootId, ports };
 
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
+
+    // Pages prop may change if using a dynamic tree. Update context's pages state
+    const [_pages, setPages] = useState(pages);
+    useEffect(() => setPages(pages), [pages]);
+
     const initState: TupleStateT = {
-        pages,
+        pages: _pages,
         viewport: initViewportState,
         viewportId,
         tree,
@@ -210,15 +227,16 @@ const Tuple = ({
         events: events || {},
     };
 
-
     const [state, dispatch] = useReducer(reducer, initState);
-    const context = useMemo(() => (
-        { state, dispatch }
-    ), [state, dispatch]);
+    const context = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
+    //------------------------------------------------------------------------------------------------------------------
 
     return (
         <TupleContext.Provider value={context}>
-            <TupleInner enableTrashcan={ enableTrashcan } enableDynamicTree={ enableDynamicTree } />
+            <TupleInner enableTrashcan={ enableTrashcan }>
+                { children }
+            </TupleInner>
         </TupleContext.Provider>
     );
 }

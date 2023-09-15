@@ -1,4 +1,3 @@
-import { DragEvent } from "react";
 import { ROOT_PORT_ID } from "..";
 
 import {

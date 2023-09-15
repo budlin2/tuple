@@ -4,44 +4,52 @@ import {
     CSSProperties,
     Children,
     useContext,
-    DragEvent,
-    MouseEvent,
+    DragEvent as rDragEvent,
+    MouseEvent as rMouseEvent,
 } from 'react';
 
-import { DragSourceT, TupleContextT } from '../TupleTypes';
+import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { TupleContext } from '..';
+import { PopupItemsT } from '../../Popup/PopupTypes';
+import { PopupDetailsT } from './TreeTypes';
 
 import _classes from './tree.module.css';
 import _global_classes from '../../styles.module.css';
 
 
 interface Props {
+    id: ID,
     text: string,
     children: ReactNode,
     open?: boolean,
-    isDynamicTree: boolean,
     branchClassName?: string,
     branchDragOverClassName?: string,
     branchesClassName?: string,
     branchStyle?: CSSProperties,
     branchDragOverStyle?: CSSProperties,
     branchesStyle?: CSSProperties,
-    path?: string[],
+    path: ID[],
+    setPopupDetails?: (details: PopupDetailsT | null) => void,
+    onRename?: (path: ID[], newName: string) => void,
+    onDrop?: (e: rDragEvent) => void,
 }
 
 
 const Branch = ({
+    id,
     text,
     children,
     open=false,
-    isDynamicTree,
     branchClassName,
     branchesClassName,
     branchDragOverClassName,
     branchStyle={},
     branchDragOverStyle={},
     branchesStyle={},
-    path=[]
+    path=[],
+    setPopupDetails=()=>{},
+    onRename,
+    onDrop,
 }: Props) => {
     //------------------------------------------------------------------------------------------------------------------
     // State
@@ -53,6 +61,11 @@ const Branch = ({
 
     const [isDraggedOver, setIsDraggedOver] = useState(false);
     const [expanded, setExpanded] = useState(open);
+
+    // Set popup menu items
+    const popupItems: PopupItemsT = [];
+    if (onRename)
+        popupItems.push({ id: 1, label: 'Rename', onClick: () => onRename(path.concat(id), 'foo')});  // TODO: How to rename?
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling
@@ -77,17 +90,18 @@ const Branch = ({
             setExpanded(cur => !cur);
     }
 
-    const onDragOverHandler = (e: DragEvent) => {
+    const onDragOverHandler = (e: rDragEvent) => {
         e.stopPropagation();
+        const isDynamicTree = !!onDrop;
         if (isDynamicTree)
             setIsDraggedOver(true);
     }
-    const onDragLeaveHandler = (e: DragEvent) => {
+    const onDragLeaveHandler = (e: rDragEvent) => {
         e.stopPropagation();
         setIsDraggedOver(false);
     }
 
-    const onDropHandler = (e: DragEvent) => {
+    const onDropHandler = (e: rDragEvent) => {
         if (events?.onTreeDrop) {
             const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
             const draggableName = pages[dragPageId].name;
@@ -99,36 +113,31 @@ const Branch = ({
         }
     };
 
-    const onAddButtonClickHandler = (e: MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        // TODO:
-    };
+    const onRightClick = (event: rMouseEvent) => {
+        if (!popupItems.length) return;
 
-    const onDeleteButtonClickHandler = (e: MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        // TODO:
+
+        event.preventDefault();
+
+        const { clientX: x, clientY: y } = event;
+        setPopupDetails({
+            pos: { x, y },
+            items: popupItems,
+        });
     };
     
     return (
         <div>
             <div
-                className   ={ _branchClassName }
-                style       ={ _branchStyle }
-                onClick     ={ onClickHandler }
-                onDragOver  ={ onDragOverHandler }
-                onDragLeave ={ onDragLeaveHandler }
-                onDrop      ={ onDropHandler }>
+                className       ={ _branchClassName }
+                style           ={ _branchStyle }
+                onClick         ={ onClickHandler }
+                onDragOver      ={ onDragOverHandler }
+                onDragLeave     ={ onDragLeaveHandler }
+                onDrop          ={ onDropHandler }
+                onContextMenu   ={ onRightClick }
+            >
                 { text }
-                { isDynamicTree && (
-                    <div className={_classes.branchButtonContainer}>
-                        <div className={_classes.branchButton} onClick={onAddButtonClickHandler}>
-                            { "\u271A" }
-                        </div>
-                        <div className={_classes.branchButton} onClick={onDeleteButtonClickHandler}>
-                            {"\u2716" }
-                        </div>
-                    </div>
-                )}
             </div>
             { expanded && (
                 <div className={branchesClassName} style={branchesStyle}>

@@ -10,6 +10,8 @@ import Page from "../Page";
 import classes from './tuple.stories.module.css';
 import LannisterCss from './templates/lannister.module.css';
 import BaratheonCss from './templates/baratheon.module.css';
+import { useTree } from "./Tree/useTree";
+import Tree from "./Tree/Tree";
 
 export default {
     title: 'Components/Tuple',
@@ -239,4 +241,28 @@ Baratheon.args = {
     views: __SixViews,
     tree,
     classes: BaratheonCss,
+};
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// Template
+//----------------------------------------------------------------------------------------------------------------------
+const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
+    const { tree: _tree, pages: _pages, renameBranch } = useTree(tree, pages);
+
+    return (
+        <div style={{
+            height: 600,
+            width: 800,
+            border: '1px solid lightgrey',
+        }}>
+            <Tuple {...args} pages={_pages}>
+                <Tree tree={_tree} onBranchRename={ renameBranch }/>
+            </Tuple>
+        </div>
+    );
+}
+export const dynamicTree = DynamicTreeTemplate.bind({});
+dynamicTree.args = {
+    views: __SixViews,
 };

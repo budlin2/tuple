@@ -1,3 +1,4 @@
+import { PopupItemsT } from "../../Popup/PopupTypes";
 import { ID } from "../TupleTypes";
 
 export interface LeafT {
@@ -20,3 +21,6 @@ export interface RootletDisplayT {
     text: string,
     open: boolean,
 }
+
+export interface PositionT { x: number, y: number };
+export interface PopupDetailsT { items: PopupItemsT, pos: PositionT };

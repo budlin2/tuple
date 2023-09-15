@@ -32,6 +32,11 @@
     border-right: 1px solid black;
 }
 
+.tab:hover {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
 .tabLabel {
     flex: 1;
     overflow: hidden;

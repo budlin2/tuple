@@ -110,7 +110,7 @@ export interface EventsT {
     onTreeDrop?: (
         e: DragEvent,
         destinationItem: string,
-        path: string[],
+        path: ID[],
         sourceItem: string,
         sourceType: DragSourceT,
         destinationType: DropDestinationT,
