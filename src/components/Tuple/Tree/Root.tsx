@@ -37,9 +37,10 @@ const Root = ({
         //TODO: Implement local storage fetching
         const [rootlets, _] = useLocalStorage<StoragePorts>(STORAGE_ID, null);
         if (rootlets) {
-            return Object.entries(rootlets).map(rootlet => ({
-                text: rootlet[0] as string,
-                open: rootlet[1].open as boolean,
+            return Object.entries(rootlets).map(([key, value]) => ({
+                id: key,
+                text: key as string,
+                open: value.open as boolean,
             }));
         }
         return [];
@@ -58,7 +59,7 @@ const Root = ({
             branchesStyle={styles.rootlets}
         >
             { rootlets.map( r => (
-                <Rootlet text={r.text} open={r.open} />
+                <Rootlet key={r.id} text={r.text} open={r.open} />
             ))}
         </Taproot>
     );

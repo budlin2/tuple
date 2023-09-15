@@ -18,6 +18,7 @@ export const isLeaf = (node: LeafT | BranchT): boolean => !!(node as LeafT)?.pag
 export type TreeT = (LeafT | BranchT)[];
 
 export interface RootletDisplayT {
+    id: ID,
     text: string,
     open: boolean,
 }
