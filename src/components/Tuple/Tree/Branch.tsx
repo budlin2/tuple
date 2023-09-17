@@ -6,6 +6,10 @@ import {
     useContext,
     DragEvent as rDragEvent,
     MouseEvent as rMouseEvent,
+    KeyboardEvent as rKeyboardEvent,
+    ChangeEvent as rChangeEvent,
+    useRef,
+    useEffect,
 } from 'react';
 
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
@@ -15,6 +19,7 @@ import { PopupDetailsT } from './TreeTypes';
 
 import _classes from './tree.module.css';
 import _global_classes from '../../styles.module.css';
+import { classNames } from '../../../utils';
 
 
 interface Props {
@@ -23,10 +28,14 @@ interface Props {
     children: ReactNode,
     open?: boolean,
     branchClassName?: string,
+    branchHoverClassName?: string,
     branchDragOverClassName?: string,
+    branchActiveClassName?: string,
     branchesClassName?: string,
     branchStyle?: CSSProperties,
+    branchHoverStyle?: CSSProperties,
     branchDragOverStyle?: CSSProperties,
+    branchActiveStyle?: CSSProperties,
     branchesStyle?: CSSProperties,
     path: ID[],
     setPopupDetails?: (details: PopupDetailsT | null) => void,
@@ -41,16 +50,21 @@ const Branch = ({
     children,
     open=false,
     branchClassName,
-    branchesClassName,
+    branchHoverClassName,
     branchDragOverClassName,
+    branchActiveClassName,
+    branchesClassName,
     branchStyle={},
+    branchHoverStyle={},
     branchDragOverStyle={},
+    branchActiveStyle={},
     branchesStyle={},
     path=[],
     setPopupDetails=()=>{},
     onRename,
     onDrop,
 }: Props) => {
+    const inputRef = useRef<HTMLInputElement>(null);
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
@@ -59,27 +73,43 @@ const Branch = ({
         events,
     }}: TupleContextT = useContext(TupleContext);
 
+    const [hovering, setHovering] = useState(false);
     const [isDraggedOver, setIsDraggedOver] = useState(false);
     const [expanded, setExpanded] = useState(open);
+    const [branchName, setBranchName] = useState(text);
+    const [renaming, setRenaming] = useState(false);
 
     // Set popup menu items
     const popupItems: PopupItemsT = [];
     if (onRename)
-        popupItems.push({ id: 1, label: 'Rename', onClick: () => onRename(path.concat(id), 'foo')});  // TODO: How to rename?
+        popupItems.push({ id: 1, label: 'Rename', onClick: () => setRenaming(true) });
+
+    useEffect(() => {
+        if (renaming && inputRef.current) {
+            inputRef.current.focus();
+        } else {
+            inputRef.current.blur();
+        }
+    }, [renaming]);
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling
     //------------------------------------------------------------------------------------------------------------------
     // Branch needs its styling passed in as prop because both branches and roots use this component
-    const _branchClassName = `
-        ${_global_classes.noHighlight}
-        ${branchClassName || ''}
-        ${isDraggedOver ? branchDragOverClassName : ''}`;
+    const _branchClassName = classNames(
+        _global_classes.noHighlight,
+        branchClassName || '',
+        hovering ? branchHoverClassName : '',
+        isDraggedOver ? branchDragOverClassName : '',
+        renaming ? branchActiveClassName : '',
+    );
 
     const _branchStyle = {
         ...branchStyle,
         // TODO: Hover styling
-        ...(isDraggedOver ? branchDragOverStyle : {})
+        ...hovering ? branchHoverStyle : {},
+        ...(isDraggedOver ? branchDragOverStyle : {}),
+        ...(renaming ? branchActiveStyle : {}),
     };
 
     //------------------------------------------------------------------------------------------------------------------
@@ -88,7 +118,11 @@ const Branch = ({
     const onClickHandler = () => {
         if (Children.count(children))
             setExpanded(cur => !cur);
-    }
+    };
+
+    const onMouseOverHandler = () => setHovering(true);
+    const onMouseLeaveHandler = () => setHovering(false);
+
 
     const onDragOverHandler = (e: rDragEvent) => {
         e.stopPropagation();
@@ -100,6 +134,21 @@ const Branch = ({
         e.stopPropagation();
         setIsDraggedOver(false);
     }
+
+    // .. TODO: Typing
+    const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.currentTarget.value) {
+            e.preventDefault();
+            setRenaming(false);
+            if (onRename)
+                onRename(path.concat(id), branchName);
+        }
+      };
+
+    const onChangeHandler = (e: rChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setBranchName(value);
+    };
 
     const onDropHandler = (e: rDragEvent) => {
         if (events?.onTreeDrop) {
@@ -116,7 +165,6 @@ const Branch = ({
     const onRightClick = (event: rMouseEvent) => {
         if (!popupItems.length) return;
 
-
         event.preventDefault();
 
         const { clientX: x, clientY: y } = event;
@@ -128,17 +176,20 @@ const Branch = ({
     
     return (
         <div>
-            <div
+            <input ref={inputRef} type="text"
+                value           ={ branchName }
+                readOnly        ={ !renaming }
                 className       ={ _branchClassName }
                 style           ={ _branchStyle }
                 onClick         ={ onClickHandler }
+                onMouseOver     ={ onMouseOverHandler }
+                onMouseLeave    ={ onMouseLeaveHandler }
                 onDragOver      ={ onDragOverHandler }
                 onDragLeave     ={ onDragLeaveHandler }
                 onDrop          ={ onDropHandler }
                 onContextMenu   ={ onRightClick }
-            >
-                { text }
-            </div>
+                onKeyDown       ={ onKeyDownHandler }
+                onChange        ={ onChangeHandler }/>
             { expanded && (
                 <div className={branchesClassName} style={branchesStyle}>
                     { children }

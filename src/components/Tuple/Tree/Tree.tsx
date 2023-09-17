@@ -11,6 +11,7 @@ import ScrollPane from '../../ScrollPane';
 import Popup from '../../Popup';
 
 import _classes from './tree.module.css';
+import { classNames } from '../../../utils';
 
 
 interface BranchesProps {
@@ -54,17 +55,23 @@ const Branches = ({
     }
 
     const branch = node as BranchT;
-    const branchClassName = `${_classes?.branch || ''} ${classes?.branch || ''}`
-    const branchDragOverClassName = `${_classes?.branchDragOver || ''} ${classes?.branchDragOver || ''}`
-    const branchesClassName = `${_classes?.branches || ''} ${classes?.branches  || ''}`;
+    // Define these here and pass as prop, since Root.tsx also uses Branch component
+    const branchClassName           = classNames(_classes?.branch, classes?.branch);
+    const branchHoverClassName      = classNames(_classes?.branchHover, classes?.branchHover);
+    const branchDragOverClassName   = classNames(_classes?.branchDragOver, classes?.branchDragOver);
+    const branchesClassName         = classNames(_classes?.branches, classes?.branches);
+    const branchActiveClassName     = classNames(_classes.branchActive, classes.branchActive);
 
     return (
         <Branch id={ branch.id }
             text                    ={ branch.label }
             branchClassName         ={ branchClassName }
+            branchHoverClassName    ={ branchHoverClassName }
             branchDragOverClassName ={ branchDragOverClassName }
+            branchActiveClassName   ={ branchActiveClassName }
             branchesClassName       ={ branchesClassName }
             branchStyle             ={ styles.branch }
+            branchHoverStyle        ={ styles.branchHover }
             branchDragOverStyle     ={ styles.branchDragOver }
             branchesStyle           ={ styles.branches }
             path                    ={ path }

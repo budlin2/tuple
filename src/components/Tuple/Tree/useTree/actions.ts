@@ -10,17 +10,20 @@ import {
 export const _rename_branch = (tree: TreeT, path: ID[], newLabel: string): TreeT => {
     return tree.map((node: BranchT) => {
         if (node.id === path[0] && 'label' in node) {
-            if (path.length === 1) {
-                // Rename the branch when at the end of the path
-                return { ...node, label: newLabel };
-            } else if ('branches' in node) {
-                // Recurse into nested branches with the updated path
+            if (path.length === 1) {  // We've reached the end of the path. Rename the branch
+                return {
+                    ...node,
+                    label: newLabel
+                };
+            } else if ('branches' in node) {  // We're not at the end of the path. Recurse
                 return {
                     ...node,
                     branches: _rename_branch(node.branches, path.slice(1), newLabel),
                 };
             }
         }
+
+        // Not on path. Return node unchanged
         return node;
     });
 }

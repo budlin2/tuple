@@ -24,14 +24,28 @@
 .branch {
     display: flex;
     justify-content: space-between;
+
+    border: none;
+    outline: none;
+    font-family: var(--GOOD-FONT);
+    font-size:medium;
+
+    width: 100%;
+    padding-left: var(--PADDING_HORIZONTAL);
+
     background: black;
     color: white;
-    padding-left: var(--PADDING_HORIZONTAL);
 }
 
-.branch:hover {
+.branchHover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.5);
+}
+
+.branchActive {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-bottom: 1px solid black;
 }
 
 .branchDragOver {

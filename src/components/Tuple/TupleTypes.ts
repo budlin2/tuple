@@ -29,7 +29,9 @@ export interface TupleStylesT {
 
     tree?: CSSProperties,
     branch?: CSSProperties,
+    branchHover?: CSSProperties,
     branchDragOver?: CSSProperties,
+    branchActive?: CSSProperties,
     branches?: CSSProperties,
     leafContainer?: CSSProperties,
     leaf?: CSSProperties,
@@ -67,7 +69,9 @@ export interface TupleClassesT {
 
     tree?: string,
     branch?: string,
+    branchHover?: string,
     branchDragOver?: string,
+    branchActive?: string,
     branches?: string,
     leafContainer?: string,
     leaf?: string,

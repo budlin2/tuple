@@ -15,7 +15,8 @@ export interface Props {
     rootName: string,
 }
 
-
+// Really stretching the tree analogy here, but (Root -> Taproot -> Rootlet)
+// is equivalent to (Tree -> Branch -> Leaf)
 const Root = ({
     rootName,
 }: Props) => {
