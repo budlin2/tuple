@@ -79,17 +79,19 @@ const Branch = ({
     const [branchName, setBranchName] = useState(text);
     const [renaming, setRenaming] = useState(false);
 
-    // Set popup menu items
-    const popupItems: PopupItemsT = [];
-    if (onRename)
-        popupItems.push({ id: 1, label: 'Rename', onClick: () => setRenaming(true) });
-
+    //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {
         if (renaming && inputRef.current) {
             inputRef.current.focus();
+            document.addEventListener('click', onClickOutsideHandler);
         } else {
             inputRef.current.blur();
+            document.removeEventListener('click', onClickOutsideHandler);
         }
+
+        return () => document.removeEventListener('click', onClickOutsideHandler);
     }, [renaming]);
 
     //------------------------------------------------------------------------------------------------------------------
@@ -115,7 +117,8 @@ const Branch = ({
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
-    const onClickHandler = () => {
+    const onClickHandler = (e: rMouseEvent) => {
+        e.stopPropagation();
         if (Children.count(children))
             setExpanded(cur => !cur);
     };
@@ -123,17 +126,17 @@ const Branch = ({
     const onMouseOverHandler = () => setHovering(true);
     const onMouseLeaveHandler = () => setHovering(false);
 
-
     const onDragOverHandler = (e: rDragEvent) => {
         e.stopPropagation();
         const isDynamicTree = !!onDrop;
         if (isDynamicTree)
             setIsDraggedOver(true);
-    }
+    };
+
     const onDragLeaveHandler = (e: rDragEvent) => {
         e.stopPropagation();
         setIsDraggedOver(false);
-    }
+    };
 
     // .. TODO: Typing
     const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
@@ -162,17 +165,38 @@ const Branch = ({
         }
     };
 
-    const onRightClick = (event: rMouseEvent) => {
+    const onRightClickHandler = (e: rMouseEvent) => {
         if (!popupItems.length) return;
 
-        event.preventDefault();
+        e.preventDefault();
 
-        const { clientX: x, clientY: y } = event;
+        const { clientX: x, clientY: y } = e;
         setPopupDetails({
             pos: { x, y },
             items: popupItems,
         });
     };
+
+    // Close renaming if click occurs outside of input component
+    const onClickOutsideHandler = (e: MouseEvent) => {
+        console.log('click outside handler')
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+            // Click occurred outside the component, so set renaming to false
+            console.log('click outside handler', popupItems)
+            setRenaming(false);
+        }
+    };
+
+    const onRenameClickHandler = (e: rMouseEvent) => {
+        e.stopPropagation();
+        setRenaming(true);
+        setPopupDetails(null);
+    };
+
+    // Set popup menu items
+    const popupItems: PopupItemsT = [];
+    if (onRename)
+        popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
     
     return (
         <div>
@@ -187,7 +211,7 @@ const Branch = ({
                 onDragOver      ={ onDragOverHandler }
                 onDragLeave     ={ onDragLeaveHandler }
                 onDrop          ={ onDropHandler }
-                onContextMenu   ={ onRightClick }
+                onContextMenu   ={ onRightClickHandler }
                 onKeyDown       ={ onKeyDownHandler }
                 onChange        ={ onChangeHandler }/>
             { expanded && (
