@@ -138,7 +138,6 @@ const Branch = ({
         setIsDraggedOver(false);
     };
 
-    // .. TODO: Typing
     const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
@@ -179,10 +178,8 @@ const Branch = ({
 
     // Close renaming if click occurs outside of input component
     const onClickOutsideHandler = (e: MouseEvent) => {
-        console.log('click outside handler')
+        // Click occurred outside the component
         if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
-            // Click occurred outside the component, so set renaming to false
-            console.log('click outside handler', popupItems)
             setRenaming(false);
         }
     };
