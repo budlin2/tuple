@@ -1,4 +1,4 @@
-import { ID } from "../../TupleTypes";
+import { ID, PagesT } from "../../TupleTypes";
 import { BranchT, TreeT } from "../TreeTypes";
 import {
     AddNodePayloadT,
@@ -27,6 +27,13 @@ export const _rename_branch = (tree: TreeT, path: ID[], newLabel: string): TreeT
         return node;
     });
 }
+
+export const _rename_leaf = (pages: PagesT, pageId: ID, newName: string): PagesT => {
+    return {
+        ...pages,
+        [pageId]: { ...pages[pageId], name: newName },
+    };
+  }
 
 export const _delete_node = (state: TreeStateT, payload: DeleteNodePayloadT): TreeStateT => {
     return state;

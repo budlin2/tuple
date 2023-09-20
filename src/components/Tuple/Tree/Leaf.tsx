@@ -1,8 +1,12 @@
 import {
     MouseEvent as rMouseEvent,
     DragEvent as rDragEvent,
+    KeyboardEvent as rKeyboardEvent,
+    ChangeEvent as rChangeEvent,
     useContext,
     useState,
+    useEffect,
+    useRef,
 } from 'react'
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -21,6 +25,7 @@ import { PopupItemsT } from '../../Popup/PopupTypes';
 import { PopupDetailsT } from './TreeTypes';
 
 import _classes from './tree.module.css';
+import { classNames } from '../../../utils';
 
 
 interface Props {
@@ -29,7 +34,7 @@ interface Props {
     pageId: ID,
     path: ID[],
     setPopupDetails?: (details: PopupDetailsT | null) => void,
-    onRename?: (nodeId: ID, path: ID[], newName: string) => void,  // TODO: remove nodeId
+    onRename?: (pageId: ID, newName: string) => void,
     onDrop?: (e: rDragEvent) => void,
 }
 
@@ -43,6 +48,8 @@ const Leaf = ({
     onRename,
     onDrop,
 }: Props) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
@@ -56,21 +63,44 @@ const Leaf = ({
             events,
         }
     }: TupleContextT = useContext(TupleContext);
+    const [hovering, setHovering] = useState(false);
     const [isDraggedOver, setIsDraggedOver] = useState(false);
     const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
+    const [leafName, setLeafName] = useState(text);
+    const [renaming, setRenaming] = useState(false);
 
-    // Set popup menu items
-    const popupItems: PopupItemsT = [];
-    if (onRename)
-        popupItems.push({ id: 1, label: 'Rename', onClick: () => onRename(id, path, 'foo')});
+    //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        if (renaming && inputRef.current) {
+            inputRef.current.focus();
+            document.addEventListener('click', onClickOutsideHandler);
+        } else {
+            inputRef.current.blur();
+            document.removeEventListener('click', onClickOutsideHandler);
+        }
+
+        return () => document.removeEventListener('click', onClickOutsideHandler);
+    }, [renaming]);
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling
     //------------------------------------------------------------------------------------------------------------------
-    const leafClassName = `
-        ${_classes?.leaf || ''}
-        ${classes?.leaf  || ''}
-        ${isDraggedOver ? `${_classes?.leafDragOver} ${classes?.leafDragOver}` : ''}`;
+    const leafClassName = classNames(
+        _classes?.leaf,
+        classes?.leaf,
+        isDraggedOver ? classNames(_classes?.leafDragOver, classes?.leafDragOver) : '',
+        hovering ? classNames(_classes?.leafHover, classes?.leafHover) : '',
+        renaming ? classNames(_classes.leafActive, classes.leafActive) : '',
+    );
+
+    const leafStyle = {
+        ...styles?.leaf,
+        ...hovering ? styles?.leafHover : {},
+        ...isDraggedOver ? styles?.leafDragOver : {},
+        ...renaming ? styles?.leafActive : {},
+    };
 
     const draggableClass = classes?.draggable || '';
 
@@ -96,6 +126,22 @@ const Leaf = ({
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
+    const onClickHandler = () => {
+        if (Object.keys(pages).length <= 0) {
+            addNewView(dispatch, pageId)
+        }
+
+        const topLeftPortId = getTopLeftPortId();
+        if (topLeftPortId) {
+            addTab(dispatch, topLeftPortId, '', pageId);
+        } else {
+            addNewView(dispatch, pageId);
+        }
+    }
+
+    const onMouseOverHandler = () => setHovering(true);
+    const onMouseLeaveHandler = () => setHovering(false);
+
     const onDragStartHandler = (e: rDragEvent) => {
         setCustomDragImage(e, text, draggableClass, styles.draggable);
         e.dataTransfer.setData('pageId', pageId as string);
@@ -127,19 +173,6 @@ const Leaf = ({
         }
     }
 
-    const onClickHandler = () => {
-        if (Object.keys(pages).length <= 0) {
-            addNewView(dispatch, pageId)
-        }
-
-        const topLeftPortId = getTopLeftPortId();
-        if (topLeftPortId) {
-            addTab(dispatch, topLeftPortId, '', pageId);
-        } else {
-            addNewView(dispatch, pageId);
-        }
-    }
-
     const onDragOverHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.stopPropagation();
         const isDynamicTree = !!onDrop;
@@ -152,7 +185,7 @@ const Leaf = ({
         setIsDraggedOver(false);
     }
 
-    const onRightClick = (event: rMouseEvent) => {
+    const onRightClickHandler = (event: rMouseEvent) => {
         if (!popupItems.length) return;
 
         event.preventDefault();
@@ -164,20 +197,57 @@ const Leaf = ({
         });
     };
 
+    const onRenameClickHandler = (e: rMouseEvent) => {
+        e.stopPropagation();
+        setRenaming(true);
+        setPopupDetails(null);
+    };
+
+    const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.currentTarget.value) {
+            e.preventDefault();
+            setRenaming(false);
+            if (onRename)
+                onRename(id, leafName);
+        }
+      };
+
+    const onChangeHandler = (e: rChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setLeafName(value);
+    };
+
+    // Close renaming if click occurs outside of input component
+    const onClickOutsideHandler = (e: MouseEvent) => {
+        // Click occurred outside the component
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+            setRenaming(false);
+        }
+    };
+
+    // Set popup menu items
+    const popupItems: PopupItemsT = [];
+    if (onRename)
+        popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
+
     return (
-        <div draggable
-            style           ={ styles.leaf }
+        <input ref={inputRef} type="text" draggable
+            value           ={ leafName }
+            readOnly        ={ !renaming }
             className       ={ leafClassName }
-            onDragStart     ={ onDragStartHandler }
-            onDragEnd       ={ onDragEndHandler }
+            style           ={ leafStyle }
+            onClick         ={ onClickHandler }
+            onMouseOver     ={ onMouseOverHandler }
+            onMouseLeave    ={ onMouseLeaveHandler }
             onDragOver      ={ onDragOverHandler }
             onDragLeave     ={ onDragLeaveHandler }
             onDrop          ={ onDropHandler }
-            onClick         ={ onClickHandler }
-            onContextMenu   ={ onRightClick }
-        >
-            { text }
-        </div>
+            onDragStart     ={ onDragStartHandler }
+            onDragEnd       ={ onDragEndHandler }
+            onContextMenu   ={ onRightClickHandler }
+            onKeyDown       ={ onKeyDownHandler }
+            onChange        ={ onChangeHandler }
+        />
     );
 };
 

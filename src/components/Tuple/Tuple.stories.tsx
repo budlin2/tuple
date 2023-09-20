@@ -248,7 +248,12 @@ Baratheon.args = {
 // Template
 //----------------------------------------------------------------------------------------------------------------------
 const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
-    const { tree: _tree, pages: _pages, renameBranch } = useTree(tree, pages);
+    const {
+        tree: _tree,
+        pages: _pages,
+        renameBranch,
+        renameLeaf,
+    } = useTree(tree, pages);
 
     return (
         <div style={{
@@ -257,7 +262,10 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
             border: '1px solid lightgrey',
         }}>
             <Tuple {...args} pages={_pages}>
-                <Tree tree={_tree} onBranchRename={ renameBranch }/>
+                <Tree tree={_tree}
+                    onBranchRename={ renameBranch }
+                    onLeafRename={ renameLeaf }
+                />
             </Tuple>
         </div>
     );

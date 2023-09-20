@@ -27,8 +27,8 @@
 
     border: none;
     outline: none;
-    font-family: var(--GOOD-FONT);
-    font-size:medium;
+    font-family: inherit;
+    font-size: inherit;
 
     width: 100%;
     padding-left: var(--PADDING_HORIZONTAL);
@@ -43,6 +43,9 @@
 }
 
 .branchActive {
+    /* Account for border width */
+    width: calc(100% - 2px);
+
     background: rgba(0, 0, 0, 0.5);
     color: white;
     border: 1px solid black;
@@ -54,6 +57,8 @@
 }
 
 .branches {
+    display: flex;
+    flex-direction: column;
     margin-left: 0.5rem;
     border-left: 1px solid black;
 }
@@ -80,23 +85,22 @@
     color: transparent;
 }
 
-.branch:hover .branchButton {
-    color: white;
-}
-
-.branch:hover .branchButton:hover {
-    background: white;
-    color: black;
-}
-
 .branchDragOver {
     background: rgba(0, 0, 0, 0.5);
 }
 
 /**********  LEAF  **********/
 .leaf {
+    display: flex;
+
+    width: 100%;
     padding: 0.1rem;
     padding-left: var(--PADDING_HORIZONTAL);
+
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 /* TODO: Styles and classNames should really look like
@@ -115,9 +119,19 @@
         },
     }
 */
-.leaf:hover {
-    background: rgba(0, 0, 0, 0.5);
+.leafHover {
     cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.leafActive {
+    /* Account for border width */
+    width: calc(100% - 2px);
+
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid black;
+    caret-color: black;
 }
 
 .leafDragOver {

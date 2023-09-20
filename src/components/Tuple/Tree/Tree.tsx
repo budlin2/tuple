@@ -18,7 +18,7 @@ interface BranchesProps {
     node: BranchT | LeafT,
     path: ID[],
     setPopupDetails: (details: PopupDetailsT) => void,
-    onNodeRename?: (nodeId: ID, path: ID[], newName: string) => void,   // TODO: Remove
+    onLeafRename?: (pageId: ID, newName: string) => void,
     onBranchRename?: (path: ID[], newName: string) => void,
 }
 
@@ -27,7 +27,7 @@ const Branches = ({
     node,
     path,
     setPopupDetails,
-    onNodeRename=()=>{},    // TODO: Remove
+    onLeafRename=()=>{},
     onBranchRename=()=>{},
 }: BranchesProps) => {
     const { state: {
@@ -49,7 +49,7 @@ const Branches = ({
                 pageId          ={ leaf.pageId }
                 path            ={ path }
                 setPopupDetails ={ setPopupDetails }
-                onRename        ={ onNodeRename }
+                onRename        ={ onLeafRename }
             />
         );
     }
@@ -84,7 +84,7 @@ const Branches = ({
                     node            ={ b }
                     path            ={ path.concat(node.id) }
                     setPopupDetails ={ setPopupDetails }
-                    onNodeRename    ={ onNodeRename }
+                    onLeafRename    ={ onLeafRename }
                     onBranchRename  ={ onBranchRename }
                 />
             ))}
@@ -96,14 +96,14 @@ const Branches = ({
 export interface TreeProps {
     tree: TreeT,
     enableTrashcan?: boolean,
-    onNodeRename?: (nodeId: ID, path: ID[], newName: string) => void,
+    onLeafRename?: (pageId: ID, newName: string) => void,
     onBranchRename?: (path: ID[], newName: string) => void,
 };
 
 const Tree = ({
     tree,   // passed in as prop, because user now has access to this component directly for dynamic trees
     enableTrashcan=false,
-    onNodeRename=null, // TODO: remove this when implementing onLeagRename
+    onLeafRename=null,
     onBranchRename = null,
 }: TreeProps) => {
     const treeRef = useRef<HTMLDivElement>();
@@ -159,7 +159,7 @@ const Tree = ({
                                 key                 ={ node.id }
                                 node                ={ node }
                                 path                ={ [] }
-                                onNodeRename        ={ onNodeRename }
+                                onLeafRename        ={ onLeafRename }
                                 onBranchRename      ={ onBranchRename }
                                 setPopupDetails     ={ setPopupDetails }
                             />

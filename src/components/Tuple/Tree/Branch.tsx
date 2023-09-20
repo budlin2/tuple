@@ -65,6 +65,7 @@ const Branch = ({
     onDrop,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
+
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
@@ -108,7 +109,6 @@ const Branch = ({
 
     const _branchStyle = {
         ...branchStyle,
-        // TODO: Hover styling
         ...hovering ? branchHoverStyle : {},
         ...(isDraggedOver ? branchDragOverStyle : {}),
         ...(renaming ? branchActiveStyle : {}),
@@ -138,20 +138,6 @@ const Branch = ({
         setIsDraggedOver(false);
     };
 
-    const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && e.currentTarget.value) {
-            e.preventDefault();
-            setRenaming(false);
-            if (onRename)
-                onRename(path.concat(id), branchName);
-        }
-      };
-
-    const onChangeHandler = (e: rChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setBranchName(value);
-    };
-
     const onDropHandler = (e: rDragEvent) => {
         if (events?.onTreeDrop) {
             const dragPageId = e.dataTransfer && e.dataTransfer.getData('pageId');
@@ -176,18 +162,32 @@ const Branch = ({
         });
     };
 
+    const onRenameClickHandler = (e: rMouseEvent) => {
+        e.stopPropagation();
+        setRenaming(true);
+        setPopupDetails(null);
+    };
+
+    const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.currentTarget.value) {
+            e.preventDefault();
+            setRenaming(false);
+            if (onRename)
+                onRename(path.concat(id), branchName);
+        }
+      };
+
+    const onChangeHandler = (e: rChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setBranchName(value);
+    };
+
     // Close renaming if click occurs outside of input component
     const onClickOutsideHandler = (e: MouseEvent) => {
         // Click occurred outside the component
         if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
             setRenaming(false);
         }
-    };
-
-    const onRenameClickHandler = (e: rMouseEvent) => {
-        e.stopPropagation();
-        setRenaming(true);
-        setPopupDetails(null);
     };
 
     // Set popup menu items

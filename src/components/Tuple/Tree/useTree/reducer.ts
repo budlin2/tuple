@@ -3,7 +3,8 @@ import {
     _add_node,
     _delete_node,
     _move_node,
-    _rename_branch
+    _rename_branch,
+    _rename_leaf,
 } from "./actions";
 
 import {
@@ -26,6 +27,11 @@ export const treeReducer = (state: TreeStateT, action: TreeActionT): TreeStateT 
                 ...state,
                 tree: _rename_branch(state.tree, path, newName),
             };
+        case TreeActionKind.RENAME_LEAF:
+            return {
+                ...state,
+                pages: _rename_leaf(state.pages, action.payload.pageId, action.payload.newName),
+            }
         case TreeActionKind.DELETE_NODE:
             return _delete_node(state, action.payload as DeleteNodePayloadT);
         case TreeActionKind.MOVE_NODE:
