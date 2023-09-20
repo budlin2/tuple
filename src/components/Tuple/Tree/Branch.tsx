@@ -87,12 +87,17 @@ const Branch = ({
         if (renaming && inputRef.current) {
             inputRef.current.focus();
             document.addEventListener('click', onClickOutsideHandler);
+            document.addEventListener('contextmenu', onClickOutsideHandler);
         } else {
             inputRef.current.blur();
             document.removeEventListener('click', onClickOutsideHandler);
+            document.removeEventListener('contextmenu', onClickOutsideHandler);
         }
 
-        return () => document.removeEventListener('click', onClickOutsideHandler);
+        return () => {
+            document.removeEventListener('click', onClickOutsideHandler);
+            document.removeEventListener('contextmenu', onClickOutsideHandler);
+        };
     }, [renaming]);
 
     //------------------------------------------------------------------------------------------------------------------
