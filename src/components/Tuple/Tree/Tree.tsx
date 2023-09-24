@@ -20,6 +20,8 @@ interface BranchesProps {
     setPopupDetails: (details: PopupDetailsT) => void,
     onLeafRename?: (pageId: ID, newName: string) => void,
     onBranchRename?: (path: ID[], newName: string) => void,
+    onLeafDelete?: (pageId: ID) => void,
+    onBranchDelete?: (path: ID[]) => void,
 }
 
 // Recursive tree component
@@ -29,6 +31,8 @@ const Branches = ({
     setPopupDetails,
     onLeafRename=()=>{},
     onBranchRename=()=>{},
+    onLeafDelete=()=>{},
+    onBranchDelete=()=>{},
 }: BranchesProps) => {
     const { state: {
         pages,
@@ -50,6 +54,7 @@ const Branches = ({
                 path            ={ path }
                 setPopupDetails ={ setPopupDetails }
                 onRename        ={ onLeafRename }
+                onDelete        ={ onLeafDelete }
             />
         );
     }
@@ -77,6 +82,7 @@ const Branches = ({
             path                    ={ path }
             setPopupDetails         ={ setPopupDetails }
             onRename                ={ onBranchRename }
+            onDelete                ={ onBranchDelete }
         >
             { branch.branches.map( b => (
                 <Branches
@@ -86,6 +92,8 @@ const Branches = ({
                     setPopupDetails ={ setPopupDetails }
                     onLeafRename    ={ onLeafRename }
                     onBranchRename  ={ onBranchRename }
+                    onLeafDelete    ={ onLeafDelete }
+                    onBranchDelete  ={ onBranchDelete }
                 />
             ))}
         </Branch>
@@ -98,6 +106,8 @@ export interface TreeProps {
     enableTrashcan?: boolean,
     onLeafRename?: (pageId: ID, newName: string) => void,
     onBranchRename?: (path: ID[], newName: string) => void,
+    onLeafDelete?: (pageId: ID) => void,
+    onBranchDelete?: (path: ID[]) => void,
 };
 
 const Tree = ({
@@ -105,6 +115,8 @@ const Tree = ({
     enableTrashcan=false,
     onLeafRename=null,
     onBranchRename = null,
+    onBranchDelete=null,
+    onLeafDelete=null,
 }: TreeProps) => {
     const treeRef = useRef<HTMLDivElement>();
     const rootContainerRef = useRef<HTMLDivElement>();
@@ -161,6 +173,8 @@ const Tree = ({
                                 path                ={ [] }
                                 onLeafRename        ={ onLeafRename }
                                 onBranchRename      ={ onBranchRename }
+                                onLeafDelete        ={ onLeafDelete }
+                                onBranchDelete      ={ onBranchDelete }
                                 setPopupDetails     ={ setPopupDetails }
                             />
                         ))}

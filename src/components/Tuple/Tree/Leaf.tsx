@@ -35,6 +35,7 @@ interface Props {
     path: ID[],
     setPopupDetails?: (details: PopupDetailsT | null) => void,
     onRename?: (pageId: ID, newName: string) => void,
+    onDelete?: (pageId: ID) => void,
     onDrop?: (e: rDragEvent) => void,
 }
 
@@ -46,6 +47,7 @@ const Leaf = ({
     path,
     setPopupDetails = ()=>{},
     onRename,
+    onDelete,
     onDrop,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);

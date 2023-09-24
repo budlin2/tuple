@@ -1,8 +1,7 @@
 import { ID, PagesT } from "../../TupleTypes";
-import { BranchT, TreeT } from "../TreeTypes";
+import { BranchT, LeafT, TreeT, isBranch, isLeaf } from "../TreeTypes";
 import {
     AddNodePayloadT,
-    DeleteNodePayloadT,
     MoveNodePayloadT,
     TreeStateT
 } from "./types";
@@ -26,18 +25,62 @@ export const _rename_branch = (tree: TreeT, path: ID[], newLabel: string): TreeT
         // Not on path. Return node unchanged
         return node;
     });
-}
+};
 
 export const _rename_leaf = (pages: PagesT, pageId: ID, newName: string): PagesT => {
     return {
         ...pages,
         [pageId]: { ...pages[pageId], name: newName },
     };
-  }
-
-export const _delete_node = (state: TreeStateT, payload: DeleteNodePayloadT): TreeStateT => {
-    return state;
 };
+
+// Fetches all leaves' pageIds in a branch
+const _get_nested_page_ids = (tree: TreeT): ID[] => {
+    return tree.reduce((acc, node) => {
+        if (isLeaf(node))
+            return acc.concat((node as LeafT).pageId);
+
+        return acc.concat(_get_nested_page_ids( (node as BranchT).branches ));
+    }, []);
+};
+
+export const _delete_branch = (tree: TreeT, pages: PagesT, path: ID[]): TreeStateT => {
+    let newPages = pages;
+
+    const newTree = tree.reduce((acc, node) => {
+        if (isBranch(node) && node.id === path[0]) {
+            const branch = node as BranchT;
+
+            // We've reached the end of the path. Delete the branch
+            if (path.length === 1) {
+                const nestedPageIds: ID[] = _get_nested_page_ids(branch.branches);
+                newPages = { ...pages };
+                nestedPageIds.forEach((pageId) => {
+                    delete newPages[pageId];
+                });
+                return acc;
+            }
+
+            // Recurse into nested branches
+            const { tree: updatedBranches, pages: updatedPages } = _delete_branch(
+                branch.branches,
+                newPages,
+                path.slice(1),
+            );
+            branch.branches = updatedBranches;
+            newPages = updatedPages;
+        }
+
+        // Keep leaves and branches that are not being deleted
+        acc.push(node);
+        return acc;
+    }, []);
+
+    return {
+        tree: newTree,
+        pages: newPages
+    };
+}
 
 export const _move_node = (state: TreeStateT, payload: MoveNodePayloadT): TreeStateT => {
     return state;

@@ -12,8 +12,9 @@ export interface BranchT {
     branches: (LeafT | BranchT)[],
 }
 
-// Helper function to distinguishg leaves from branches
+// Helper functions to distinguishg leaves from branches
 export const isLeaf = (node: LeafT | BranchT): boolean => !!(node as LeafT)?.pageId;
+export const isBranch = (node: LeafT | BranchT): boolean => !!(node as BranchT)?.branches;
 
 export type TreeT = (LeafT | BranchT)[];
 

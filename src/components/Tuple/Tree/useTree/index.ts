@@ -20,10 +20,16 @@ export const useTree = (initialTreeData: TreeT, initialPagesData: PagesT) => {
         payload: { pageId, newName }
     });
 
+    const deleteBranch = (path: ID[]) => dispatch({
+        type: TreeActionKind.DELETE_BRANCH,
+        payload: { path },
+    });
+
     return {
         tree: state.tree,
         pages: state.pages,
         renameBranch,
         renameLeaf,
+        deleteBranch,
     };
 }

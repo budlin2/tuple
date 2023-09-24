@@ -12,6 +12,7 @@ import LannisterCss from './templates/lannister.module.css';
 import BaratheonCss from './templates/baratheon.module.css';
 import { useTree } from "./Tree/useTree";
 import Tree from "./Tree/Tree";
+import { useEffect } from "react";
 
 export default {
     title: 'Components/Tuple',
@@ -60,6 +61,24 @@ const pages: PagesT = {
     'ferrari':  { id: 15, name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
     'gm':       { id: 16, name: 'gm'        , component: () => <Page>{gm}</Page> },
     'honda':    { id: 17, name: 'honda'     , component: () => <Page>{honda}</Page> },
+    'ford2':     { id: 51, name: 'ford'      , component: () => <Page>{ford}</Page> },
+    'jeep2':     { id: 52, name: 'jeep'      , component: () => <Page>{jeep}</Page> },
+    'chrysler2': { id: 53, name: 'chrysler'  , component: () => <Page>{chrysler}</Page> },
+    'ferrari2':  { id: 54, name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
+    'gm2':       { id: 55, name: 'gm'        , component: () => <Page>{gm}</Page> },
+    'honda2':    { id: 56, name: 'honda'     , component: () => <Page>{honda}</Page> },
+    'ford3':     { id: 61, name: 'ford'      , component: () => <Page>{ford}</Page> },
+    'jeep3':     { id: 62, name: 'jeep'      , component: () => <Page>{jeep}</Page> },
+    'chrysler3': { id: 63, name: 'chrysler'  , component: () => <Page>{chrysler}</Page> },
+    'ferrari3':  { id: 64, name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
+    'gm3':       { id: 65, name: 'gm'        , component: () => <Page>{gm}</Page> },
+    'honda3':    { id: 66, name: 'honda'     , component: () => <Page>{honda}</Page> },
+    'ford4':     { id: 71, name: 'ford'      , component: () => <Page>{ford}</Page> },
+    'jeep4':     { id: 72, name: 'jeep'      , component: () => <Page>{jeep}</Page> },
+    'chrysler4': { id: 73, name: 'chrysler'  , component: () => <Page>{chrysler}</Page> },
+    'ferrari4':  { id: 74, name: 'ferrari'   , component: () => <Page>{ferrari}</Page> },
+    'gm4':       { id: 75, name: 'gm'        , component: () => <Page>{gm}</Page> },
+    'honda4':    { id: 76, name: 'honda'     , component: () => <Page>{honda}</Page> },
     'carpe':    { id: 18, name: 'carpe'     , component: () => <Page>{carpe}</Page> },
     'diem':     { id: 19, name: 'diem'      , component: () => <Page>{diem}</Page> },
     'monkey':   { id: 20, name: 'monkey'    , component: () => <Page>{monkey}</Page> },
@@ -82,7 +101,6 @@ const tree: TreeT = [
         { id: 12, pageId: 'carpe' },
         { id: 13, pageId: 'diem' },
         { id: 2, label: 'hello again', branches: [
-            { id: 14, pageId: 'world' },
             { id: 3, label: 'cars', branches: [
                 { id: 15, pageId: 'ford' },
                 { id: 16, pageId: 'jeep' },
@@ -91,31 +109,39 @@ const tree: TreeT = [
                 { id: 19, pageId: 'gm' },
                 { id: 20, pageId: 'honda' },
                 { id: 4, label: 'cars', branches: [
-                    { id: 21, pageId: 'ford' },
-                    { id: 22, pageId: 'jeep' },
-                    { id: 23, pageId: 'chrysler' },
-                    { id: 24, pageId: 'ferrari' },
-                    { id: 25, pageId: 'gm' },
-                    { id: 26, pageId: 'honda' },
+                    { id: 21, pageId: 'ford2' },
+                    { id: 22, pageId: 'jeep2' },
+                    { id: 23, pageId: 'chrysler2' },
+                    { id: 24, pageId: 'ferrari2' },
+                    { id: 25, pageId: 'gm2' },
+                    { id: 26, pageId: 'honda2' },
                     { id: 5, label: 'cars', branches: [
-                        { id: 27, pageId: 'ford' },
-                        { id: 28, pageId: 'jeep' },
-                        { id: 29, pageId: 'chrysler' },
-                        { id: 30, pageId: 'ferrari' },
-                        { id: 31, pageId: 'gm' },
-                        { id: 32, pageId: 'honda' },
+                        { id: 27, pageId: 'ford3' },
+                        { id: 28, pageId: 'jeep3' },
+                        { id: 29, pageId: 'chrysler3' },
+                        { id: 30, pageId: 'ferrari3' },
+                        { id: 31, pageId: 'gm3' },
+                        { id: 32, pageId: 'honda3' },
                         { id: 5, label: 'cars', branches: [
-                            { id: 33, pageId: 'ford' },
-                            { id: 34, pageId: 'jeep' },
-                            { id: 35, pageId: 'chrysler' },
-                            { id: 36, pageId: 'ferrari' },
-                            { id: 37, pageId: 'gm' },
-                            { id: 38, pageId: 'honda' },
+                            { id: 33, pageId: 'ford4' },
+                            { id: 34, pageId: 'jeep4' },
+                            { id: 35, pageId: 'chrysler4' },
+                            { id: 36, pageId: 'ferrari4' },
+                            { id: 37, pageId: 'gm4' },
+                            { id: 38, pageId: 'honda4' },
                         ]},
-                    ]}
-                ]}
-            ]}
-        ]}
+                    ]},
+                ]},
+                { id: 6, label: 'fruits', branches: [
+                    { id: 41, pageId: 'apple' },
+                    { id: 42, pageId: 'banana' },
+                    { id: 43, pageId: 'carrot' },
+                    { id: 44, pageId: 'brocoli' },
+                    { id: 45, pageId: 'tomato' },
+                    { id: 46, pageId: 'orange' },
+                ]},
+            ]},
+        ]},
     ]},
     { id: 39, pageId: 'monkey' },
     { id: 40, pageId: 'pox' },
@@ -253,7 +279,16 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
         pages: _pages,
         renameBranch,
         renameLeaf,
+        deleteBranch,
     } = useTree(tree, pages);
+
+    useEffect(() => {
+        console.log('tree', _tree);
+    }, [_tree])
+
+    useEffect(() => {
+        console.log('pages', _pages);
+    }, [_tree])
 
     return (
         <div style={{
@@ -265,6 +300,7 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
                 <Tree tree={_tree}
                     onBranchRename={ renameBranch }
                     onLeafRename={ renameLeaf }
+                    onBranchDelete={ deleteBranch }
                 />
             </Tuple>
         </div>

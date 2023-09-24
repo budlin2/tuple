@@ -9,7 +9,7 @@ export interface TreeStateT {
 export enum TreeActionKind {
     RENAME_BRANCH='RENAME_BRANCH',
     RENAME_LEAF='RENAME_LEAF',
-    DELETE_NODE='DELETE_NODE',
+    DELETE_BRANCH='DELETE_BRANCH',
     MOVE_NODE='MOVE_NODE',
     ADD_NODE='ADD_NODE',
 }
@@ -17,11 +17,11 @@ export enum TreeActionKind {
 export interface RenameBranchPayloadT { path: ID[], newName: string };
 export interface RenameBranchActionT { type: TreeActionKind.RENAME_BRANCH, payload: RenameBranchPayloadT };
 
-export interface RenameLeafPayloadT { pageId, newName: string };
+export interface RenameLeafPayloadT { pageId: ID, newName: string };
 export interface RenameLeafActionT { type: TreeActionKind.RENAME_LEAF, payload: RenameLeafPayloadT };
 
-export interface DeleteNodePayloadT { };
-export interface DeleteNodeActionT { type: TreeActionKind.DELETE_NODE, payload: DeleteNodePayloadT };
+export interface DeleteBranchPayloadT { path: ID[] };
+export interface DeleteBranchActionT { type: TreeActionKind.DELETE_BRANCH, payload: DeleteBranchPayloadT };
 
 export interface MoveNodePayloadT { };
 export interface MoveNodeActionT { type: TreeActionKind.MOVE_NODE, payload: MoveNodePayloadT };
@@ -31,6 +31,6 @@ export interface AddNodeActionT { type: TreeActionKind.ADD_NODE, payload: AddNod
 
 export type TreeActionT = RenameBranchActionT
                         | RenameLeafActionT
-                        | DeleteNodeActionT
+                        | DeleteBranchActionT
                         | MoveNodeActionT
                         | AddNodeActionT;

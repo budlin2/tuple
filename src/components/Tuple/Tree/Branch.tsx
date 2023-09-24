@@ -10,6 +10,7 @@ import {
     ChangeEvent as rChangeEvent,
     useRef,
     useEffect,
+    useMemo,
 } from 'react';
 
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
@@ -40,6 +41,7 @@ interface Props {
     path: ID[],
     setPopupDetails?: (details: PopupDetailsT | null) => void,
     onRename?: (path: ID[], newName: string) => void,
+    onDelete?: (path: ID[]) => void,
     onDrop?: (e: rDragEvent) => void,
 }
 
@@ -62,6 +64,7 @@ const Branch = ({
     path=[],
     setPopupDetails=()=>{},
     onRename,
+    onDelete,
     onDrop,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -195,10 +198,24 @@ const Branch = ({
         }
     };
 
-    // Set popup menu items
-    const popupItems: PopupItemsT = [];
-    if (onRename)
-        popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
+    //------------------------------------------------------------------------------------------------------------------
+    // Popup Items
+    //------------------------------------------------------------------------------------------------------------------
+    const getPopupItems = (
+        onRename: (path: ID[], newName: string) => void,
+        onDelete: (path: ID[]) => void,
+    ): PopupItemsT => {
+        const popupItems: PopupItemsT = [];
+        if (onRename)
+            popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
+
+        if (onDelete)
+            popupItems.push({ id: 2, label: 'Delete', onClick: () => onDelete(path.concat(id)) });
+
+        return popupItems;
+    };
+
+    const popupItems = useMemo(() => getPopupItems(onRename, onDelete), [onRename, onDelete]);
     
     return (
         <div>

@@ -1,7 +1,7 @@
 import { TreeT } from "../TreeTypes";
 import {
     _add_node,
-    _delete_node,
+    _delete_branch,
     _move_node,
     _rename_branch,
     _rename_leaf,
@@ -9,7 +9,7 @@ import {
 
 import {
     AddNodePayloadT,
-    DeleteNodePayloadT,
+    DeleteBranchPayloadT,
     MoveNodePayloadT,
     RenameBranchPayloadT,
     TreeActionKind,
@@ -20,9 +20,10 @@ import {
 export const initialTree: TreeT = [];
 
 export const treeReducer = (state: TreeStateT, action: TreeActionT): TreeStateT => {
-    switch(action.type) {
+    const { type, payload } = action;
+    switch(type) {
         case TreeActionKind.RENAME_BRANCH:
-            const { path, newName } = action.payload as RenameBranchPayloadT;
+            const { path, newName } = payload as RenameBranchPayloadT;
             return {
                 ...state,
                 tree: _rename_branch(state.tree, path, newName),
@@ -30,10 +31,10 @@ export const treeReducer = (state: TreeStateT, action: TreeActionT): TreeStateT 
         case TreeActionKind.RENAME_LEAF:
             return {
                 ...state,
-                pages: _rename_leaf(state.pages, action.payload.pageId, action.payload.newName),
+                pages: _rename_leaf(state.pages, payload.pageId, payload.newName),
             }
-        case TreeActionKind.DELETE_NODE:
-            return _delete_node(state, action.payload as DeleteNodePayloadT);
+        case TreeActionKind.DELETE_BRANCH:
+            return _delete_branch(state.tree, state.pages, payload.path);
         case TreeActionKind.MOVE_NODE:
             return _move_node(state, action.payload as MoveNodePayloadT);
         case TreeActionKind.ADD_NODE:
