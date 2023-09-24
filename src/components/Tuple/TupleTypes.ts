@@ -44,6 +44,11 @@ export interface TupleStylesT {
     rootletTextBox?: CSSProperties,
     rootletContainer?: CSSProperties,
     symbolContainer?: CSSProperties,
+    popup?: CSSProperties,
+    popupItem?: CSSProperties,
+    popupItemHover?: CSSProperties,
+    popupItemActive?: CSSProperties,
+    popupHr?: CSSProperties,
     trashcan?: CSSProperties,
 
     tabBar?: CSSProperties,
@@ -86,6 +91,11 @@ export interface TupleClassesT {
     rootletTextBox?: string,
     rootletContainer?: string,
     symbolContainer?: string,
+    popup?: string,
+    popupItem?: string,
+    popupItemHover?: string,
+    popupItemActive?: string,
+    popupHr?: string,
     trashcan?: string,
 
     tabBar?: string,

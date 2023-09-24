@@ -8,7 +8,7 @@ import { BranchT, LeafT, PopupDetailsT, TreeT, isLeaf } from './TreeTypes';
 import { ID, PageT, TupleContextT } from '../TupleTypes';
 import Trashcan from './Trashcan';
 import ScrollPane from '../../ScrollPane';
-import Popup from '../../Popup';
+import Popup, { PopupClassesT, PopupStylesT } from '../../Popup';
 
 import _classes from './tree.module.css';
 import { classNames } from '../../../utils';
@@ -151,11 +151,25 @@ const Tree = ({
     // Styling
     //------------------------------------------------------------------------------------------------------------------
     // CSSModules
-    const treeClassName = `${ _classes?.tree || '' } ${ classes?.tree  || '' }`;
-    const scrollPaneClassName = `${_classes.contentContainer} ${classes.scrollPane}`;
+    const treeClassName = classNames(_classes?.tree, classes?.tree);
+    const scrollPaneClassName = classNames(_classes.contentContainer, classes.scrollPane);
+    const popupClassNames: PopupClassesT = {
+        popup:      classNames(_classes?.popup, classes?.popup),
+        item:       classNames(_classes?.popupItem, classes?.popupItem),
+        itemHover:  classNames(_classes?.popupItemHover, classes?.popupItemHover),
+        itemActive: classNames(_classes?.popupItemActive, classes?.popupItemActive),
+        hr:         classNames(_classes?.popupHr, classes?.popupHr),
+    };
 
     // Styles
     const scrollPaneStyle = { ...styles?.scrollPane, height: scrollPaneHeight }
+    const popupStyles: PopupStylesT = {
+        popup:      styles?.popup,
+        item:       styles?.popupItem,
+        itemHover:  styles?.popupItemHover,
+        itemActive: styles?.popupItemActive,
+        hr:         styles?.popupHr,
+    };
 
     return (
         <div className={_classes.treeContainer}>
@@ -182,9 +196,12 @@ const Tree = ({
                 </ScrollPane>
 
                 { popupDetails && (
-                    <Popup position={popupDetails.pos}
-                        items={ popupDetails.items }
-                        onClose={ () => setPopupDetails(null) }
+                    <Popup
+                        position    ={ popupDetails.pos }
+                        classes     ={ popupClassNames }
+                        styles      ={ popupStyles }
+                        items       ={ popupDetails.items }
+                        onClose     ={ () => setPopupDetails(null) }
                     />
                 )}
 

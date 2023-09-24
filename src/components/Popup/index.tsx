@@ -6,7 +6,7 @@ import _classes from './popup.module.css';
 import { classNames } from '../../utils';
 import { ID } from '../Tuple/TupleTypes';
 
-interface PopupStylesT {
+export interface PopupStylesT {
     popup?:         CSSProperties,
     itemHover?:     CSSProperties,
     itemActive?:    CSSProperties,
@@ -14,7 +14,7 @@ interface PopupStylesT {
     hr?:            CSSProperties,
 };
 
-interface PopupClassesT {
+export interface PopupClassesT {
     popup?:         string,
     itemHover?:     string,
     itemActive?:    string,
@@ -50,6 +50,7 @@ const Popup = ({
     const popupStyle: CSSProperties = { ...styles?.popup, left: x, top: y };
 
     const itemClassNameBase = classNames(_classes?.item, classes?.item);
+    console.log(itemClassNameBase)
     const hrClassName = classNames(_classes?.hr, classes?.hr);
 
     //------------------------------------------------------------------------------------------------------------------
@@ -69,10 +70,8 @@ const Popup = ({
 
                 const itemClassName = classNames(
                     itemClassNameBase,
-                    hoveredId === item.id && _classes?.itemHover,
-                    hoveredId === item.id && classes?.itemHover,
-                    activeId === item.id && _classes?.itemActive,
-                    activeId === item.id && classes?.itemActive,
+                    hoveredId === item.id && classNames(_classes?.itemHover, classes?.itemHover),
+                    activeId === item.id && classNames(_classes?.itemActive, classes?.itemActive),
                 );
 
                 const itemStyle = {
