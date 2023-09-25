@@ -25,11 +25,17 @@ export const useTree = (initialTreeData: TreeT, initialPagesData: PagesT) => {
         payload: { path },
     });
 
+    const deleteLeaf = (path: ID[]) => dispatch({
+        type: TreeActionKind.DELETE_LEAF,
+        payload: { path },
+    });
+
     return {
         tree: state.tree,
         pages: state.pages,
         renameBranch,
         renameLeaf,
         deleteBranch,
+        deleteLeaf,
     };
 }

@@ -17,11 +17,11 @@ import { classNames } from '../../../utils';
 interface BranchesProps {
     node: BranchT | LeafT,
     path: ID[],
-    setPopupDetails: (details: PopupDetailsT) => void,
-    onLeafRename?: (pageId: ID, newName: string) => void,
-    onBranchRename?: (path: ID[], newName: string) => void,
-    onLeafDelete?: (pageId: ID) => void,
-    onBranchDelete?: (path: ID[]) => void,
+    setPopupDetails:    (details: PopupDetailsT) => void,
+    onLeafRename?:      (pageId: ID, newName: string) => void,
+    onBranchRename?:    (path: ID[], newName: string) => void,
+    onLeafDelete?:      (path: ID[]) => void,
+    onBranchDelete?:    (path: ID[]) => void,
 }
 
 // Recursive tree component
@@ -29,10 +29,10 @@ const Branches = ({
     node,
     path,
     setPopupDetails,
-    onLeafRename=()=>{},
-    onBranchRename=()=>{},
-    onLeafDelete=()=>{},
-    onBranchDelete=()=>{},
+    onLeafRename    =()=>{},
+    onBranchRename  =()=>{},
+    onLeafDelete    =()=>{},
+    onBranchDelete  =()=>{},
 }: BranchesProps) => {
     const { state: {
         pages,
@@ -106,7 +106,7 @@ export interface TreeProps {
     enableTrashcan?: boolean,
     onLeafRename?: (pageId: ID, newName: string) => void,
     onBranchRename?: (path: ID[], newName: string) => void,
-    onLeafDelete?: (pageId: ID) => void,
+    onLeafDelete?: (path: ID[]) => void,
     onBranchDelete?: (path: ID[]) => void,
 };
 
@@ -115,8 +115,8 @@ const Tree = ({
     enableTrashcan=false,
     onLeafRename=null,
     onBranchRename = null,
-    onBranchDelete=null,
     onLeafDelete=null,
+    onBranchDelete=null,
 }: TreeProps) => {
     const treeRef = useRef<HTMLDivElement>();
     const rootContainerRef = useRef<HTMLDivElement>();

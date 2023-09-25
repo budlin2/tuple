@@ -2,6 +2,7 @@ import { TreeT } from "../TreeTypes";
 import {
     _add_node,
     _delete_branch,
+    _delete_leaf,
     _move_node,
     _rename_branch,
     _rename_leaf,
@@ -35,6 +36,8 @@ export const treeReducer = (state: TreeStateT, action: TreeActionT): TreeStateT 
             }
         case TreeActionKind.DELETE_BRANCH:
             return _delete_branch(state.tree, state.pages, payload.path);
+        case TreeActionKind.DELETE_LEAF:
+            return _delete_leaf(state.tree, state.pages, payload.path);
         case TreeActionKind.MOVE_NODE:
             return _move_node(state, action.payload as MoveNodePayloadT);
         case TreeActionKind.ADD_NODE:

@@ -280,6 +280,7 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
         renameBranch,
         renameLeaf,
         deleteBranch,
+        deleteLeaf,
     } = useTree(tree, pages);
 
     useEffect(() => {
@@ -301,6 +302,7 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
                     onBranchRename={ renameBranch }
                     onLeafRename={ renameLeaf }
                     onBranchDelete={ deleteBranch }
+                    onLeafDelete={ deleteLeaf }
                 />
             </Tuple>
         </div>

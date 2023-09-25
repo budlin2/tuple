@@ -82,6 +82,42 @@ export const _delete_branch = (tree: TreeT, pages: PagesT, path: ID[]): TreeStat
     };
 }
 
+export const _delete_leaf = (tree: TreeT, pages: PagesT, path: ID[]): TreeStateT => {
+    let newPages = pages;
+
+    const newTree = tree.reduce((acc, node) => {
+        if (isLeaf(node) && path.length == 1 && node.id === path[0]) {
+            const leaf = node as LeafT;
+            newPages = { ...pages };
+            delete newPages[leaf.pageId];
+
+            return acc;
+        };
+
+        if (isBranch(node) && node.id === path[0]) {
+            const branch = node as BranchT;
+
+            // Recurse into nested branches
+            const { tree: updatedBranches, pages: updatedPages } = _delete_leaf(
+                branch.branches,
+                newPages,
+                path.slice(1),
+            );
+            branch.branches = updatedBranches;
+            newPages = updatedPages;
+        }
+
+        // Keep leaves and branches that are not being deleted
+        acc.push(node);
+        return acc;
+    }, []);
+
+    return {
+        tree: newTree,
+        pages: newPages,
+    };
+};
+
 export const _move_node = (state: TreeStateT, payload: MoveNodePayloadT): TreeStateT => {
     return state;
 };

@@ -7,6 +7,7 @@ import {
     useState,
     useEffect,
     useRef,
+    useMemo,
 } from 'react'
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -33,10 +34,10 @@ interface Props {
     text: string,
     pageId: ID,
     path: ID[],
-    setPopupDetails?: (details: PopupDetailsT | null) => void,
-    onRename?: (pageId: ID, newName: string) => void,
-    onDelete?: (pageId: ID) => void,
-    onDrop?: (e: rDragEvent) => void,
+    setPopupDetails?:   (details: PopupDetailsT | null) => void,
+    onRename?:          (pageId: ID, newName: string) => void,
+    onDelete?:          (path: ID[]) => void,
+    onDrop?:            (e: rDragEvent) => void,
 }
 
 
@@ -232,10 +233,24 @@ const Leaf = ({
         }
     };
 
-    // Set popup menu items
-    const popupItems: PopupItemsT = [];
-    if (onRename)
-        popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
+    //------------------------------------------------------------------------------------------------------------------
+    // Popup Items
+    //------------------------------------------------------------------------------------------------------------------
+    const getPopupItems = (
+        onRename: (pageId: ID, newName: string) => void,
+        onDelete: (path: ID[]) => void,
+    ): PopupItemsT => {
+        const popupItems: PopupItemsT = [];
+        if (onRename)
+            popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
+
+        if (onDelete)
+            popupItems.push({ id: 2, label: 'Delete', onClick: () => onDelete(path.concat(id)) });
+
+        return popupItems;
+    };
+
+    const popupItems = useMemo(() => getPopupItems(onRename, onDelete), [onRename, onDelete]);
 
     return (
         <input ref={inputRef} type="text" draggable

@@ -50,7 +50,6 @@ const Popup = ({
     const popupStyle: CSSProperties = { ...styles?.popup, left: x, top: y };
 
     const itemClassNameBase = classNames(_classes?.item, classes?.item);
-    console.log(itemClassNameBase)
     const hrClassName = classNames(_classes?.hr, classes?.hr);
 
     //------------------------------------------------------------------------------------------------------------------
