@@ -11,7 +11,7 @@
 /****************************** SCROLLBAR ******************************/
 /* Firefox */
 .scrollpane {
-    scrollbar-width: auto;
+    scrollbar-width: 0.75rem;
     scrollbar-color: var(--SCROLLBAR_COLOR) transparent;
     overflow-y: overlay;    /* Scrollbar overlays content */
 }
@@ -19,6 +19,7 @@
 /* Chrome, Edge, and Safari */
 .scrollpane::-webkit-scrollbar {
     width: 0.75rem;
+    height: 0.75rem;
 }
 
 .scrollpane::-webkit-scrollbar-track {
@@ -26,8 +27,8 @@
 }
 
 .scrollpane::-webkit-scrollbar-thumb {
-    background-color: var(--SCROLLBAR_COLOR);
     border-radius: 0;
+    background-color: var(--SCROLLBAR_COLOR);
 }
 
 /* Scrollbar Hidden */

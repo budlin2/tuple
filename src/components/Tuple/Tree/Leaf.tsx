@@ -8,7 +8,7 @@ import {
     useEffect,
     useRef,
     useMemo,
-} from 'react'
+} from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 import { TupleContext } from '..';
