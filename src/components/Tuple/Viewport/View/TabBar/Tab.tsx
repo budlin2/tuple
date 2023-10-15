@@ -27,6 +27,7 @@ import { addTab, changeView, removeTab } from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
 
 import _classes from './tabbar.module.css';
+import { classNames } from '../../../../../utils';
 
 
 export interface TabProps {
@@ -41,49 +42,29 @@ export const Tab = ({
     index,
     pageId,
 }: TabProps) => {
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
     const {
         dispatch,
         state:{ pages, classes, styles, viewport, viewportId },
     }: TupleContextT = useContext(TupleContext);
 
+    const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
+
+    const label = pages[pageId]?.name || '';
+    const port = viewport.ports[portId];
+    const isActiveTab = pageId === port.activePageId;
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {
         cleanupDraggable();
     }, [cleanupDraggable]);
 
     const tabRef = useRef<HTMLDivElement>();
     const [closeVisible, setCloseVisible] = useState(false);
-    const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
-
-    const label = pages[pageId].name;
-    const port = viewport.ports[portId];
-    const isActiveTab = pageId === port.activePageId;
-
-    const inactiveTabClassName = `
-        ${_classes?.tab || ''}
-        ${classes?.tab  || ''}`;
-
-    const activeTabClassName = `
-        ${inactiveTabClassName}
-        ${_classes?.tabActive || ''}
-        ${classes?.tabActive  || ''}`;
-
-    const tabClassName = isActiveTab
-        ? activeTabClassName
-        : inactiveTabClassName;
-
-    const tabLabelClassName = `
-        ${_classes?.tabLabel || ''}
-        ${classes?.tabLabel  || ''}`;
-
-    const tabCloseClassName = `
-        ${_classes?.tabClose || ''}
-        ${classes?.tabClose  || ''}`;
-
-    const draggableClass = classes?.draggable || '';
-
-    const tabStyle = isActiveTab
-            ? {...styles.tab, ...styles.tabActive}
-            : styles.tab;
 
     // Note: Unfortunate, but much of Tuple's CSS relies on tab height.
     //       This is a hack in case the user changes it in their custom CSS.
@@ -92,6 +73,24 @@ export const Tab = ({
         const tabbarHeight = tabRef.current?.clientHeight;
         rootCSS.style.setProperty('--TAB-HEIGHT', `${tabbarHeight.toString()}px`);
     }, [tabRef]);
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
+    const inactiveTabClassName = classNames(_classes?.tab, classes?.tab);
+    const activeTabClassName = classNames(inactiveTabClassName, _classes?.tabActive, classes?.tabActive);
+
+    const tabClassName = isActiveTab
+        ? activeTabClassName
+        : inactiveTabClassName;
+
+    const tabLabelClassName = classNames(_classes?.tabLabel, classes?.tabLabel);
+    const tabCloseClassName = classNames(_classes?.tabClose, classes?.tabClose);
+    const draggableClass = classes?.draggable || '';
+
+    const tabStyle = isActiveTab
+        ? {...styles.tab, ...styles.tabActive}
+        : styles.tab;
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
