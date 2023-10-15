@@ -32,9 +32,8 @@ const TupleInner = ({ enableTrashcan, children=null }: TupleInnerProps) => {
         ${_classes?.tuple || ''}
         ${classes?.tuple  || ''}`;
 
-    if (!isRootViewport) {
+    if (!isRootViewport)
         return <Viewport />;
-    }
 
     return (
         <div className={tupleClassName} style={styles.tuple}>

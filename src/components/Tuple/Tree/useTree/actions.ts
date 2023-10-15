@@ -1,7 +1,6 @@
 import { ID, PagesT } from "../../TupleTypes";
 import { BranchT, LeafT, TreeT, isBranch, isLeaf } from "../TreeTypes";
 import {
-    AddNodePayloadT,
     MoveNodePayloadT,
     TreeStateT
 } from "./types";
@@ -118,10 +117,38 @@ export const _delete_leaf = (tree: TreeT, pages: PagesT, path: ID[]): TreeStateT
     };
 };
 
-export const _move_node = (state: TreeStateT, payload: MoveNodePayloadT): TreeStateT => {
-    return state;
+
+const _add_node_helper = (
+    tree: TreeT,
+    path: ID[],
+    position: number,
+    newNode: BranchT | LeafT
+): TreeT => {
+    return tree.map((node) => {
+        if (isBranch(node) && node.id === path[0]) {
+            const branch = node as BranchT;
+            const { branches } = branch;
+            branch.branches = (path.length === 1)
+                ? [...branches.slice(0, position), newNode, ...branches.slice(position)]
+                : _add_node(branch.branches, path.slice(1), position, newNode);
+        }
+        return node;
+    });
 };
 
-export const _add_node = (state: TreeStateT, payload: AddNodePayloadT): TreeStateT => {
+export const _add_node = (
+    tree: TreeT,
+    path: ID[],
+    position: number,
+    newNode: BranchT | LeafT
+): TreeT => {
+    // At root level
+    if (path.length === 0)
+        return [...tree.slice(0, position), newNode, ...tree.slice(position)];
+
+    return _add_node_helper(tree, path, position, newNode);
+};
+
+export const _move_node = (state: TreeStateT, payload: MoveNodePayloadT): TreeStateT => {
     return state;
 };

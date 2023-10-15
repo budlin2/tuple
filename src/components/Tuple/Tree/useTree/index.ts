@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import { TreeT } from '../TreeTypes';
-import { ID, PagesT } from '../../TupleTypes';
+import { ComponentRendererT, ID, PagesT } from '../../TupleTypes';
 import { treeReducer } from './reducer';
 import { TreeActionKind } from './types';
 
@@ -30,6 +30,36 @@ export const useTree = (initialTreeData: TreeT, initialPagesData: PagesT) => {
         payload: { path },
     });
 
+    const addBranch = (
+        path:       ID[],
+        position:   number,
+        name:       string
+    ) => dispatch({
+        type: TreeActionKind.ADD_BRANCH,
+        payload: {
+            path,
+            position,
+            name
+        },
+    });
+
+    const addLeaf = (
+        path:       ID[],
+        position:   number,
+        name:       string,
+        component:  ComponentRendererT,
+        props:      Record<string, any>
+    ) => dispatch({
+        type: TreeActionKind.ADD_LEAF,
+        payload: {
+            path,
+            position,
+            name,
+            component,
+            props,
+        },
+    })
+
     return {
         tree: state.tree,
         pages: state.pages,
@@ -37,5 +67,7 @@ export const useTree = (initialTreeData: TreeT, initialPagesData: PagesT) => {
         renameLeaf,
         deleteBranch,
         deleteLeaf,
+        addBranch,
+        addLeaf,
     };
 }

@@ -51,7 +51,7 @@ const Root = ({
     rootlets = rootlets.filter((r: RootletDisplayT) => r.text !== 'root');
 
     return (
-        <Taproot id={1}
+        <Taproot id={1} index={0}
             path={[]}
             text={rootName}
             branchClassName={rootClassName}

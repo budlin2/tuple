@@ -281,6 +281,8 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
         renameLeaf,
         deleteBranch,
         deleteLeaf,
+        addBranch,
+        addLeaf,
     } = useTree(tree, pages);
 
     useEffect(() => {
@@ -291,6 +293,16 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
         console.log('pages', _pages);
     }, [_tree])
 
+    const _addLeaf = (path: number[], position: number, branchName: string) => {
+        addLeaf(
+            path,
+            position,
+            branchName,
+            () => (<div>{branchName}</div>),
+            {}
+        );
+    };
+
     return (
         <div style={{
             height: 600,
@@ -299,10 +311,12 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
         }}>
             <Tuple {...args} pages={_pages}>
                 <Tree tree={_tree}
-                    onBranchRename={ renameBranch }
-                    onLeafRename={ renameLeaf }
-                    onBranchDelete={ deleteBranch }
-                    onLeafDelete={ deleteLeaf }
+                    onBranchRename  ={ renameBranch }
+                    onLeafRename    ={ renameLeaf }
+                    onBranchDelete  ={ deleteBranch }
+                    onLeafDelete    ={ deleteLeaf }
+                    onBranchAdd     ={ addBranch }
+                    onLeafAdd       ={ _addLeaf }
                 />
             </Tuple>
         </div>

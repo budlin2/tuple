@@ -1,12 +1,12 @@
 import { getUniqueId } from "../../../utils";
 import { ID, StoragePort, StoragePorts } from "../TupleTypes";
-import { PortsT, PortT, ViewT } from "../Viewport/ViewportTypes";
+import { PortsT, PortT } from "../Viewport/ViewportTypes";
 
 
-export const STORAGE_ID = 'ports';
+export const STORAGE_ID     = 'ports';
 const DRAGGED_TO_DIFF_VP_ID = 'dragged_to_tuple';
-const VIEWPORT_QUERY_ID = 'p';
-export const DRAGGING_ID = 'dragging';
+const VIEWPORT_QUERY_ID     = 'p';
+export const DRAGGING_ID    = 'dragging';
 
 
 //---------------------------------------------------------------------------------------------------------------------

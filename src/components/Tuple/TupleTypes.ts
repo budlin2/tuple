@@ -7,13 +7,13 @@ import { PortsT, ViewportStateT } from "./Viewport/ViewportTypes";
 export type ID = number | string;
 export const isID = (id: any) => typeof(id) === 'string' || typeof(id) === 'number';
 
-export type ComponentRendererT = (props: any) => JSX.Element;
+export type ComponentRendererT = (props: Record<string, any>) => JSX.Element;
 
 export interface PageT {
     id: ID,
     name: string,
     component: ComponentRendererT,
-    props?: object,
+    props?: Record<string, any>,
 }
 
 export type PagesT = { [key: ID]: PageT }
@@ -167,6 +167,7 @@ export interface TupleContextT {
 }
 
 export enum TupleActionKind {
+    // Viewport
     ADD_TAB="ADD_TAB",
     REMOVE_TAB="REMOVE_TAB",
 
@@ -174,6 +175,9 @@ export enum TupleActionKind {
     ADD_VIEW="ADD_VIEW",
     REMOVE_VIEW="REMOVE_VIEW",
     CHANGE_ACTIVE_VIEW="CHANGE_ACTIVE_VIEW",
+
+    // Other
+    SET_PAGES="SET_PAGES",
 }
 
 export interface AddTabPayloadT { portId: ID, pageId: ID, dragPortId: ID, index: number };
@@ -194,9 +198,13 @@ export interface RemoveViewActionT { type: TupleActionKind.REMOVE_VIEW, payload:
 export interface ChangeActiveViewPayloadT { portId: ID, pageId: ID };
 export interface ChangeActiveViewActionT { type: TupleActionKind.CHANGE_ACTIVE_VIEW, payload: ChangeActiveViewPayloadT };
 
+export interface SetPagesPayloadT { pages: PagesT };
+export interface SetPagesActionT { type: TupleActionKind.SET_PAGES, payload: SetPagesPayloadT };
+
 export type TupleActionT = AddTabActionT
                          | RemoveTabActionT
                          | AddNewViewActionT
                          | AddViewActionT
                          | RemoveViewActionT
-                         | ChangeActiveViewActionT;
+                         | ChangeActiveViewActionT
+                         | SetPagesActionT;

@@ -57,7 +57,7 @@ export const _get_sister_details = (viewportState: ViewportStateT, id: ID): IdPo
 
 //---------------------------------------------------------------------------------------------------------------------
 export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStateT => {
-    _log_action('Add Tab', state, payload);
+    // _log_action('Add Tab', state, payload);
 
     if (payload.portId === payload.dragPortId) {
         const newPorts = {
@@ -125,7 +125,7 @@ export const _add_tab = (state: TupleStateT, payload: AddTabPayloadT): TupleStat
 
 //---------------------------------------------------------------------------------------------------------------------
 export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): TupleStateT => {
-    _log_action('Remove Tab', state, payload);
+    // _log_action('Remove Tab', state, payload);
 
     if (state.viewport.skipTabRemoval) {
         return {
@@ -140,7 +140,7 @@ export const _remove_tab = (state: TupleStateT, payload: RemoveTabPayloadT): Tup
     const port = _get_port_copy(state.viewport.ports, payload.portId);
 
     const pageIds = port.pageIds;
-    if (!pageIds) throw Error('Page ids is null. Was this action called on a Splitview port?');
+    if (!pageIds) return state;
 
     const newPageIds = pageIds.filter((_, i) => i !== payload.index);
 
@@ -214,7 +214,7 @@ export const _add_new_view = (state: TupleStateT, payload: AddNewViewPayloadT): 
          (Port)    (New Child)
 */
 export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleStateT => {
-    _log_action('Add View', state, payload);
+    // _log_action('Add View', state, payload);
 
     const newPortId = getUniqueId();
     const newChildId = getUniqueId();
@@ -289,7 +289,7 @@ export const _add_view = (state: TupleStateT, payload: AddViewPayloadT): TupleSt
 //---------------------------------------------------------------------------------------------------------------------
 // Remove => Replace parent with sister component
 export const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): TupleStateT => {
-    _log_action('Remove View', state, payload);
+    // _log_action('Remove View', state, payload);
 
     // React's Strict mode will cause duplicate renders, which
     // will cause this action to be called twice. This check
@@ -360,7 +360,7 @@ export const _remove_view = (state: TupleStateT, payload: RemoveViewPayloadT): T
 
 //---------------------------------------------------------------------------------------------------------------------
 export const _change_active_view = (state: TupleStateT, payload: ChangeActiveViewPayloadT): TupleStateT => {
-    _log_action('Change Active View', state, payload);
+    // _log_action('Change Active View', state, payload);
 
     const port = _get_port_copy(state.viewport.ports, payload.portId);
 

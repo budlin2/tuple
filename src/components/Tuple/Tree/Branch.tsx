@@ -25,6 +25,7 @@ import { classNames } from '../../../utils';
 
 interface Props {
     id: ID,
+    index: number,
     text: string,
     children: ReactNode,
     open?: boolean,
@@ -39,15 +40,18 @@ interface Props {
     branchActiveStyle?: CSSProperties,
     branchesStyle?: CSSProperties,
     path: ID[],
-    setPopupDetails?: (details: PopupDetailsT | null) => void,
-    onRename?: (path: ID[], newName: string) => void,
-    onDelete?: (path: ID[]) => void,
-    onDrop?: (e: rDragEvent) => void,
+    setPopupDetails?:   (details: PopupDetailsT | null) => void,
+    onRename?:          (path: ID[], newName: string) => void,
+    onDelete?:          (path: ID[]) => void,
+    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
+    onLeafAdd?:         (path: ID[], position: number, leafName: string) => void,
+    onDrop?:            (e: rDragEvent) => void,
 }
 
 
 const Branch = ({
     id,
+    index,
     text,
     children,
     open=false,
@@ -65,6 +69,8 @@ const Branch = ({
     setPopupDetails=()=>{},
     onRename,
     onDelete,
+    onBranchAdd,
+    onLeafAdd,
     onDrop,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -211,6 +217,12 @@ const Branch = ({
 
         if (onDelete)
             popupItems.push({ id: 2, label: 'Delete', onClick: () => onDelete(path.concat(id)) });
+
+        if (onBranchAdd)
+            popupItems.push({ id: 3, label: 'Add Branch', onClick: () => onBranchAdd(path, 0, 'foo') });
+
+        if (onLeafAdd)
+            popupItems.push({ id: 4, label: 'Add Leaf', onClick: () => onLeafAdd(path, 0, 'bar') });
 
         return popupItems;
     };

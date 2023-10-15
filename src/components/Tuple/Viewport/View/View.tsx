@@ -36,6 +36,7 @@ const View = ({
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
+
     const [_, setDragging] = useLocalStorage(DRAGGING_ID, false)
 
     const viewClassName = `
@@ -95,7 +96,7 @@ const View = ({
                 validateDraggable       = {validateDraggable}>
 
                 <ScrollPane className={scrollPaneClassName} style={styles?.scrollPane || null}>
-                    <ActivePage.component {...ActivePage.props } />
+                    { ActivePage && <ActivePage.component {...ActivePage.props } /> }
                 </ScrollPane>
 
             </DropZone>

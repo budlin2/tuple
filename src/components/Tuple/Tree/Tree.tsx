@@ -16,23 +16,29 @@ import { classNames } from '../../../utils';
 
 interface BranchesProps {
     node: BranchT | LeafT,
+    index: number,
     path: ID[],
     setPopupDetails:    (details: PopupDetailsT) => void,
     onLeafRename?:      (pageId: ID, newName: string) => void,
     onBranchRename?:    (path: ID[], newName: string) => void,
     onLeafDelete?:      (path: ID[]) => void,
     onBranchDelete?:    (path: ID[]) => void,
+    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
+    onLeafAdd?:         (path: ID[], position: number, leafName: string) => void,
 }
 
 // Recursive tree component
 const Branches = ({
     node,
+    index,
     path,
     setPopupDetails,
     onLeafRename    =()=>{},
     onBranchRename  =()=>{},
     onLeafDelete    =()=>{},
     onBranchDelete  =()=>{},
+    onBranchAdd     =()=>{},
+    onLeafAdd       =()=>{},
 }: BranchesProps) => {
     const { state: {
         pages,
@@ -45,16 +51,19 @@ const Branches = ({
         const page: PageT = pages[leaf.pageId];
 
         if (!page)
-            throw `Page ID not found within "pages": [${ leaf.pageId }]`;
+            return;
 
         return (
             <Leaf id={leaf.id}
+                index           ={ index }
                 text            ={ page.name }
                 pageId          ={ leaf.pageId }
                 path            ={ path }
                 setPopupDetails ={ setPopupDetails }
                 onRename        ={ onLeafRename }
                 onDelete        ={ onLeafDelete }
+                onBranchAdd     ={ onBranchAdd }
+                onLeafAdd       ={ onLeafAdd }
             />
         );
     }
@@ -69,6 +78,7 @@ const Branches = ({
 
     return (
         <Branch id={ branch.id }
+            index                   ={ index }
             text                    ={ branch.label }
             branchClassName         ={ branchClassName }
             branchHoverClassName    ={ branchHoverClassName }
@@ -83,10 +93,12 @@ const Branches = ({
             setPopupDetails         ={ setPopupDetails }
             onRename                ={ onBranchRename }
             onDelete                ={ onBranchDelete }
+            onBranchAdd             ={ onBranchAdd }
+            onLeafAdd               ={ onLeafAdd }
         >
-            { branch.branches.map( b => (
-                <Branches
-                    key             ={ b.id }
+            { branch.branches.map( (b, i) => (
+                <Branches key={b.id}
+                    index           ={ i }
                     node            ={ b }
                     path            ={ path.concat(node.id) }
                     setPopupDetails ={ setPopupDetails }
@@ -94,6 +106,8 @@ const Branches = ({
                     onBranchRename  ={ onBranchRename }
                     onLeafDelete    ={ onLeafDelete }
                     onBranchDelete  ={ onBranchDelete }
+                    onBranchAdd     ={ onBranchAdd }
+                    onLeafAdd       ={ onLeafAdd }
                 />
             ))}
         </Branch>
@@ -102,12 +116,14 @@ const Branches = ({
 
 
 export interface TreeProps {
-    tree: TreeT,
-    enableTrashcan?: boolean,
-    onLeafRename?: (pageId: ID, newName: string) => void,
-    onBranchRename?: (path: ID[], newName: string) => void,
-    onLeafDelete?: (path: ID[]) => void,
-    onBranchDelete?: (path: ID[]) => void,
+    tree:               TreeT,
+    enableTrashcan?:    boolean,
+    onLeafRename?:      (pageId: ID, newName: string) => void,
+    onBranchRename?:    (path: ID[], newName: string) => void,
+    onLeafDelete?:      (path: ID[]) => void,
+    onBranchDelete?:    (path: ID[]) => void,
+    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
+    onLeafAdd?:         (path: ID[], position: number, leafName: string) => void,
 };
 
 const Tree = ({
@@ -117,6 +133,8 @@ const Tree = ({
     onBranchRename = null,
     onLeafDelete=null,
     onBranchDelete=null,
+    onBranchAdd=null,
+    onLeafAdd=null,
 }: TreeProps) => {
     const treeRef = useRef<HTMLDivElement>();
     const rootContainerRef = useRef<HTMLDivElement>();
@@ -180,15 +198,17 @@ const Tree = ({
 
                 <ScrollPane className={scrollPaneClassName} style={scrollPaneStyle}>
                     <>
-                        { tree.map( node => (
-                            <Branches
-                                key                 ={ node.id }
+                        { tree.map( (node, i) => (
+                            <Branches key={node.id}
+                                index               ={ i }
                                 node                ={ node }
                                 path                ={ [] }
                                 onLeafRename        ={ onLeafRename }
                                 onBranchRename      ={ onBranchRename }
                                 onLeafDelete        ={ onLeafDelete }
                                 onBranchDelete      ={ onBranchDelete }
+                                onBranchAdd         ={ onBranchAdd }
+                                onLeafAdd           ={ onLeafAdd }
                                 setPopupDetails     ={ setPopupDetails }
                             />
                         ))}

@@ -7,6 +7,7 @@ import {
     ChangeActiveViewPayloadT,
     RemoveTabPayloadT,
     RemoveViewPayloadT,
+    SetPagesPayloadT,
     TupleActionKind,
     TupleActionT,
     TupleStateT
@@ -38,18 +39,30 @@ const _with_storage_update = (state: TupleStateT) => {
 
 export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT => {
     switch(action.type) {
+        // Viewport State
         case TupleActionKind.ADD_TAB:
             return _with_storage_update(_add_tab(state, action.payload as AddTabPayloadT));
+
         case TupleActionKind.REMOVE_TAB:
             return _with_storage_update(_remove_tab(state, action.payload as RemoveTabPayloadT));
+
         case TupleActionKind.ADD_NEW_VIEW:
             return _with_storage_update(_add_new_view(state, action.payload as AddNewViewPayloadT));
+
         case TupleActionKind.ADD_VIEW:
             return _with_storage_update(_add_view(state, action.payload as AddViewPayloadT));
+
         case TupleActionKind.REMOVE_VIEW:
             return _with_storage_update(_remove_view(state, action.payload as RemoveViewPayloadT));
+
         case TupleActionKind.CHANGE_ACTIVE_VIEW:
             return _with_storage_update(_change_active_view(state, action.payload as ChangeActiveViewPayloadT));
+
+        // Other
+        case TupleActionKind.SET_PAGES:
+            const { pages } = action.payload as SetPagesPayloadT;
+            return { ...state, pages };
+
         default:
             return state;
     }

@@ -97,6 +97,7 @@
     padding: 0.1rem;
     padding-left: var(--PADDING_HORIZONTAL);
 
+    background: transparent;
     border: none;
     outline: none;
     font-family: inherit;
@@ -132,6 +133,7 @@
     color: white;
     border: 1px solid black;
     caret-color: black;
+    cursor: pointer;
 }
 
 .leafDragOver {

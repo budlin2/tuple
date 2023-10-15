@@ -9,8 +9,10 @@ import {
     AddViewPayloadT,
     ChangeActiveViewActionT,
     ID,
+    PagesT,
     RemoveTabActionT,
     RemoveViewActionT,
+    SetPagesActionT,
     TupleActionKind,
     TupleActionT,
 } from "../TupleTypes";
@@ -137,4 +139,17 @@ export const changeView = (
     };
 
     dispatch(changeActiveViewAction); 
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+export const setPages = (
+    dispatch: Dispatch<TupleActionT>,
+    pages: PagesT,
+) => {
+    const changeActiveViewAction: SetPagesActionT = {
+        type: TupleActionKind.SET_PAGES,
+        payload: { pages }
+    };
+
+    dispatch(changeActiveViewAction);
 }

@@ -45,6 +45,7 @@ import {
     set_storage_port_open,
 } from './state/browser-actions';
 import { TreeProps } from './Tree/Tree';
+import { setPages } from './state/dispatchers';
 
 export const ROOT_PORT_ID = 'root';
 
@@ -212,13 +213,8 @@ const Tuple = ({
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
-
-    // Pages prop may change if using a dynamic tree. Update context's pages state
-    const [_pages, setPages] = useState(pages);
-    useEffect(() => setPages(pages), [pages]);
-
     const initState: TupleStateT = {
-        pages: _pages,
+        pages,
         viewport: initViewportState,
         viewportId,
         tree,
@@ -229,6 +225,8 @@ const Tuple = ({
 
     const [state, dispatch] = useReducer(reducer, initState);
     const context = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
+    useEffect(() => setPages(dispatch, pages), [pages]);
 
     //------------------------------------------------------------------------------------------------------------------
 

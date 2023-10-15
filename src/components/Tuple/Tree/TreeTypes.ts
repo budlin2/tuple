@@ -16,6 +16,12 @@ export interface BranchT {
 export const isLeaf = (node: LeafT | BranchT): boolean => !!(node as LeafT)?.pageId;
 export const isBranch = (node: LeafT | BranchT): boolean => !!(node as BranchT)?.branches;
 
+export enum NodeStateT {
+    ADDING_LEAF     ='ADDING_LEAF',
+    ADDING_BRANCH   ='ADDING_BRANCH',
+    NULL            ='NULL',
+};
+
 export type TreeT = (LeafT | BranchT)[];
 
 export interface RootletDisplayT {
