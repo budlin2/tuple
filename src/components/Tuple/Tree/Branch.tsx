@@ -16,7 +16,7 @@ import {
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { TupleContext } from '..';
 import { PopupItemsT } from '../../Popup/PopupTypes';
-import { PopupDetailsT } from './TreeTypes';
+import { NodeStateT, PopupDetailsT } from './TreeTypes';
 
 import _classes from './tree.module.css';
 import _global_classes from '../../styles.module.css';
@@ -74,6 +74,7 @@ const Branch = ({
     onDrop,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
+    const newNodeRef = useRef<HTMLInputElement>(null);
 
     //------------------------------------------------------------------------------------------------------------------
     // State
@@ -81,33 +82,59 @@ const Branch = ({
     const { state: {
         pages,
         events,
+        classes,
+        styles,
     }}: TupleContextT = useContext(TupleContext);
 
-    const [hovering, setHovering] = useState(false);
+    const [hovering, setHovering]           = useState(false);
     const [isDraggedOver, setIsDraggedOver] = useState(false);
-    const [expanded, setExpanded] = useState(open);
-    const [branchName, setBranchName] = useState(text);
-    const [renaming, setRenaming] = useState(false);
+    const [expanded, setExpanded]           = useState(open);
+
+    const [branchName, setBranchName]       = useState(text);
+    const [renaming, setRenaming]           = useState(false);
+
+    const [nodeState, setNodeState]         = useState<NodeStateT>(NodeStateT.NULL);
+    const [newNodeName, setNewNodeName]     = useState('');
+
+    // memoize?
+    const isAddingNode = (nodeState: NodeStateT) => nodeState === NodeStateT.ADDING_BRANCH || nodeState === NodeStateT.ADDING_LEAF;
 
     //------------------------------------------------------------------------------------------------------------------
     // Effects
     //------------------------------------------------------------------------------------------------------------------
-    useEffect(() => {
+    useEffect(() => {   // Event Handlers for renaming branch
         if (renaming && inputRef.current) {
             inputRef.current.focus();
-            document.addEventListener('click', onClickOutsideHandler);
-            document.addEventListener('contextmenu', onClickOutsideHandler);
+            document.addEventListener('click', onClickOutside_RENAME);
+            document.addEventListener('contextmenu', onClickOutside_RENAME);
         } else {
             inputRef.current.blur();
-            document.removeEventListener('click', onClickOutsideHandler);
-            document.removeEventListener('contextmenu', onClickOutsideHandler);
+            document.removeEventListener('click', onClickOutside_RENAME);
+            document.removeEventListener('contextmenu', onClickOutside_RENAME);
         }
 
         return () => {
-            document.removeEventListener('click', onClickOutsideHandler);
-            document.removeEventListener('contextmenu', onClickOutsideHandler);
+            document.removeEventListener('click', onClickOutside_RENAME);
+            document.removeEventListener('contextmenu', onClickOutside_RENAME);
         };
     }, [renaming]);
+
+    useEffect(() => { // Event Handlers for adding new node
+        if (isAddingNode(nodeState) && newNodeRef.current) {
+            newNodeRef?.current?.focus();
+            document.addEventListener('click', onClickOutside_NEW_NODE);
+            document.addEventListener('contextmenu', onClickOutside_NEW_NODE);
+        } else {
+            newNodeRef?.current?.blur();
+            document.removeEventListener('click', onClickOutside_NEW_NODE);
+            document.removeEventListener('contextmenu', onClickOutside_NEW_NODE);
+        }
+
+        return () => {
+            document.removeEventListener('click', onClickOutside_NEW_NODE);
+            document.removeEventListener('contextmenu', onClickOutside_NEW_NODE);
+        };
+    }, [nodeState]);
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling
@@ -119,6 +146,14 @@ const Branch = ({
         hovering ? branchHoverClassName : '',
         isDraggedOver ? branchDragOverClassName : '',
         renaming ? branchActiveClassName : '',
+    );
+
+    // TODO: Sharing this class with leafActive is noticeably awkward here... Maybe rethink API
+    const newNodeClassName = classNames(
+        _classes?.leaf,
+        classes?.leaf,
+        _classes?.leafActive,
+        classes?.leafActive
     );
 
     const _branchStyle = {
@@ -176,28 +211,31 @@ const Branch = ({
         });
     };
 
-    const onRenameClickHandler = (e: rMouseEvent) => {
+    //------------------------------------------------------------------------------------------------------------------
+    // Rename Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const onPopupClick_RENAME = (e: rMouseEvent) => {
         e.stopPropagation();
         setRenaming(true);
         setPopupDetails(null);
     };
 
-    const onKeyDownHandler = (e: rKeyboardEvent<HTMLInputElement>) => {
+    const onKeyDown_RENAME = (e: rKeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
             setRenaming(false);
             if (onRename)
                 onRename(path.concat(id), branchName);
         }
-      };
+    };
 
-    const onChangeHandler = (e: rChangeEvent<HTMLInputElement>) => {
+    const onChange_RENAME = (e: rChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setBranchName(value);
     };
 
-    // Close renaming if click occurs outside of input component
-    const onClickOutsideHandler = (e: MouseEvent) => {
+    // Stop renaming if click occurs outside of input component
+    const onClickOutside_RENAME = (e: MouseEvent) => {
         // Click occurred outside the component
         if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
             setRenaming(false);
@@ -205,29 +243,67 @@ const Branch = ({
     };
 
     //------------------------------------------------------------------------------------------------------------------
+    // New Node Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const onPopupClick_NEW_NODE = (e: rMouseEvent, nodeState: NodeStateT) => {
+        e.stopPropagation();
+        setExpanded(true);
+        setNodeState(nodeState);
+        setPopupDetails(null);
+    };
+
+    const onKeyDown_NEW_NODE = (e: rKeyboardEvent<HTMLInputElement>, nodeState: NodeStateT) => {
+        if (e.key === 'Enter' && e.currentTarget.value) {
+            e.preventDefault();
+            setNodeState(NodeStateT.NULL);
+            if (nodeState == NodeStateT.ADDING_BRANCH && onBranchAdd)
+                onBranchAdd(path.concat(id), 0, newNodeName);
+
+            if (nodeState == NodeStateT.ADDING_LEAF && onLeafAdd)
+                onLeafAdd(path.concat(id), 0, newNodeName);
+        }
+    };
+
+    const onChange_NEW_NODE = (e: rChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setNewNodeName(value);
+    };
+
+    // Stop adding new node if click occurs outside of input component
+    const onClickOutside_NEW_NODE = (e: MouseEvent) => {
+        if (newNodeRef?.current && !newNodeRef?.current?.contains(e.target as Node)) {
+            setNodeState(NodeStateT.NULL);
+        }
+    };
+
+    //------------------------------------------------------------------------------------------------------------------
     // Popup Items
     //------------------------------------------------------------------------------------------------------------------
     const getPopupItems = (
-        onRename: (path: ID[], newName: string) => void,
-        onDelete: (path: ID[]) => void,
+        onRename:       (path: ID[], newName: string) => void,
+        onDelete:       (path: ID[]) => void,
+        onBranchAdd:    (path: ID[], position: number, branchName: string) => void,
+        onLeafAdd:      (path: ID[], position: number, leafName: string) => void,
     ): PopupItemsT => {
         const popupItems: PopupItemsT = [];
         if (onRename)
-            popupItems.push({ id: 1, label: 'Rename', onClick: onRenameClickHandler });
+            popupItems.push({ id: 1, label: 'Rename', onClick: onPopupClick_RENAME });
 
         if (onDelete)
             popupItems.push({ id: 2, label: 'Delete', onClick: () => onDelete(path.concat(id)) });
 
         if (onBranchAdd)
-            popupItems.push({ id: 3, label: 'Add Branch', onClick: () => onBranchAdd(path, 0, 'foo') });
+            popupItems.push({ id: 3, label: 'Add Branch', onClick: e => onPopupClick_NEW_NODE(e, NodeStateT.ADDING_BRANCH) });
 
         if (onLeafAdd)
-            popupItems.push({ id: 4, label: 'Add Leaf', onClick: () => onLeafAdd(path, 0, 'bar') });
+            popupItems.push({ id: 4, label: 'Add Leaf', onClick: e => onPopupClick_NEW_NODE(e, NodeStateT.ADDING_LEAF) });
 
         return popupItems;
     };
 
-    const popupItems = useMemo(() => getPopupItems(onRename, onDelete), [onRename, onDelete]);
+    const popupItems = useMemo(() => getPopupItems(
+        onRename, onDelete, onBranchAdd, onLeafAdd
+    ), [onRename, onDelete, onBranchAdd, onLeafAdd]);
     
     return (
         <div>
@@ -243,10 +319,21 @@ const Branch = ({
                 onDragLeave     ={ onDragLeaveHandler }
                 onDrop          ={ onDropHandler }
                 onContextMenu   ={ onRightClickHandler }
-                onKeyDown       ={ onKeyDownHandler }
-                onChange        ={ onChangeHandler }/>
+                onKeyDown       ={ onKeyDown_RENAME }
+                onChange        ={ onChange_RENAME }
+            />
+
             { expanded && (
                 <div className={branchesClassName} style={branchesStyle}>
+                    { (isAddingNode(nodeState)) && (
+                        <input ref={newNodeRef} type="text"
+                            value       ={ newNodeName }
+                            className   ={ newNodeClassName }
+                            style       ={ styles.leafActive }
+                            onKeyDown   ={ e => onKeyDown_NEW_NODE(e, nodeState) }
+                            onChange    ={ onChange_NEW_NODE }
+                        />
+                    )}
                     { children }
                 </div>
             )}

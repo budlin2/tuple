@@ -80,8 +80,9 @@ const Leaf = ({
     const [leafName, setLeafName]           = useState(text);
     const [renaming, setRenaming]           = useState(false);
 
-    const [nodeState, setNodeState]       = useState<NodeStateT>(NodeStateT.NULL);
+    const [nodeState, setNodeState]         = useState<NodeStateT>(NodeStateT.NULL);
     const [newNodeName, setNewNodeName]     = useState('');
+
     const [_, setDragging]                  = useLocalStorage(DRAGGING_ID, false);
 
     // memoize?
@@ -267,7 +268,7 @@ const Leaf = ({
         setLeafName(value);
     };
 
-    // Close renaming if click occurs outside of input component
+    // Stop renaming if click occurs outside of input component
     const onClickOutside_RENAME = (e: MouseEvent) => {
         if (inputRef?.current && !inputRef?.current?.contains(e.target as Node)) {
             setRenaming(false);
@@ -300,7 +301,7 @@ const Leaf = ({
         setNewNodeName(value);
     };
 
-    // Close adding new node if click occurs outside of input component
+    // Stop adding new node if click occurs outside of input component
     const onClickOutside_NEW_NODE = (e: MouseEvent) => {
         if (newNodeRef?.current && !newNodeRef?.current?.contains(e.target as Node)) {
             setNodeState(NodeStateT.NULL);
