@@ -25,7 +25,6 @@ import { classNames } from '../../../utils';
 
 interface Props {
     id: ID,
-    index: number,
     text: string,
     children: ReactNode,
     open?: boolean,
@@ -51,7 +50,6 @@ interface Props {
 
 const Branch = ({
     id,
-    index,
     text,
     children,
     open=false,
@@ -143,17 +141,17 @@ const Branch = ({
     const _branchClassName = classNames(
         _global_classes.noHighlight,
         branchClassName || '',
-        hovering ? branchHoverClassName : '',
-        isDraggedOver ? branchDragOverClassName : '',
-        renaming ? branchActiveClassName : '',
+        hovering && branchHoverClassName,
+        isDraggedOver && branchDragOverClassName,
+        renaming && branchActiveClassName,
     );
 
     // TODO: Sharing this class with leafActive is noticeably awkward here... Maybe rethink API
     const newNodeClassName = classNames(
-        _classes?.leaf,
-        classes?.leaf,
-        _classes?.leafActive,
-        classes?.leafActive
+        _classes?.leaf_base,
+        classes?.leaf_base,
+        _classes?.leaf_active,
+        classes?.leaf_active
     );
 
     const _branchStyle = {
@@ -168,6 +166,9 @@ const Branch = ({
     //------------------------------------------------------------------------------------------------------------------
     const onClickHandler = (e: rMouseEvent) => {
         e.stopPropagation();
+
+        setNodeState(NodeStateT.NULL)
+
         if (Children.count(children))
             setExpanded(cur => !cur);
     };
@@ -255,6 +256,9 @@ const Branch = ({
     const onKeyDown_NEW_NODE = (e: rKeyboardEvent<HTMLInputElement>, nodeState: NodeStateT) => {
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
+
+            setNewNodeName('');
+
             setNodeState(NodeStateT.NULL);
             if (nodeState == NodeStateT.ADDING_BRANCH && onBranchAdd)
                 onBranchAdd(path.concat(id), 0, newNodeName);
@@ -272,6 +276,7 @@ const Branch = ({
     // Stop adding new node if click occurs outside of input component
     const onClickOutside_NEW_NODE = (e: MouseEvent) => {
         if (newNodeRef?.current && !newNodeRef?.current?.contains(e.target as Node)) {
+            setNewNodeName('');
             setNodeState(NodeStateT.NULL);
         }
     };
@@ -329,7 +334,7 @@ const Branch = ({
                         <input ref={newNodeRef} type="text"
                             value       ={ newNodeName }
                             className   ={ newNodeClassName }
-                            style       ={ styles.leafActive }
+                            style       ={ styles?.leaf?.active }
                             onKeyDown   ={ e => onKeyDown_NEW_NODE(e, nodeState) }
                             onChange    ={ onChange_NEW_NODE }
                         />

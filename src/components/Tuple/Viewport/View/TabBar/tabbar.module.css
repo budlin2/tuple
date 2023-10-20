@@ -3,7 +3,7 @@
     --PADDING_SMALL: 0.2rem;
 }
 
-.tabBar {
+.tabBar_base {
     display: flex;
     width: 100%;
     overflow-x: scroll;
@@ -12,7 +12,7 @@
     border-bottom: 1px solid black;
 }
 
-.tab {
+.tab_base {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -32,8 +32,18 @@
     border-right: 1px solid black;
 }
 
-.tab:hover {
+.tab_hover {
     background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.tab_dragOver {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.tab_active {
+    background: black;
     color: white;
 }
 
@@ -51,7 +61,7 @@
     align-items: center;
 }
 
-.tabClose {
+.tabClose_base {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,17 +73,13 @@
     cursor: pointer;
 }
 
-.tabClose:hover {
+.tabClose_hover {
     background: black;
     color: white;
 }
 
-.tabActive {
-    background: black;
-    color: white;
-}
-
-.tabActive .tabClose:hover {
+/* TODO: What to do about this? */
+.tab_active .tabClose_hover {
     background: white;
     color: black;
 }

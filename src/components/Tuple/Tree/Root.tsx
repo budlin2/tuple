@@ -9,6 +9,7 @@ import Rootlet from './Rootlet';
 
 import _classes from './tree.module.css';
 import { RootletDisplayT } from './TreeTypes';
+import { classNames } from '../../../utils';
 
 
 export interface Props {
@@ -25,17 +26,16 @@ const Root = ({
         styles,
     }}: TupleContextT = useContext(TupleContext);
 
-    const rootClassName = `
-        ${_classes?.root || ''}
-        ${classes?.root  || ''}`;
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
+    const rootClassName = classNames(_classes?.root, classes?.root);
+    const rootletsClassName = classNames(_classes?.rootlets, classes?.rootlets);
 
-
-    const rootletsClassName = `
-        ${_classes?.rootlets || ''}
-        ${classes?.rootlets  || ''}`;
-
+    //------------------------------------------------------------------------------------------------------------------
+    // Helpers
+    //------------------------------------------------------------------------------------------------------------------
     const getRootlets = (): RootletDisplayT[] => {
-        //TODO: Implement local storage fetching
         const [rootlets, _] = useLocalStorage<StoragePorts>(STORAGE_ID, null);
         if (rootlets) {
             return Object.entries(rootlets).map(([key, value]) => ({
@@ -51,16 +51,16 @@ const Root = ({
     rootlets = rootlets.filter((r: RootletDisplayT) => r.text !== 'root');
 
     return (
-        <Taproot id={1} index={0}
-            path={[]}
-            text={rootName}
-            branchClassName={rootClassName}
-            branchesClassName={rootletsClassName}
-            branchStyle={styles.rootlets}
-            branchesStyle={styles.rootlets}
+        <Taproot id={1}
+            path                ={ [] }
+            text                ={ rootName }
+            branchClassName     ={ rootClassName }
+            branchesClassName   ={ rootletsClassName }
+            branchStyle         ={ styles.rootlets }
+            branchesStyle       ={ styles.rootlets }
         >
             { rootlets.map( r => (
-                <Rootlet key={r.id} text={r.text} open={r.open} />
+                <Rootlet key={ r.id } text={ r.text } open={ r.open } />
             ))}
         </Taproot>
     );

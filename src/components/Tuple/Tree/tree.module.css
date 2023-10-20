@@ -21,7 +21,7 @@
 }
 
 /**********  BRANCH  **********/
-.branch {
+.branch_base {
     display: flex;
     justify-content: space-between;
 
@@ -37,12 +37,12 @@
     color: white;
 }
 
-.branchHover {
+.branch_hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.5);
 }
 
-.branchActive {
+.branch_active {
     /* Account for border width */
     width: calc(100% - 2px);
 
@@ -52,7 +52,7 @@
     caret-color: black;
 }
 
-.branchDragOver {
+.branch_dragOver {
     background: rgba(0, 0, 0, 0.5);
 }
 
@@ -90,7 +90,7 @@
 }
 
 /**********  LEAF  **********/
-.leaf {
+.leaf_base {
     display: flex;
 
     width: 100%;
@@ -104,28 +104,12 @@
     font-size: inherit;
 }
 
-/* TODO: Styles and classNames should really look like
-    {
-        ...
-        leaf: {
-            base: {
-                ...
-            },
-            hover: {
-                ...
-            },
-            dragOver: {
-                ...
-            }
-        },
-    }
-*/
-.leafHover {
+.leaf_hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.5);
 }
 
-.leafActive {
+.leaf_active {
     /* Account for border width */
     width: calc(100% - 2px);
 
@@ -136,11 +120,12 @@
     cursor: pointer;
 }
 
-.leafDragOver {
+.leaf_dragOver {
     background: rgba(0, 0, 0, 0.5);
 }
 
 /**********  ROOT  **********/
+/* TODO: Need to really revisit roots */
 .root {
     display: flex;
     align-items: center;

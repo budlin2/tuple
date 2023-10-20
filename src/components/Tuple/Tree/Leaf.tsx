@@ -129,25 +129,31 @@ const Leaf = ({
     // Styling
     //------------------------------------------------------------------------------------------------------------------
     const leafClassName = classNames(
-        _classes?.leaf,
-        classes?.leaf,
-        isDraggedOver ? classNames(_classes?.leafDragOver, classes?.leafDragOver) : '',
-        hovering ? classNames(_classes?.leafHover, classes?.leafHover) : '',
-        renaming ? classNames(_classes.leafActive, classes.leafActive) : '',
+        _classes?.leaf_base,
+        classes?.leaf_base,
+        isDraggedOver
+            ? classNames(_classes?.leaf_dragOver, classes?.leaf_dragOver)
+            : '',
+        hovering
+            ? classNames(_classes?.leaf_hover, classes?.leaf_hover)
+            : '',
+        renaming
+            ? classNames(_classes.leaf_active, classes.leaf_active)
+            : '',
     );
 
     const newNodeClassName = classNames(
-        _classes?.leaf,
-        classes?.leaf,
-        _classes?.leafActive,
-        classes?.leafActive
+        _classes?.leaf_base,
+        classes?.leaf_base,
+        _classes?.leaf_active,
+        classes?.leaf_active
     );
 
     const leafStyle = {
-        ...styles?.leaf,
-        ...hovering ? styles?.leafHover : {},
-        ...isDraggedOver ? styles?.leafDragOver : {},
-        ...renaming ? styles?.leafActive : {},
+        ...styles?.leaf?.base,
+        ...hovering ? styles?.leaf?.hover : {},
+        ...isDraggedOver ? styles?.leaf?.dragOver : {},
+        ...renaming ? styles?.leaf?.active : {},
     };
 
     const draggableClass = classes?.draggable || '';
@@ -287,6 +293,9 @@ const Leaf = ({
     const onKeyDown_NEW_NODE = (e: rKeyboardEvent<HTMLInputElement>, nodeState: NodeStateT) => {
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
+
+            setNewNodeName('');
+
             setNodeState(NodeStateT.NULL);
             if (nodeState == NodeStateT.ADDING_BRANCH && onBranchAdd)
                 onBranchAdd(path, index+1, newNodeName);
@@ -304,6 +313,7 @@ const Leaf = ({
     // Stop adding new node if click occurs outside of input component
     const onClickOutside_NEW_NODE = (e: MouseEvent) => {
         if (newNodeRef?.current && !newNodeRef?.current?.contains(e.target as Node)) {
+            setNewNodeName('');
             setNodeState(NodeStateT.NULL);
         }
     };
@@ -362,7 +372,7 @@ const Leaf = ({
                 <input ref={newNodeRef} type="text"
                     value       ={ newNodeName }
                     className   ={ newNodeClassName }
-                    style       ={ styles.leafActive }
+                    style       ={ styles.leaf.active }
                     onKeyDown   ={ e => onKeyDown_NEW_NODE(e, nodeState) }
                     onChange    ={ onChange_NEW_NODE }
                 />

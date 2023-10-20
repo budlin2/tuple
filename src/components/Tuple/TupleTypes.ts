@@ -23,96 +23,125 @@ export type PortMapT = { ports: PortsT, rootId: ID };
 
 // Should always have same fields as TupleClassesT
 export interface TupleStylesT {
-    tuple?: CSSProperties,
-    draggable?: CSSProperties,
-    splitpane?: CSSProperties,
+    // Tuple
+    tuple?:             CSSProperties,
+    draggable?:         CSSProperties,
+    splitpane?:         CSSProperties,
 
-    tree?: CSSProperties,
-    branch?: CSSProperties,
-    branchHover?: CSSProperties,
-    branchDragOver?: CSSProperties,
-    branchActive?: CSSProperties,
-    branches?: CSSProperties,
-    leafContainer?: CSSProperties,
-    leaf?: CSSProperties,
-    leafHover?: CSSProperties,
-    leafDragOver?: CSSProperties,
-    leafActive?: CSSProperties,
-    root?: CSSProperties,
-    rootlet?: CSSProperties,
-    rootlets?: CSSProperties,
-    rootletTextBox?: CSSProperties,
-    rootletContainer?: CSSProperties,
-    symbolContainer?: CSSProperties,
-    popup?: CSSProperties,
-    popupItem?: CSSProperties,
-    popupItemHover?: CSSProperties,
-    popupItemActive?: CSSProperties,
-    popupHr?: CSSProperties,
-    trashcan?: CSSProperties,
+    // Viewport
+    viewport?:          CSSProperties,
+    view?:              CSSProperties,
+    dropZoneCenter?:    CSSProperties,
+    dropZoneSide?:      CSSProperties,
+    scrollPane?:        CSSProperties,
+    pane?:              CSSProperties,       // TODO: Probably remove this
 
-    tabBar?: CSSProperties,
-    tabBarDragOver?: CSSProperties,
-    // tabBarActive?: CSSProperties,  // TODO: when user has selected current view
-    tab?: CSSProperties,
-    tabDragOver?: CSSProperties,
-    tabActive?: CSSProperties,
-    tabLabel?: CSSProperties,
-    tabClose?: CSSProperties,
+    // TabBar
+    tabBar?: {
+        base?:          CSSProperties,
+        dragOver?:      CSSProperties,
+        // active?:     CSSProperties  // TODO: When viewport is active
+    },
+    tab?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+        dragOver?:      CSSProperties,
+        active?:        CSSProperties,
+    },
+    tabLabel?:          CSSProperties,
+    tabClose?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+    },
 
-    viewport?: CSSProperties,
-    view?: CSSProperties,
-    dropZoneCenter?: CSSProperties,
-    dropZoneSide?: CSSProperties,
-    scrollPane?: CSSProperties,
-    pane?: CSSProperties,       // TODO: Probably remove this
+    // Tree
+    tree?:              CSSProperties,
+    branch?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+        dragOver?:      CSSProperties,
+        active?:        CSSProperties,
+    },
+    branches?:          CSSProperties,
+    leafContainer?:     CSSProperties,
+    leaf?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+        dragOver?:      CSSProperties,
+        active?:        CSSProperties,
+    },
+    root?:              CSSProperties,
+    rootlet?:           CSSProperties,
+    rootlets?:          CSSProperties,
+    rootletTextBox?:    CSSProperties,
+    rootletContainer?:  CSSProperties,
+    symbolContainer?:   CSSProperties,
+
+    // Other
+    popup?:             CSSProperties,
+    popupItem?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+        active?:        CSSProperties,
+    },
+    popupHr?:           CSSProperties,
+    trashcan?:          CSSProperties,  // Idk about this one still...
 }
 
 
 export interface TupleClassesT {
-    tuple?: string,
-    draggable?: string,
-    splitpane?: string,
+    // Tuple
+    splitpane?:             string,
+    tuple?:                 string,
+    draggable?:             string,
 
-    tree?: string,
-    branch?: string,
-    branchHover?: string,
-    branchDragOver?: string,
-    branchActive?: string,
-    branches?: string,
-    leafContainer?: string,
-    leaf?: string,
-    leafHover?: string,
-    leafDragOver?: string,
-    leafActive?: string,
-    root?: string,
-    rootlet?: string,
-    rootlets?: string,
-    rootletTextBox?: string,
-    rootletContainer?: string,
-    symbolContainer?: string,
-    popup?: string,
-    popupItem?: string,
-    popupItemHover?: string,
-    popupItemActive?: string,
-    popupHr?: string,
-    trashcan?: string,
+    // Viewport
+    viewport?:              string,
+    view?:                  string,
+    dropZoneCenter?:        string,
+    dropZoneSide?:          string,
+    scrollPane?:            string,
+    pane?:                  string,       // TODO: Probably remove this
 
-    tabBar?: string,
-    tabBarDragOver?: string,
-    // tabBarActive?: string,  // TODO: when user has selected current view
-    tab?: string,
-    tabDragOver?: string,
-    tabActive?: string,
-    tabLabel?: string,
-    tabClose?: string,
+    // TabBar
+    tabBar_base?:           string,
+        tabBar_dragOver?:   string,
+        // tabBar_active?:  string  // TODO: When viewport is active
+    tab_base?:              string,
+        tab_hover?:         string,
+        tab_dragOver?:      string,
+        tab_active?:        string,
 
-    viewport?: string,
-    view?: string,
-    dropZoneCenter?: string,
-    dropZoneSide?: string,
-    scrollPane?: string,
-    pane?: string,              // TODO: Probably remove this
+    tabLabel?:              string,
+    tabClose_base?:         string,
+        tabClose_hover?:    string,
+
+    // Tree
+    tree?:                  string,
+    branch_base?:           string,
+        branch_hover?:      string,
+        branch_dragOver?:   string,
+        branch_active?:     string,
+    branches?:              string,
+    leafContainer?:         string,
+    leaf_base?:             string,
+        leaf_hover?:        string,
+        leaf_dragOver?:     string,
+        leaf_active?:       string,
+    root?:                  string,
+    rootlet?:               string,
+    rootlets?:              string,
+    rootletTextBox?:        string,
+    rootletContainer?:      string,
+    symbolContainer?:       string,
+
+    // Other
+    popup?:                 string,
+    popupItem_base?:        string,
+        popupItem_hover?:   string,
+        popupItem_active?:  string,
+    popupHr?:               string,
+    trashcan?:              string, // Idk about this one still...
 }
 
 

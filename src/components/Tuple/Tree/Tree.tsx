@@ -70,24 +70,23 @@ const Branches = ({
 
     const branch = node as BranchT;
     // Define these here and pass as prop, since Root.tsx also uses Branch component
-    const branchClassName           = classNames(_classes?.branch, classes?.branch);
-    const branchHoverClassName      = classNames(_classes?.branchHover, classes?.branchHover);
-    const branchDragOverClassName   = classNames(_classes?.branchDragOver, classes?.branchDragOver);
+    const branchClassName           = classNames(_classes?.branch_base, classes?.branch_base);
+    const branchHoverClassName      = classNames(_classes?.branch_hover, classes?.branch_hover);
+    const branchDragOverClassName   = classNames(_classes?.branch_dragOver, classes?.branch_dragOver);
+    const branchActiveClassName     = classNames(_classes.branch_active, classes.branch_active);
     const branchesClassName         = classNames(_classes?.branches, classes?.branches);
-    const branchActiveClassName     = classNames(_classes.branchActive, classes.branchActive);
 
     return (
         <Branch id={ branch.id }
-            index                   ={ index }
             text                    ={ branch.label }
             branchClassName         ={ branchClassName }
             branchHoverClassName    ={ branchHoverClassName }
             branchDragOverClassName ={ branchDragOverClassName }
             branchActiveClassName   ={ branchActiveClassName }
             branchesClassName       ={ branchesClassName }
-            branchStyle             ={ styles.branch }
-            branchHoverStyle        ={ styles.branchHover }
-            branchDragOverStyle     ={ styles.branchDragOver }
+            branchStyle             ={ styles?.branch?.base }
+            branchHoverStyle        ={ styles?.branch?.hover }
+            branchDragOverStyle     ={ styles?.branch?.dragOver }
             branchesStyle           ={ styles.branches }
             path                    ={ path }
             setPopupDetails         ={ setPopupDetails }
@@ -173,9 +172,9 @@ const Tree = ({
     const scrollPaneClassName = classNames(_classes.contentContainer, classes.scrollPane);
     const popupClassNames: PopupClassesT = {
         popup:      classNames(_classes?.popup, classes?.popup),
-        item:       classNames(_classes?.popupItem, classes?.popupItem),
-        itemHover:  classNames(_classes?.popupItemHover, classes?.popupItemHover),
-        itemActive: classNames(_classes?.popupItemActive, classes?.popupItemActive),
+        item:       classNames(_classes?.popupItem_base, classes?.popupItem_base),
+        itemHover:  classNames(_classes?.popupItem_hover, classes?.popupItem_hover),
+        itemActive: classNames(_classes?.popupItem_active, classes?.popupItem_active),
         hr:         classNames(_classes?.popupHr, classes?.popupHr),
     };
 
@@ -183,9 +182,9 @@ const Tree = ({
     const scrollPaneStyle = { ...styles?.scrollPane, height: scrollPaneHeight }
     const popupStyles: PopupStylesT = {
         popup:      styles?.popup,
-        item:       styles?.popupItem,
-        itemHover:  styles?.popupItemHover,
-        itemActive: styles?.popupItemActive,
+        item:       styles?.popupItem?.base,
+        itemHover:  styles?.popupItem?.hover,
+        itemActive: styles?.popupItem?.active,
         hr:         styles?.popupHr,
     };
 

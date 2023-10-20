@@ -1,10 +1,9 @@
 import {
     useState,
     useRef,
-    MutableRefObject,
     useContext,
-    DragEvent,
     useEffect,
+    DragEvent as rDragEvent,
     MouseEvent as rMouseEvent,
 } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
@@ -23,7 +22,7 @@ import {
     set_dragged_to_different_viewport,
     set_storage_port_from_page_id,
 } from '../../../state/browser-actions';
-import { addTab, changeView, removeTab } from '../../../state/dispatchers';
+import * as actions from '../../../state/dispatchers';
 import { ID, TupleContextT } from '../../../TupleTypes';
 
 import _classes from './tabbar.module.css';
@@ -42,15 +41,27 @@ export const Tab = ({
     index,
     pageId,
 }: TabProps) => {
+    const tabRef = useRef<HTMLDivElement>();
+
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
     const {
         dispatch,
-        state:{ pages, classes, styles, viewport, viewportId },
+        state:{
+            pages,
+            classes,
+            styles,
+            viewport,
+            viewportId
+        },
     }: TupleContextT = useContext(TupleContext);
 
     const [_, setDragging] = useLocalStorage(DRAGGING_ID, false);
+    // TODO: Working here...
+    const [hovering, setHovering] = useState(false);
+    const [tabCloseHovering, setTabCloseHovering] = useState(false);
+    const [draggingOver, setDraggingOver] = useState(false);
 
     const label = pages[pageId]?.name || '';
     const port = viewport.ports[portId];
@@ -63,9 +74,6 @@ export const Tab = ({
         cleanupDraggable();
     }, [cleanupDraggable]);
 
-    const tabRef = useRef<HTMLDivElement>();
-    const [closeVisible, setCloseVisible] = useState(false);
-
     // Note: Unfortunate, but much of Tuple's CSS relies on tab height.
     //       This is a hack in case the user changes it in their custom CSS.
     useEffect(() => {
@@ -77,31 +85,48 @@ export const Tab = ({
     //------------------------------------------------------------------------------------------------------------------
     // Styling
     //------------------------------------------------------------------------------------------------------------------
-    const inactiveTabClassName = classNames(_classes?.tab, classes?.tab);
-    const activeTabClassName = classNames(inactiveTabClassName, _classes?.tabActive, classes?.tabActive);
-
-    const tabClassName = isActiveTab
-        ? activeTabClassName
-        : inactiveTabClassName;
+    const tabClassName = classNames(
+        _classes?.tab_base,
+        classes?.tab_base,
+        isActiveTab && _classes?.tab_active,
+        isActiveTab && classes?.tab_active,
+        hovering && _classes?.tab_hover,
+        hovering && classes?.tab_hover,
+        draggingOver && _classes?.tab_dragOver,
+        draggingOver && classes?.tab_dragOver,
+    );
 
     const tabLabelClassName = classNames(_classes?.tabLabel, classes?.tabLabel);
-    const tabCloseClassName = classNames(_classes?.tabClose, classes?.tabClose);
+
+    const tabCloseClassName = classNames(
+        _classes?.tabClose_base,
+        classes?.tabClose_base,
+        tabCloseHovering && _classes.tabClose_hover,
+        tabCloseHovering && classes.tabClose_hover,
+    );
+
     const draggableClass = classes?.draggable || '';
 
-    const tabStyle = isActiveTab
-        ? {...styles.tab, ...styles.tabActive}
-        : styles.tab;
+    const tabStyle = {
+        ...styles?.tab?.base,
+        ...(isActiveTab && styles?.tab?.active)
+    }
+
+    const tabCloseStyle = {
+        ...styles?.tabClose?.base,
+        ...(tabCloseHovering && styles?.tabClose?.hover)
+    };
 
     //------------------------------------------------------------------------------------------------------------------
-    // Event Handlers
+    // Tab Event Handlers
     //------------------------------------------------------------------------------------------------------------------
-    const mouseEnterHandler = () => setCloseVisible(true);
-    const mouseLeaveHandler = () => setCloseVisible(false);
+    const mouseEnterHandler = () => setHovering(true);
+    const mouseLeaveHandler = () => setHovering(false);
 
-    const clickHandler = () => changeView(dispatch, portId, pageId);
+    const clickHandler = () => actions.changeView(dispatch, portId, pageId);
 
-    const dragStartHandler = (e: DragEvent<HTMLDivElement>) => {
-        setCloseVisible(false);
+    const dragStartHandler = (e: rDragEvent<HTMLDivElement>) => {
+        setHovering(false);
         setCustomDragImage(e, label, draggableClass, styles.draggable);
         setDragging(true);
 
@@ -110,12 +135,11 @@ export const Tab = ({
         e.dataTransfer && e.dataTransfer.setData('viewportId', viewportId.toString());
     };
 
-    const dropHandler = (e: DragEvent<HTMLDivElement>) => {
+    const dropHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (tabRef.current)
-            tabRef.current.style.opacity = '1';
+        setDraggingOver(false);
 
         if (!validateDraggable(e)) return;
 
@@ -127,27 +151,22 @@ export const Tab = ({
             set_dragged_to_different_viewport(true);
         }
 
-        addTab(dispatch, portId, dragPortId, dragPageId, index+1);
+        actions.addTab(dispatch, portId, dragPortId, dragPageId, index);
     }
 
-    const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+    const dragOverHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
-        // TODO: Better solution for this
-        if (tabRef.current)
-            tabRef.current.style.opacity = '0.7';
+        setDraggingOver(true);
     }
 
-    const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
+    const dragLeaveHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
-        if (tabRef.current)
-            tabRef.current.style.opacity = '1';
+        setDraggingOver(false);
     }
 
-    const dragEndHandler = async (e: DragEvent<HTMLDivElement>) => {
+    const dragEndHandler = async (e: rDragEvent<HTMLDivElement>) => {
         setDragging(false);
         cleanupDraggable();
         removeTabHandler();
@@ -166,39 +185,45 @@ export const Tab = ({
         removeTabHandler();
     }
 
-    const removeTabHandler = () => removeTab(dispatch, portId, index);
+    const removeTabHandler = () => actions.removeTab(dispatch, portId, index);
+
+    // Tab Close Event Handlers
+    const onTabCloseMouseOver = () => setTabCloseHovering(true);
+    const onTabCloseMouseLeave = () => setTabCloseHovering(false);
+
 
     return (
-        <div ref={tabRef as MutableRefObject<HTMLDivElement> }
-            draggable 
-            style={tabStyle}
-            className={tabClassName}
+        <div draggable ref={ tabRef }
+            style           ={ tabStyle }
+            className       ={ tabClassName }
 
-            onDragStart={dragStartHandler}
-            onDragEnd={dragEndHandler}
-            onDragEnter={dragOverHandler}
-            onDragOver={dragOverHandler}
-            onDragLeave={dragLeaveHandler}
-            onDrop={dropHandler}
+            onDragStart     ={ dragStartHandler }
+            onDragEnd       ={ dragEndHandler }
+            onDragEnter     ={ dragOverHandler }
+            onDragOver      ={ dragOverHandler }
+            onDragLeave     ={ dragLeaveHandler }
+            onDrop          ={ dropHandler }
 
-            onMouseOver={mouseEnterHandler}
-            onMouseLeave={mouseLeaveHandler}
-            onClick={clickHandler}
+            onMouseOver     ={ mouseEnterHandler }
+            onMouseLeave    ={ mouseLeaveHandler }
+            onClick         ={ clickHandler }
         >
-            <div
-                style={styles.tabLabel}
-                className={tabLabelClassName}>
+            <div style={ styles.tabLabel } className={ tabLabelClassName }>
                 { label }
             </div>
-            <div className={_classes.tabCloseContainer}>
-                { closeVisible &&
+
+            <div className={ _classes.tabCloseContainer }>
+                { hovering && (
                     <div
-                        style={styles.tabClose}
-                        className={tabCloseClassName}
-                        onClick={onCloseClickHandler}>
+                        style       ={ tabCloseStyle }
+                        className   ={ tabCloseClassName }
+                        onClick     ={ onCloseClickHandler }
+                        onMouseOver ={ onTabCloseMouseOver }
+                        onMouseLeave={ onTabCloseMouseLeave }
+                    >
                         { "\u2716" }
                     </div>
-                }
+                )}
             </div>
         </div>
     );
