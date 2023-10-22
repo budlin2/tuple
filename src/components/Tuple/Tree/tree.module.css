@@ -15,8 +15,7 @@
 .tree {
     height: 100%;
     width: 100%;
-    border-right: 1px solid black;
-    color: black;
+    color: var(--COLOR-SECONDARY-1);
     white-space: nowrap;  /* Prevent text wrap */
 }
 
@@ -33,34 +32,43 @@
     width: 100%;
     padding-left: var(--PADDING_HORIZONTAL);
 
-    background: black;
-    color: white;
+    background: var(--COLOR-PRIMARY-2);
+    border-bottom: 1px solid var(--COLOR-PRIMARY-3);
+    color: var(--COLOR-SECONDARY-1);
 }
 
 .branch_hover {
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--COLOR-SECONDARY-1);
+    color: var(--COLOR-PRIMARY-1);
 }
 
 .branch_active {
     /* Account for border width */
-    width: calc(100% - 2px);
+    width: 100%;
 
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: 1px solid black;
-    caret-color: black;
+    background: var(--COLOR-SECONDARY-2);
+    color: var(--COLOR-PRIMARY-1);
+    caret-color: var(--COLOR-PRIMARY-3);
 }
 
 .branch_dragOver {
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--COLOR-SECONDARY-3);
+    color: var(--COLOR-PRIMARY-1);
 }
 
-.branches {
+.branches_base {
     display: flex;
     flex-direction: column;
     margin-left: 0.5rem;
-    border-left: 1px solid black;
+    border-left: 1px solid var(--COLOR-PRIMARY-3);
+}
+
+.branches_hover {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    border-left: 1px solid var(--COLOR-SECONDARY-3);
 }
 
 .branchButtonContainer {
@@ -85,10 +93,6 @@
     color: transparent;
 }
 
-.branchDragOver {
-    background: rgba(0, 0, 0, 0.5);
-}
-
 /**********  LEAF  **********/
 .leaf_base {
     display: flex;
@@ -106,22 +110,24 @@
 
 .leaf_hover {
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--COLOR-SECONDARY-3);
+    color: var(--COLOR-PRIMARY-1)
 }
 
 .leaf_active {
     /* Account for border width */
-    width: calc(100% - 2px);
+    width: 100%;
 
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: 1px solid black;
-    caret-color: black;
     cursor: pointer;
+
+    background: var(--COLOR-SECONDARY-2);
+    color: var(--COLOR-PRIMARY-1);
+    caret-color: var(--COLOR-PRIMARY-3);
 }
 
 .leaf_dragOver {
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--COLOR-SECONDARY-3);
+    color: var(--COLOR-PRIMARY-1)
 }
 
 /**********  ROOT  **********/
@@ -139,7 +145,7 @@
     height: calc(var(--TAB-HEIGHT) - 1px);
     width: 100%;
     padding-left: var(--PADDING_HORIZONTAL);
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--COLOR-SECONDARY-1);
 
     font-size: 1.4rem;
     cursor: pointer;
@@ -149,8 +155,8 @@
     padding-top: var(--PADDING_VERTICAL);
     padding-bottom: var(--PADDING_VERTICAL);
 
-    background: black;
-    color: white;
+    background: var(--COLOR-SECONDARY-2);
+    color: var(--COLOR-PRIMARY-1);
 }
 
 .rootlet {
@@ -163,24 +169,25 @@
 }
 
 .rootletTextBox {
-    color: white;
     background: transparent;
-    border: none;
-    width: 100%;
+    color: var(--COLOR-PRIMARY-1);
+    border: 1px solid transparent;
+
+    width: 75%;
     margin-right: var(--PADDING_HORIZONTAL);
     padding: 0.2rem;
-    border: 1px solid transparent;
+
     cursor: pointer;
-    width: 75%;
 }
 
 .rootletTextBox:hover {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--COLOR-PRIMARY-1);;
 }
 
+/* TODO: This should be rootletTextBox_active */
 .rootletTextBox:focus {
     outline: none;
-    border: 1px solid white;
+    border: 1px solid var(--COLOR-PRIMARY-1);;
     cursor: text;
 }
 
@@ -195,8 +202,8 @@
     justify-content: center;
     align-items: center;
 
-    background: rgba(0,0,0, 0.5);
-    color: white;
+    background: var(--COLOR-SECONDARY-3);
+    color: var(--COLOR-PRIMARY-1);
 
     height: 10rem;
     width: 100%;
@@ -206,7 +213,7 @@
 }
 
 .trashcanHover {
-    background: rgba(0,0,0, 0.75);
+    background: var(--COLOR-SECONDARY-2);
     font-size: 5rem;
 }
 
@@ -214,7 +221,7 @@
     width: 12rem;
 }
 
-.popupItem {
+.popupItem_base {
     display: flex;
     width: calc(100% - 0.5em);
     padding-left: 0.5em;

@@ -118,7 +118,7 @@ export const Tab = ({
     };
 
     //------------------------------------------------------------------------------------------------------------------
-    // Tab Event Handlers
+    // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
     const mouseEnterHandler = () => setHovering(true);
     const mouseLeaveHandler = () => setHovering(false);
@@ -147,9 +147,8 @@ export const Tab = ({
         const dragPortId = e.dataTransfer && e.dataTransfer.getData('portId');
         const dragViewportId = e.dataTransfer && e.dataTransfer.getData('viewportId');
 
-        if (dragViewportId !== viewportId) {
+        if (dragViewportId !== viewportId)
             set_dragged_to_different_viewport(true);
-        }
 
         actions.addTab(dispatch, portId, dragPortId, dragPageId, index);
     }
@@ -206,7 +205,7 @@ export const Tab = ({
 
             onMouseOver     ={ mouseEnterHandler }
             onMouseLeave    ={ mouseLeaveHandler }
-            onClick         ={ clickHandler }
+            onMouseDown     ={ clickHandler }
         >
             <div style={ styles.tabLabel } className={ tabLabelClassName }>
                 { label }

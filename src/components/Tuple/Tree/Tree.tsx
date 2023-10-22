@@ -1,117 +1,16 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import Leaf from './Leaf';
-import Branch from './Branch';
 import Root from './Root';
 import { TupleContext } from '..';
-import { BranchT, LeafT, PopupDetailsT, TreeT, isLeaf } from './TreeTypes';
-import { ID, PageT, TupleContextT } from '../TupleTypes';
+import { PopupDetailsT, TreeT } from './TreeTypes';
+import { ID, TupleContextT } from '../TupleTypes';
 import Trashcan from './Trashcan';
 import ScrollPane from '../../ScrollPane';
 import Popup, { PopupClassesT, PopupStylesT } from '../../Popup';
+import Branches from './Branches';
 
 import _classes from './tree.module.css';
 import { classNames } from '../../../utils';
-
-
-interface BranchesProps {
-    node: BranchT | LeafT,
-    index: number,
-    path: ID[],
-    setPopupDetails:    (details: PopupDetailsT) => void,
-    onLeafRename?:      (pageId: ID, newName: string) => void,
-    onBranchRename?:    (path: ID[], newName: string) => void,
-    onLeafDelete?:      (path: ID[]) => void,
-    onBranchDelete?:    (path: ID[]) => void,
-    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
-    onLeafAdd?:         (path: ID[], position: number, leafName: string) => void,
-}
-
-// Recursive tree component
-const Branches = ({
-    node,
-    index,
-    path,
-    setPopupDetails,
-    onLeafRename    =()=>{},
-    onBranchRename  =()=>{},
-    onLeafDelete    =()=>{},
-    onBranchDelete  =()=>{},
-    onBranchAdd     =()=>{},
-    onLeafAdd       =()=>{},
-}: BranchesProps) => {
-    const { state: {
-        pages,
-        classes,
-        styles,
-    }}: TupleContextT = useContext(TupleContext);
-
-    if (isLeaf(node)) {
-        const leaf = node as LeafT;
-        const page: PageT = pages[leaf.pageId];
-
-        if (!page)
-            return;
-
-        return (
-            <Leaf id={leaf.id}
-                index           ={ index }
-                text            ={ page.name }
-                pageId          ={ leaf.pageId }
-                path            ={ path }
-                setPopupDetails ={ setPopupDetails }
-                onRename        ={ onLeafRename }
-                onDelete        ={ onLeafDelete }
-                onBranchAdd     ={ onBranchAdd }
-                onLeafAdd       ={ onLeafAdd }
-            />
-        );
-    }
-
-    const branch = node as BranchT;
-    // Define these here and pass as prop, since Root.tsx also uses Branch component
-    const branchClassName           = classNames(_classes?.branch_base, classes?.branch_base);
-    const branchHoverClassName      = classNames(_classes?.branch_hover, classes?.branch_hover);
-    const branchDragOverClassName   = classNames(_classes?.branch_dragOver, classes?.branch_dragOver);
-    const branchActiveClassName     = classNames(_classes.branch_active, classes.branch_active);
-    const branchesClassName         = classNames(_classes?.branches, classes?.branches);
-
-    return (
-        <Branch id={ branch.id }
-            text                    ={ branch.label }
-            branchClassName         ={ branchClassName }
-            branchHoverClassName    ={ branchHoverClassName }
-            branchDragOverClassName ={ branchDragOverClassName }
-            branchActiveClassName   ={ branchActiveClassName }
-            branchesClassName       ={ branchesClassName }
-            branchStyle             ={ styles?.branch?.base }
-            branchHoverStyle        ={ styles?.branch?.hover }
-            branchDragOverStyle     ={ styles?.branch?.dragOver }
-            branchesStyle           ={ styles.branches }
-            path                    ={ path }
-            setPopupDetails         ={ setPopupDetails }
-            onRename                ={ onBranchRename }
-            onDelete                ={ onBranchDelete }
-            onBranchAdd             ={ onBranchAdd }
-            onLeafAdd               ={ onLeafAdd }
-        >
-            { branch.branches.map( (b, i) => (
-                <Branches key={b.id}
-                    index           ={ i }
-                    node            ={ b }
-                    path            ={ path.concat(node.id) }
-                    setPopupDetails ={ setPopupDetails }
-                    onLeafRename    ={ onLeafRename }
-                    onBranchRename  ={ onBranchRename }
-                    onLeafDelete    ={ onLeafDelete }
-                    onBranchDelete  ={ onBranchDelete }
-                    onBranchAdd     ={ onBranchAdd }
-                    onLeafAdd       ={ onLeafAdd }
-                />
-            ))}
-        </Branch>
-    );
-};
 
 
 export interface TreeProps {
@@ -121,9 +20,12 @@ export interface TreeProps {
     onBranchRename?:    (path: ID[], newName: string) => void,
     onLeafDelete?:      (path: ID[]) => void,
     onBranchDelete?:    (path: ID[]) => void,
-    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
     onLeafAdd?:         (path: ID[], position: number, leafName: string) => void,
+    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
+    onLeafDrop?:        () => void,
+    onBranchDrop?:      () => void,
 };
+
 
 const Tree = ({
     tree,   // passed in as prop, because user now has access to this component directly for dynamic trees
@@ -132,8 +34,10 @@ const Tree = ({
     onBranchRename = null,
     onLeafDelete=null,
     onBranchDelete=null,
-    onBranchAdd=null,
     onLeafAdd=null,
+    onBranchAdd=null,
+    onLeafDrop=null,
+    onBranchDrop=null,
 }: TreeProps) => {
     const treeRef = useRef<HTMLDivElement>();
     const rootContainerRef = useRef<HTMLDivElement>();
@@ -169,7 +73,7 @@ const Tree = ({
     //------------------------------------------------------------------------------------------------------------------
     // CSSModules
     const treeClassName = classNames(_classes?.tree, classes?.tree);
-    const scrollPaneClassName = classNames(_classes.contentContainer, classes.scrollPane);
+    const scrollPaneClassName = classNames(_classes.scrollPane, classes.scrollPane);
     const popupClassNames: PopupClassesT = {
         popup:      classNames(_classes?.popup, classes?.popup),
         item:       classNames(_classes?.popupItem_base, classes?.popupItem_base),
@@ -206,8 +110,10 @@ const Tree = ({
                                 onBranchRename      ={ onBranchRename }
                                 onLeafDelete        ={ onLeafDelete }
                                 onBranchDelete      ={ onBranchDelete }
-                                onBranchAdd         ={ onBranchAdd }
                                 onLeafAdd           ={ onLeafAdd }
+                                onBranchAdd         ={ onBranchAdd }
+                                onLeafDrop          ={ onLeafDrop }
+                                onBranchDrop        ={ onBranchDrop }
                                 setPopupDetails     ={ setPopupDetails }
                             />
                         ))}

@@ -93,11 +93,11 @@ const Leaf = ({
     //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {  // Event Handlers for renaming leaf
         if (renaming && inputRef.current) {
-            inputRef.current.focus();
+            // inputRef.current.focus();
             document.addEventListener('click', onClickOutside_RENAME);
             document.addEventListener('contextmenu', onClickOutside_RENAME);
         } else {
-            inputRef.current.blur();
+            // inputRef.current.blur();
             document.removeEventListener('click', onClickOutside_RENAME);
             document.removeEventListener('contextmenu', onClickOutside_RENAME);
         }
@@ -110,11 +110,11 @@ const Leaf = ({
 
     useEffect(() => { // Event Handlers for adding new node
         if (isAddingNode(nodeState) && newNodeRef.current) {
-            newNodeRef?.current?.focus();
+            // newNodeRef?.current?.focus();
             document.addEventListener('click', onClickOutside_NEW_NODE);
             document.addEventListener('contextmenu', onClickOutside_NEW_NODE);
         } else {
-            newNodeRef?.current?.blur();
+            // newNodeRef?.current?.blur();
             document.removeEventListener('click', onClickOutside_NEW_NODE);
             document.removeEventListener('contextmenu', onClickOutside_NEW_NODE);
         }
@@ -138,7 +138,7 @@ const Leaf = ({
             ? classNames(_classes?.leaf_hover, classes?.leaf_hover)
             : '',
         renaming
-            ? classNames(_classes.leaf_active, classes.leaf_active)
+            ? classNames(_classes?.leaf_active, classes?.leaf_active)
             : '',
     );
 
@@ -261,6 +261,12 @@ const Leaf = ({
     };
 
     const onKeyDown_RENAME = (e: rKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setRenaming(false);
+            return;
+        }
+
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
             setRenaming(false);
@@ -291,6 +297,12 @@ const Leaf = ({
     };
 
     const onKeyDown_NEW_NODE = (e: rKeyboardEvent<HTMLInputElement>, nodeState: NodeStateT) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setNodeState(NodeStateT.NULL);
+            return;
+        }
+
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
 
@@ -372,7 +384,7 @@ const Leaf = ({
                 <input ref={newNodeRef} type="text"
                     value       ={ newNodeName }
                     className   ={ newNodeClassName }
-                    style       ={ styles.leaf.active }
+                    style       ={ styles?.leaf?.active }
                     onKeyDown   ={ e => onKeyDown_NEW_NODE(e, nodeState) }
                     onChange    ={ onChange_NEW_NODE }
                 />

@@ -1,10 +1,13 @@
 .view {
     height: 100%;
     width: 100%;
-    border-left: 1px solid black;
-    border-top: 1px solid black;
+    border-left: 1px solid var(--COLOR-SECONDARY-3);
+    border-top: 1px solid var(--COLOR-SECONDARY-3);
+    background: var(--COLOR-PRIMARY-1);
+    color: var(--COLOR-SECONDARY-1)
 }
 
 .contentContainer {
+    /* TODO: No it doesn't actually.... */
     z-index: 1;  /* This allows highlighting of inner text */
 }

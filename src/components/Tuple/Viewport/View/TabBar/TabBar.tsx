@@ -1,4 +1,4 @@
-import { useContext, DragEvent as rDragEvent } from 'react';
+import { useContext, DragEvent as rDragEvent, useState } from 'react';
 
 import { TupleContext } from '../../..';
 import { ID, TupleContextT } from '../../../TupleTypes';
@@ -26,12 +26,27 @@ const TabBar = ({
         dispatch,
         state:{ classes, styles, viewportId }
     }: TupleContextT = useContext(TupleContext);
-    
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
+    const [draggingOver, setDraggingOver] = useState(false);
+
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
     const tabBarClassName = classNames(
         _global_classes.noScrollbar,
         _classes?.tabBar_base,
         classes?.tabBar_base,
+        draggingOver && _classes?.tabBar_dragOver,
+        draggingOver && classes?.tabBar_dragOver,
     );
+
+    const tabBarStyle = {
+        ...styles?.tabBar?.base,
+        ...(draggingOver && styles?.tabBar?.dragOver),
+    };
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -39,11 +54,16 @@ const TabBar = ({
     const dragOverHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+        setDraggingOver(true);
     }
+
+    const dragLeaveHandler = () => setDraggingOver(false);
 
     const dropHandler = (e: rDragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+
+        setDraggingOver(false);
 
         if (!validateDraggable(e)) return;
 
@@ -60,8 +80,9 @@ const TabBar = ({
 
     return (
         <div className={ tabBarClassName }
-            style       ={ styles?.tabBar?.base }
+            style       ={ tabBarStyle }
             onDragOver  ={ dragOverHandler }
+            onDragLeave ={ dragLeaveHandler }
             onDrop      ={ dropHandler }
         >
             { pageIds.map((pid, i) => (

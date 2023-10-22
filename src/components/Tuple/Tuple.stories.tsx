@@ -317,6 +317,8 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
                     onLeafDelete    ={ deleteLeaf }
                     onBranchAdd     ={ addBranch }
                     onLeafAdd       ={ _addLeaf }
+                    onBranchDrop    ={ () => {} }
+                    onLeafDrop      ={ () => {} }
                 />
             </Tuple>
         </div>

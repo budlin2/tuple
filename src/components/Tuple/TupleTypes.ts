@@ -62,7 +62,10 @@ export interface TupleStylesT {
         dragOver?:      CSSProperties,
         active?:        CSSProperties,
     },
-    branches?:          CSSProperties,
+    branches?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+    },
     leafContainer?:     CSSProperties,
     leaf?: {
         base?:          CSSProperties,
@@ -122,7 +125,8 @@ export interface TupleClassesT {
         branch_hover?:      string,
         branch_dragOver?:   string,
         branch_active?:     string,
-    branches?:              string,
+    branches_base?:         string,
+        branches_hover?:    string,
     leafContainer?:         string,
     leaf_base?:             string,
         leaf_hover?:        string,

@@ -5,10 +5,33 @@ export const getUniqueId = () => {
     ).toString(36);
 }
 
+const words = [
+    "apple",
+    "zebra",
+    "lion",
+    "pancho",
+    "lioness",
+    "tough",
+    "weak",
+    "pretty",
+    "monkey",
+    "monster",
+    "imp",
+    "sloth",
+    "dragon",
+    "house",
+    "door",
+    "window",
+    "air",
+    "park",
+    "tree",
+    "chipmunk",
+    "monk",
+    "priestess",
+    "elephant",
+];
 
 const getRandomWord = () => {
-    const words = ["apple","zebra","lion","pancho","lioness","tough","weak","pretty","monkey","monster","imp","sloth","dragon","house","door","window","air","park","tree","chipmunk","monk","priestess","elephant"];
-
     const max = words.length - 1;
     const min = 0;
     const index = Math.floor(Math.random() * (max - min + 1) + min);

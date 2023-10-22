@@ -1,6 +1,12 @@
 :root {
     --GOOD_FONT: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     --TAB-HEIGHT: 2rem;
+    --COLOR-PRIMARY-1:      #ffffff;
+    --COLOR-PRIMARY-2:      #f7f7f7;
+    --COLOR-PRIMARY-3:      #eeeeee;
+    --COLOR-SECONDARY-1:    #181818;
+    --COLOR-SECONDARY-2:    #2a2d2e;
+    --COLOR-SECONDARY-3:    #616161;
 }
 
 .noScrollbar {

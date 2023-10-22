@@ -1,6 +1,7 @@
 import { CSSProperties, ReactElement, useState, useEffect } from 'react';
 
 import _classes from './ScrollPane.module.css';
+import { classNames } from '../../utils';
 
 
 export interface Props {
@@ -15,23 +16,31 @@ const ScrollPane = ({
     className,
     children,
 }: Props) => {
-    const scrollPaneClasses = `${_classes.scrollpane} ${className}`;
-    const [_className, setClassName] = useState(scrollPaneClasses);
+    // State
     const [isScrolling, setIsScrolling] = useState(false);
 
-    const onScrollHandler = () => setIsScrolling(true);
-
+    // Effects
     useEffect(() => {
         if (isScrolling) {
-           setClassName(scrollPaneClasses);
            setTimeout(() => setIsScrolling(false), 750);
-        } else {
-            setClassName(`${scrollPaneClasses} ${_classes.scrollpaneHidden}`);
         }
-    }, [isScrolling, setIsScrolling, scrollPaneClasses, _classes, setClassName]);
+    }, [isScrolling, setIsScrolling]);
+
+    // Styling
+    const scrollPaneClassName = classNames(
+        className,
+        _classes.scrollpane,
+        !isScrolling && _classes.scrollpaneHidden,
+    );
+
+    // Event Handlers
+    const onScrollHandler = () => setIsScrolling(true);
 
     return (
-        <div className={_className} style={style} onScroll={onScrollHandler}>
+        <div className={scrollPaneClassName}
+            style={style}
+            onScroll={onScrollHandler}
+        >
             { children }
         </div>
     );

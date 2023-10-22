@@ -24,27 +24,34 @@ import { classNames } from '../../../utils';
 
 
 interface Props {
-    id: ID,
-    text: string,
-    children: ReactNode,
-    open?: boolean,
-    branchClassName?: string,
-    branchHoverClassName?: string,
-    branchDragOverClassName?: string,
-    branchActiveClassName?: string,
-    branchesClassName?: string,
-    branchStyle?: CSSProperties,
-    branchHoverStyle?: CSSProperties,
-    branchDragOverStyle?: CSSProperties,
-    branchActiveStyle?: CSSProperties,
-    branchesStyle?: CSSProperties,
-    path: ID[],
-    setPopupDetails?:   (details: PopupDetailsT | null) => void,
-    onRename?:          (path: ID[], newName: string) => void,
-    onDelete?:          (path: ID[]) => void,
-    onBranchAdd?:       (path: ID[], position: number, branchName: string) => void,
-    onLeafAdd?:         (path: ID[], position: number, leafName: string) => void,
-    onDrop?:            (e: rDragEvent) => void,
+    id:                         ID,
+    text:                       string,
+    path:                       ID[],
+    children:                   ReactNode,
+    open?:                      boolean,
+
+    branchClassName?:           string,
+    branchHoverClassName?:      string,
+    branchDragOverClassName?:   string,
+    branchActiveClassName?:     string,
+
+    branchesClassName?:         string,
+    branchesHoverClassName?:    string,
+
+    branchStyle?:               CSSProperties,
+    branchHoverStyle?:          CSSProperties,
+    branchDragOverStyle?:       CSSProperties,
+    branchActiveStyle?:         CSSProperties,
+
+    branchesStyle?:             CSSProperties,
+    branchesHoverStyle?:        CSSProperties,
+
+    setPopupDetails?:           (details: PopupDetailsT | null) => void,
+    onRename?:                  (path: ID[], newName: string) => void,
+    onDelete?:                  (path: ID[]) => void,
+    onBranchAdd?:               (path: ID[], position: number, branchName: string) => void,
+    onLeafAdd?:                 (path: ID[], position: number, leafName: string) => void,
+    onDrop?:                    (e: rDragEvent) => void,
 }
 
 
@@ -53,16 +60,23 @@ const Branch = ({
     text,
     children,
     open=false,
+
     branchClassName,
     branchHoverClassName,
     branchDragOverClassName,
     branchActiveClassName,
+
     branchesClassName,
+    branchesHoverClassName,
+
     branchStyle={},
     branchHoverStyle={},
     branchDragOverStyle={},
     branchActiveStyle={},
+
     branchesStyle={},
+    branchesHoverStyle,
+
     path=[],
     setPopupDetails=()=>{},
     onRename,
@@ -87,10 +101,12 @@ const Branch = ({
     const [hovering, setHovering]           = useState(false);
     const [isDraggedOver, setIsDraggedOver] = useState(false);
     const [expanded, setExpanded]           = useState(open);
+    const [hoveringBranches, setHoveringBranches] = useState(false);
 
     const [branchName, setBranchName]       = useState(text);
     const [renaming, setRenaming]           = useState(false);
 
+    // TODO: Add RENAMING to Node State
     const [nodeState, setNodeState]         = useState<NodeStateT>(NodeStateT.NULL);
     const [newNodeName, setNewNodeName]     = useState('');
 
@@ -102,11 +118,11 @@ const Branch = ({
     //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {   // Event Handlers for renaming branch
         if (renaming && inputRef.current) {
-            inputRef.current.focus();
+            // inputRef.current.focus();
             document.addEventListener('click', onClickOutside_RENAME);
             document.addEventListener('contextmenu', onClickOutside_RENAME);
         } else {
-            inputRef.current.blur();
+            // inputRef.current.blur();
             document.removeEventListener('click', onClickOutside_RENAME);
             document.removeEventListener('contextmenu', onClickOutside_RENAME);
         }
@@ -119,11 +135,11 @@ const Branch = ({
 
     useEffect(() => { // Event Handlers for adding new node
         if (isAddingNode(nodeState) && newNodeRef.current) {
-            newNodeRef?.current?.focus();
+            // newNodeRef?.current?.focus();
             document.addEventListener('click', onClickOutside_NEW_NODE);
             document.addEventListener('contextmenu', onClickOutside_NEW_NODE);
         } else {
-            newNodeRef?.current?.blur();
+            // newNodeRef?.current?.blur();
             document.removeEventListener('click', onClickOutside_NEW_NODE);
             document.removeEventListener('contextmenu', onClickOutside_NEW_NODE);
         }
@@ -146,12 +162,17 @@ const Branch = ({
         renaming && branchActiveClassName,
     );
 
+    const _branchesClassName = classNames(
+        branchesClassName,
+        hoveringBranches && branchesHoverClassName,
+    );
+
     // TODO: Sharing this class with leafActive is noticeably awkward here... Maybe rethink API
     const newNodeClassName = classNames(
-        _classes?.leaf_base,
-        classes?.leaf_base,
-        _classes?.leaf_active,
-        classes?.leaf_active
+        _classes?.branch_base,
+        classes?.branch_base,
+        _classes?.branch_active,
+        classes?.branch_active
     );
 
     const _branchStyle = {
@@ -159,6 +180,16 @@ const Branch = ({
         ...hovering ? branchHoverStyle : {},
         ...(isDraggedOver ? branchDragOverStyle : {}),
         ...(renaming ? branchActiveStyle : {}),
+    };
+
+    const _branchesStyle = {
+        ...branchesStyle,
+        ...hoveringBranches ? branchesHoverStyle : {},
+    };
+
+    const newNodeStyle = {
+        ...styles?.branch?.base,
+        ...styles?.branch?.active,
     };
 
     //------------------------------------------------------------------------------------------------------------------
@@ -212,6 +243,9 @@ const Branch = ({
         });
     };
 
+    const onBranchesMouseOverHandler = () => setHoveringBranches(true);
+    const onBranchesMouseLeaveHandler = () => setHoveringBranches(false);
+
     //------------------------------------------------------------------------------------------------------------------
     // Rename Event Handlers
     //------------------------------------------------------------------------------------------------------------------
@@ -222,6 +256,12 @@ const Branch = ({
     };
 
     const onKeyDown_RENAME = (e: rKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setRenaming(false);
+            return;
+        }
+
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
             setRenaming(false);
@@ -254,6 +294,12 @@ const Branch = ({
     };
 
     const onKeyDown_NEW_NODE = (e: rKeyboardEvent<HTMLInputElement>, nodeState: NodeStateT) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setNodeState(NodeStateT.NULL);
+            return;
+        }
+
         if (e.key === 'Enter' && e.currentTarget.value) {
             e.preventDefault();
 
@@ -329,12 +375,16 @@ const Branch = ({
             />
 
             { expanded && (
-                <div className={branchesClassName} style={branchesStyle}>
+                <div className={ _branchesClassName }
+                    style       ={ _branchesStyle }
+                    onMouseOver ={ onBranchesMouseOverHandler }
+                    onMouseLeave={ onBranchesMouseLeaveHandler }
+                >
                     { (isAddingNode(nodeState)) && (
                         <input ref={newNodeRef} type="text"
                             value       ={ newNodeName }
                             className   ={ newNodeClassName }
-                            style       ={ styles?.leaf?.active }
+                            style       ={ newNodeStyle }
                             onKeyDown   ={ e => onKeyDown_NEW_NODE(e, nodeState) }
                             onChange    ={ onChange_NEW_NODE }
                         />

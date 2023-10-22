@@ -8,8 +8,12 @@
     width: 100%;
     overflow-x: scroll;
     /* overflow-y: auto; */
+    background: var(--COLOR-PRIMARY-2);
+    border-bottom: 1px solid var(--COLOR-SECONDARY-3);
+}
 
-    border-bottom: 1px solid black;
+.tabBar_dragOver {
+    background: var(--COLOR-PRIMARY-3);
 }
 
 .tab_base {
@@ -17,34 +21,36 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    overflow: hidden;
+    flex-shrink: 0;
 
-    padding-left: var(--PADDING_MEDIUM);
-    padding-right: var(--PADDING_SMALL);
     min-width: 5rem;
     max-width: 12rem;
-    flex-shrink: 0;
     height: var(--TAB-HEIGHT);
+    padding-left: var(--PADDING_MEDIUM);
+    padding-right: var(--PADDING_SMALL);
+
+    border-right: 1px solid var(--COLOR-SECONDARY-3);
+    background: var(--COLOR-PRIMARY-2);
+    color: var(--COLOR-SECONDARY-1);
 
     cursor: pointer;
+    overflow: hidden;
     font-size: 0.85rem;
-
-    border-right: 1px solid black;
 }
 
 .tab_hover {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
+    background: var(--COLOR-PRIMARY-3);
+    color: var(--COLOR-SECONDARY-1);
 }
 
 .tab_dragOver {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
+    background: var(--COLOR-PRIMARY-3);
+    color: var(--COLOR-SECONDARY-1);
 }
 
 .tab_active {
-    background: black;
-    color: white;
+    background: var(--COLOR-SECONDARY-1);
+    color: var(--COLOR-PRIMARY-1);
 }
 
 .tabLabel {
@@ -54,8 +60,6 @@
 }
 
 .tabCloseContainer {
-    width: 28px;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,12 +78,9 @@
 }
 
 .tabClose_hover {
-    background: black;
-    color: white;
+    background: var(--COLOR-PRIMARY-1);
 }
 
-/* TODO: What to do about this? */
 .tab_active .tabClose_hover {
-    background: white;
-    color: black;
+    background: var(--COLOR-SECONDARY-3);
 }

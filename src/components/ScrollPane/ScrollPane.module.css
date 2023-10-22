@@ -5,7 +5,6 @@
 .scrollpane {
     height: 100%;
     width: 100%;
-    overflow: auto;
 }
 
 /****************************** SCROLLBAR ******************************/
@@ -14,6 +13,7 @@
     scrollbar-width: 0.75rem;
     scrollbar-color: var(--SCROLLBAR_COLOR) transparent;
     overflow-y: overlay;    /* Scrollbar overlays content */
+    overflow-x: hidden;     /* Hide horizontal scrollbar */
 }
 
 /* Chrome, Edge, and Safari */
