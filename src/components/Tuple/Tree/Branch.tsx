@@ -118,11 +118,11 @@ const Branch = ({
     //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {   // Event Handlers for renaming branch
         if (renaming && inputRef.current) {
-            // inputRef.current.focus();
+            inputRef.current.focus();
             document.addEventListener('click', onClickOutside_RENAME);
             document.addEventListener('contextmenu', onClickOutside_RENAME);
         } else {
-            // inputRef.current.blur();
+            inputRef.current.blur();
             document.removeEventListener('click', onClickOutside_RENAME);
             document.removeEventListener('contextmenu', onClickOutside_RENAME);
         }
@@ -135,11 +135,11 @@ const Branch = ({
 
     useEffect(() => { // Event Handlers for adding new node
         if (isAddingNode(nodeState) && newNodeRef.current) {
-            // newNodeRef?.current?.focus();
+            newNodeRef?.current?.focus();
             document.addEventListener('click', onClickOutside_NEW_NODE);
             document.addEventListener('contextmenu', onClickOutside_NEW_NODE);
         } else {
-            // newNodeRef?.current?.blur();
+            newNodeRef?.current?.blur();
             document.removeEventListener('click', onClickOutside_NEW_NODE);
             document.removeEventListener('contextmenu', onClickOutside_NEW_NODE);
         }
@@ -357,7 +357,7 @@ const Branch = ({
     ), [onRename, onDelete, onBranchAdd, onLeafAdd]);
     
     return (
-        <div>
+        <div style={{ overflow: 'hidden' }}>
             <input ref={inputRef} type="text"
                 value           ={ branchName }
                 readOnly        ={ !renaming }
