@@ -7,7 +7,7 @@ import {
 
 import { DropSideT } from '../DropZoneTypes';
 
-import _classes from './sides.dropzone.module.css';
+import _classes from '../dropzone.module.css';
 
 
 export interface Props {

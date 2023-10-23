@@ -11,6 +11,7 @@ import ScrollPane from '../../../ScrollPane';
 import DropZone from '../../../Dropzone';
 import { DRAGGING_ID, set_dragged_to_different_viewport } from '../../state/browser-actions';
 import { validateDraggable } from '../../../Draggable';
+import { classNames } from '../../../../utils';
 
 import _classes from './view.module.css';
 
@@ -32,20 +33,22 @@ const View = ({
 
     const {
         dispatch,
-        state: { pages, styles, classes, viewportId }
+        state: { pages, styles, classes, viewportId, darkMode }
     }: TupleContextT = useContext(TupleContext);
 
     const ActivePage: PageT = pages[activePageId];
 
     const [_, setDragging] = useLocalStorage(DRAGGING_ID, false)
 
-    const viewClassName = `
-        ${_classes?.view || ''}
-        ${classes?.view  || ''}`;
+    const viewClassName = classNames(
+        _classes?.view,
+        classes?.view,
+    );
 
-    const scrollPaneClassName = `
-        ${_classes.contentContainer}
-        ${classes.scrollPane}`;
+    const scrollPaneClassName = classNames(
+        _classes.contentContainer,
+        classes.scrollPane,
+    );
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -85,15 +88,19 @@ const View = ({
             style={styles?.view}>
             <TabBar portId={portId} pageIds={pageIds} />
             <DropZone
-                dropZoneRootStyle       = {styles.pane}
-                centerDropZoneStyle     = {styles.dropZoneCenter}
-                sidesDropZoneStyle      = {styles.dropZoneSide}
-                dropZoneRootClassName   = {classes.pane}
-                centerDropZoneClassName = {classes.dropZoneCenter}
-                sidesDropZoneClassName  = {classes.dropZoneSide}
-                dropCenterCb            = {dropCenterHandler}
-                dropSidesCb             = {dropSideHandler}
-                validateDraggable       = {validateDraggable}>
+                darkMode                = { darkMode }
+                dropZoneRootStyle       = { styles.pane }
+                centerDropZoneStyle     = { styles.dropZoneCenter }
+                sidesDropZoneStyle      = { styles.dropZoneSide }
+
+                dropZoneRootClassName   = { classes.pane }
+                centerDropZoneClassName = { classes.dropZoneCenter }
+                sidesDropZoneClassName  = { classes.dropZoneSide }
+
+                dropCenterCb            = { dropCenterHandler }
+                dropSidesCb             = { dropSideHandler }
+                validateDraggable       = { validateDraggable }
+            >
 
                 <ScrollPane className={scrollPaneClassName} style={styles?.scrollPane || null}>
                     { ActivePage && <ActivePage.component {...ActivePage.props } /> }

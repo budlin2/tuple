@@ -49,8 +49,8 @@
 }
 
 .tab_active {
-    background: var(--COLOR-SECONDARY-1);
-    color: var(--COLOR-PRIMARY-1);
+    background: var(--COLOR-PRIMARY-3);
+    color: var(--COLOR-SECONDARY-1);
 }
 
 .tabLabel {

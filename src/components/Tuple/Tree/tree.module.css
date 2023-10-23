@@ -15,6 +15,7 @@
 .tree {
     height: 100%;
     width: 100%;
+    background: var(--COLOR-PRIMARY-1);
     color: var(--COLOR-SECONDARY-1);
     white-space: nowrap;  /* Prevent text wrap */
 }
@@ -28,7 +29,6 @@
     outline: none;
     font-family: inherit;
     font-size: inherit;
-
     width: 100%;
     padding-left: var(--PADDING_HORIZONTAL);
 
@@ -39,7 +39,7 @@
 
 .branch_hover {
     cursor: pointer;
-    background: var(--COLOR-SECONDARY-1);
+    background: var(--COLOR-SECONDARY-3);
     color: var(--COLOR-PRIMARY-1);
 }
 
@@ -104,11 +104,13 @@
     padding: 0.1rem;
     padding-left: var(--PADDING_HORIZONTAL);
 
-    background: transparent;
     border: none;
     outline: none;
     font-family: inherit;
     font-size: inherit;
+
+    background: transparent;
+    color: var(--COLOR-SECONDARY-1);
 }
 
 .leaf_hover {
@@ -145,6 +147,9 @@
     background: transparent;
     color: inherit;
 
+    background: var(--COLOR-PRIMARY-1);
+    color: var(--COLOR-SECONDARY-1);
+
     height: calc(var(--TAB-HEIGHT) - 1px);
     width: 100%;
     padding-left: var(--PADDING_HORIZONTAL);
@@ -158,8 +163,8 @@
     padding-top: var(--PADDING_VERTICAL);
     padding-bottom: var(--PADDING_VERTICAL);
 
-    background: var(--COLOR-SECONDARY-2);
-    color: var(--COLOR-PRIMARY-1);
+    background: var(--COLOR-PRIMARY-3);
+    color: var(--COLOR-SECONDARY-1);
 }
 
 .rootlet {
@@ -173,7 +178,7 @@
 
 .rootletTextBox {
     background: transparent;
-    color: var(--COLOR-PRIMARY-1);
+    color: var(--COLOR-SECONDARY-1);
     border: 1px solid transparent;
 
     width: 75%;
@@ -184,7 +189,7 @@
 }
 
 .rootletTextBox:hover {
-    border-bottom: 1px solid var(--COLOR-PRIMARY-1);;
+    border-bottom: 1px solid var(--COLOR-SECONDARY-1);
 }
 
 /* TODO: This should be rootletTextBox_active */

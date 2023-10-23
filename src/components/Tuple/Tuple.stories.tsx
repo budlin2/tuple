@@ -327,4 +327,5 @@ const DynamicTreeTemplate: Story<TupleProps> = (args: any) => {
 export const dynamicTree = DynamicTreeTemplate.bind({});
 dynamicTree.args = {
     views: __SixViews,
+    darkMode: false,
 };

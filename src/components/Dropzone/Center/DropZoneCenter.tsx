@@ -5,7 +5,7 @@ import {
     useState
 } from 'react';
 
-import _classes from './center.dropzone.module.css';
+import _classes from '../dropzone.module.css';
 
 
 export interface Props {

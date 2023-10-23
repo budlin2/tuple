@@ -57,24 +57,26 @@ export const TupleContext = createContext({
         styles: {},
         classes: {},
         events: {},
+        darkMode: false,
     }
 } as TupleContextT);
 
 
 export interface TupleProps {
-    pages: PagesT,
-    tree?: TreeT,
-    children?: ReactElement<TreeProps>,
+    pages:              PagesT,
+    tree?:              TreeT,
+    children?:          ReactElement<TreeProps>,
 
-    views?: ViewportT,
-    styles?: TupleStylesT,
-    classes?: TupleClassesT,
-    events?: EventsT,  // TODO: Remove?
+    views?:             ViewportT,
+    styles?:            TupleStylesT,
+    classes?:           TupleClassesT,
+    events?:            EventsT,  // TODO: Remove?
 
-    enableTrashcan?: boolean,
+    darkMode?:          boolean,
+    enableTrashcan?:    boolean,
 
-    onTreeUpdate?: (tree: TreeT) => void,
-    onViewportUpdate?: (viewport: ViewportT) => void,
+    onTreeUpdate?:      (tree: TreeT) => void,
+    onViewportUpdate?:  (viewport: ViewportT) => void,
 };
 
 // TODO: Check that every pageId in the tree is in the pages object
@@ -109,17 +111,32 @@ const Tuple = ({
     styles,
     classes,
     events,
+    darkMode,
     enableTrashcan=false,
     children=null,
 }: TupleProps) => {
-    validateProps({ pages, views, tree, children });
 
+    //------------------------------------------------------------------------------------------------------------------
+    // Validations
+    //------------------------------------------------------------------------------------------------------------------
+    validateProps({
+        pages,
+        views,
+        tree,
+        children,
+    });
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Setup
+    //------------------------------------------------------------------------------------------------------------------
     const viewportId = get_viewport_id_from_query_params();
 
     window.addEventListener("beforeunload", () => {
         set_storage_port_open(viewportId || 'root', false);
     }, false);
 
+    //------------------------------------------------------------------------------------------------------------------
+    // PortMap Helpers
     //------------------------------------------------------------------------------------------------------------------
     const buildPortMapHelper = (
         viewport: ViewportT,
@@ -167,7 +184,6 @@ const Tuple = ({
         return { ports, rootId };
     }
 
-    //------------------------------------------------------------------------------------------------------------------
     const getPortMap = (): PortMapT | null => {
         const emptyPortMap: PortMapT = { ports: {}, rootId: '' };
 
@@ -220,14 +236,17 @@ const Tuple = ({
         styles: styles || {},
         classes: classes || {},
         events: events || {},
+        darkMode,
     };
 
     const [state, dispatch] = useReducer(reducer, initState);
     const context = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-    useEffect(() => setPages(dispatch, pages), [pages]);
-
     //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
+    // TODO: Is this needed?
+    useEffect(() => setPages(dispatch, pages), [pages]);
 
     return (
         <TupleContext.Provider value={context}>

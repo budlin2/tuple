@@ -192,6 +192,7 @@ export interface TupleStateT {
     styles: TupleStylesT,
     classes: TupleClassesT,
     events: EventsT,
+    darkMode: boolean,
 }
 
 export interface TupleContextT {

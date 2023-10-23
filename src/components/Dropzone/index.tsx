@@ -5,46 +5,73 @@ import {
     DragEvent,
     ReactElement,
     MouseEvent as rMouseEvent,
+    useEffect,
 } from 'react';
 
 import DropZoneCenter from './Center/DropZoneCenter';
 import { DropSideT } from './DropZoneTypes';
 import DropZoneSides from './Sides/DropZoneSides';
+import { classNames } from '../../utils';
 
 import _classes from './DropZone.module.css';
 
 export interface Props {
+    children?                   : ReactElement,
+    darkMode?                   : boolean,
+
     dropZoneRootStyle?          : CSSProperties
     centerDropZoneStyle?        : CSSProperties,
     sidesDropZoneStyle?         : CSSProperties,
+
     dropZoneRootClassName?      : string
     centerDropZoneClassName?    : string,
     sidesDropZoneClassName?     : string,
     dropCenterCb?               : ((e: DragEvent<Element>) => void) | null,
     dropSidesCb?                : ((e: DragEvent<Element>, side: DropSideT) => void) | null,
     validateDraggable?          : ((e: DragEvent<Element>) => boolean) | null,
-    children?                   : ReactElement,
 }
 
 
 const DropZone = ({
+    children,
+    darkMode                    =false,
+
     dropZoneRootStyle,
-    centerDropZoneStyle=null,
-    sidesDropZoneStyle=null,
+    centerDropZoneStyle         =null,
+    sidesDropZoneStyle          =null,
     dropZoneRootClassName,
-    centerDropZoneClassName=null,
-    sidesDropZoneClassName=null,
+    centerDropZoneClassName     =null,
+    sidesDropZoneClassName      =null,
+
     dropCenterCb=null,
     dropSidesCb=null,
     validateDraggable=null,
-    children,
 }: Props) => {
     const rootRef = useRef<HTMLDivElement>();
+
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
     const [dropZonesActive, setDropZonesActive] = useState(false);
 
-    const rootClassName = `
-        ${_classes.root}
-        ${dropZoneRootClassName}`;
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
+    const rootClassName = classNames(
+        _classes.root,
+        dropZoneRootClassName,
+    );
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        if (darkMode) {
+            document.documentElement.style.setProperty('--HOVER_COLOR', 'rgba(255,255,255, 0.5)');
+        } else {
+            document.documentElement.style.setProperty('--HOVER_COLOR', 'rgba(10, 10, 10, 0.5)');
+        }
+    }, [darkMode]);
 
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
@@ -82,28 +109,27 @@ const DropZone = ({
     }
 
     return (
-        <div ref={rootRef}
-            className={rootClassName}
-            style={dropZoneRootStyle}
-            onDragOver={onDragOverHandler}
-            onDragLeave={onDragLeaveHandler}>
-
+        <div ref={ rootRef }
+            className       ={ rootClassName }
+            style           ={ dropZoneRootStyle }
+            onDragOver      ={ onDragOverHandler }
+            onDragLeave     ={ onDragLeaveHandler }
+        >
             <DropZoneCenter
-                style={centerDropZoneStyle}
-                className={centerDropZoneClassName}
-                dropZoneActive={dropZonesActive}
-                onDropCB={onDropCenterHandler}
-                validateDraggable={validateDraggable}>
-
+                style               ={ centerDropZoneStyle }
+                className           ={ centerDropZoneClassName }
+                dropZoneActive      ={ dropZonesActive }
+                onDropCB            ={ onDropCenterHandler }
+                validateDraggable   ={ validateDraggable }
+            >
                 <DropZoneSides
-                    style={sidesDropZoneStyle}
-                    className={sidesDropZoneClassName}
-                    dropZoneActive={dropZonesActive}
-                    onDropCB={onDropSidesHandler}
-                    validateDraggable={validateDraggable}>
-
+                    style               ={ sidesDropZoneStyle }
+                    className           ={ sidesDropZoneClassName }
+                    dropZoneActive      ={ dropZonesActive }
+                    onDropCB            ={ onDropSidesHandler }
+                    validateDraggable   ={ validateDraggable }
+                >
                     { children }
-
                 </DropZoneSides>
             </DropZoneCenter>
         </div>
