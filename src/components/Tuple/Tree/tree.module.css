@@ -233,4 +233,12 @@
     display: flex;
     width: calc(100% - 0.5em);
     padding-left: 0.5em;
+
+    background: var(--COLOR-PRIMARY-2);
+    color: var(--COLOR-SECONDARY-1);
+}
+
+.popupItem_hover {
+    background: var(--COLOR-SECONDARY-3);
+    color: red;
 }

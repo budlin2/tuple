@@ -59,6 +59,7 @@ const Popup = ({
     const handleMouseLeave = () => setHoveredId(null);
     const handleMouseDown = (id: ID) => setActiveId(id);
 
+    // TODO: WTF is this?
     useEffect(() => (() => onClose()), []);
 
     return (
@@ -69,9 +70,13 @@ const Popup = ({
 
                 const itemClassName = classNames(
                     itemClassNameBase,
-                    hoveredId === item.id && classNames(_classes?.itemHover, classes?.itemHover),
-                    activeId === item.id && classNames(_classes?.itemActive, classes?.itemActive),
+                    hoveredId === item.id && _classes?.itemHover,
+                    hoveredId === item.id && classes?.itemHover,
+                    activeId === item.id && _classes?.itemActive,
+                    activeId === item.id && classes?.itemActive,
                 );
+
+                console.log(itemClassName)
 
                 const itemStyle = {
                     ...styles?.item,

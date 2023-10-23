@@ -120,6 +120,7 @@ const Tree = ({
                     </>
                 </ScrollPane>
 
+                {/* TODO: classes don't seem to be passed properly... at least hover class isnt working... */}
                 { popupDetails && (
                     <Popup
                         position    ={ popupDetails.pos }
