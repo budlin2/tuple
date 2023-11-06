@@ -1,4 +1,4 @@
-import { ID } from "../Tuple/TupleTypes";
+import { ID } from '../Tuple/TupleTypes';
 
 export type HorizontalRuleT = 'hr';
 

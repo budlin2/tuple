@@ -131,15 +131,9 @@ const Leaf = ({
     const leafClassName = classNames(
         _classes?.leaf_base,
         classes?.leaf_base,
-        isDraggedOver
-            ? classNames(_classes?.leaf_dragOver, classes?.leaf_dragOver)
-            : '',
-        hovering
-            ? classNames(_classes?.leaf_hover, classes?.leaf_hover)
-            : '',
-        renaming
-            ? classNames(_classes?.leaf_active, classes?.leaf_active)
-            : '',
+        isDraggedOver && classNames(_classes?.leaf_dragOver, classes?.leaf_dragOver),
+        hovering && classNames(_classes?.leaf_hover, classes?.leaf_hover),
+        renaming && classNames(_classes?.leaf_active, classes?.leaf_active),
     );
 
     const newNodeClassName = classNames(

@@ -14,7 +14,7 @@
     height: 1px;
     width: 100%;
     margin: 0;
-    background-color: black; /* line color */
+    background: black; /* line color */
 }
 
 .item {
@@ -26,12 +26,17 @@
     cursor: pointer;
 }
 
-.itemHover {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-}
+/*
+    Not providing default styles for itemHover and itemActive:
+    This active issue details why:
+        https://github.com/vitejs/vite/issues/3924
+    Basically, Vite is screwing up the order by which CSS modules
+    are loaded, so the styles for itemHover and itemActive are
+    are being applied before the styles passed into them via
+    the `classes` prop.
 
-.itemActive {
-    background: black;
-    color: white;
-}
+    It's weird. If I clear the cache, it will be correct on the first
+    page render and then incorrect on every subsequent page render.
+
+    Keep an eye on styles that get passed in a production app.
+*/

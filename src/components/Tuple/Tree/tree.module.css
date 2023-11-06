@@ -240,5 +240,5 @@
 
 .popupItem_hover {
     background: var(--COLOR-SECONDARY-3);
-    color: red;
+    color: var(--COLOR-PRIMARY-1);
 }

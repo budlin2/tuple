@@ -1,3 +1,5 @@
+import _classes from './tree.module.css';
+
 import { useContext, useEffect, useRef, useState } from 'react';
 
 import Root from './Root';
@@ -6,11 +8,11 @@ import { PopupDetailsT, TreeT } from './TreeTypes';
 import { ID, TupleContextT } from '../TupleTypes';
 import Trashcan from './Trashcan';
 import ScrollPane from '../../ScrollPane';
-import Popup, { PopupClassesT, PopupStylesT } from '../../Popup';
 import Branches from './Branches';
 
-import _classes from './tree.module.css';
 import { classNames } from '../../../utils';
+
+import Popup, { PopupClassesT, PopupStylesT } from '../../Popup';
 
 
 export interface TreeProps {

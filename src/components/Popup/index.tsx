@@ -1,33 +1,27 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useEffect } from 'react';
 
 import { PopupItemsT } from './PopupTypes';
+import { classNames, getUniqueId } from '../../utils';
+import Item, { ItemClassesT, ItemStylesT } from './Item';
 
 import _classes from './popup.module.css';
-import { classNames } from '../../utils';
-import { ID } from '../Tuple/TupleTypes';
 
-export interface PopupStylesT {
+export interface PopupStylesT extends ItemStylesT {
     popup?:         CSSProperties,
-    itemHover?:     CSSProperties,
-    itemActive?:    CSSProperties,
-    item?:          CSSProperties,
     hr?:            CSSProperties,
 };
 
-export interface PopupClassesT {
+export interface PopupClassesT extends ItemClassesT {
     popup?:         string,
-    itemHover?:     string,
-    itemActive?:    string,
-    item?:          string,
     hr?:            string,
 };
 
 export interface Props {
-    position: { x: number, y: number },
-    items: PopupItemsT,
-    classes?: PopupClassesT,
-    styles?: PopupStylesT,
-    onClose?: () => void,
+    position:   { x: number, y: number },
+    items:      PopupItemsT,
+    classes?:   PopupClassesT,
+    styles?:    PopupStylesT,
+    onClose?:   () => void,
 }
 
 const Popup = ({
@@ -38,27 +32,28 @@ const Popup = ({
     onClose,
 }: Props) => {
     //------------------------------------------------------------------------------------------------------------------
-    // State
-    //------------------------------------------------------------------------------------------------------------------
-    const [hoveredId, setHoveredId] = useState<ID>(null);
-    const [activeId, setActiveId] = useState<ID>(null);
-
-    //------------------------------------------------------------------------------------------------------------------
     // Styling
     //------------------------------------------------------------------------------------------------------------------
     const popupClassName = classNames(_classes?.popup, classes?.popup);
     const popupStyle: CSSProperties = { ...styles?.popup, left: x, top: y };
 
-    const itemClassNameBase = classNames(_classes?.item, classes?.item);
+    const itemClasses = {
+        item:       classes?.item,
+        itemHover:  classes?.itemHover,
+        itemActive: classes?.itemActive,
+    };
+
+    const itemStyles = {
+        item:       styles?.item,
+        itemHover:  styles?.itemHover,
+        itemActive: styles?.itemActive,
+    };
+
     const hrClassName = classNames(_classes?.hr, classes?.hr);
 
     //------------------------------------------------------------------------------------------------------------------
-    // Event Handlers
+    // Effects
     //------------------------------------------------------------------------------------------------------------------
-    const handleMouseEnter = (id: ID) => setHoveredId(id);
-    const handleMouseLeave = () => setHoveredId(null);
-    const handleMouseDown = (id: ID) => setActiveId(id);
-
     // TODO: WTF is this?
     useEffect(() => (() => onClose()), []);
 
@@ -66,35 +61,14 @@ const Popup = ({
         <div className={popupClassName} style={popupStyle}>
             { items.map( item => {
                 if (item == 'hr')
-                    return <hr className={ hrClassName } style={ styles?.hr } />;
-
-                const itemClassName = classNames(
-                    itemClassNameBase,
-                    hoveredId === item.id && _classes?.itemHover,
-                    hoveredId === item.id && classes?.itemHover,
-                    activeId === item.id && _classes?.itemActive,
-                    activeId === item.id && classes?.itemActive,
-                );
-
-                console.log(itemClassName)
-
-                const itemStyle = {
-                    ...styles?.item,
-                    ...( hoveredId === item.id ? styles?.itemHover : {} ),
-                    ...( activeId === item.id ? styles?.itemActive : {} ),
-                };
+                    return <hr key={ getUniqueId() } className={ hrClassName } style={ styles?.hr } />;
 
                 return (
-                    <div key={ item.id }
-                        className       ={ itemClassName }
-                        style           ={ itemStyle }
-                        onClick         ={ item.onClick }
-                        onMouseEnter    ={ () => handleMouseEnter(item.id) }
-                        onMouseLeave    ={ handleMouseLeave }
-                        onMouseDown     ={ () => handleMouseDown(item.id) }
-                    >
-                        { item.label }
-                    </div>
+                    <Item key={ item.id }
+                        classes ={ itemClasses }
+                        styles  ={ itemStyles }
+                        item    ={ item }
+                    />
                 );
             })}
         </div>
