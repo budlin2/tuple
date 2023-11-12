@@ -171,8 +171,8 @@ const Branch = ({
     const newNodeClassName = classNames(
         _classes?.branch_base,
         classes?.branch_base,
-        _classes?.branch_active,
-        classes?.branch_active
+        _classes?.branch_renaming,
+        classes?.branch_renaming,
     );
 
     const _branchStyle = {
@@ -189,7 +189,7 @@ const Branch = ({
 
     const newNodeStyle = {
         ...styles?.branch?.base,
-        ...styles?.branch?.active,
+        ...styles?.branch?.renaming,
     };
 
     //------------------------------------------------------------------------------------------------------------------

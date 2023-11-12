@@ -43,7 +43,7 @@
     color: var(--COLOR-PRIMARY-1);
 }
 
-.branch_active {
+.branch_renaming {
     /* Account for border width */
     width: 100%;
 
@@ -119,7 +119,7 @@
     color: var(--COLOR-PRIMARY-1)
 }
 
-.leaf_active {
+.leaf_renaming {
     /* Account for border width */
     width: 100%;
 

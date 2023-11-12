@@ -13,6 +13,7 @@ import { open_new_viewport_window, rename_storage_port_key } from '../state/brow
 import { TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
+import { classNames } from '../../../utils';
 
 
 interface Props {
@@ -31,32 +32,27 @@ const Rootlet = ({
     openSymbol='\u25CF',
     hoverSymbol='\u25C9'
 }: Props) => {
+    const textboxRef = useRef<HTMLInputElement>();
+
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
     const [_text, setText] = useState(text);
     const [hoveringSymbol, setHoveringSymbol] = useState(false);
-    const textboxRef = useRef<HTMLInputElement>();
+    const {
+        state: { classes, styles }
+    }: TupleContextT = useContext(TupleContext);
 
     const displaySymbol = open
         ? openSymbol
         : (hoveringSymbol ? hoverSymbol : closeSymbol);
 
-    const { state: {
-        classes,
-        styles,
-    }}: TupleContextT = useContext(TupleContext);
-
-    const rootletClassName = `
-        ${_classes?.rootlet || ''}
-        ${classes?.rootlet  || ''}`;
-
-    const symbolContainerClassName = `
-        ${_classes?.symbolContainer}
-        ${classes?.symbolContainer  || ''}`
-
-    const rootletTextBoxClassName = `
-        ${_classes?.rootletTextBox}
-
-        ${classes?.rootletTextBox  || ''}`
-
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
+    const rootletClassName = classNames(_classes?.rootlet, classes?.rootlet);
+    const symbolContainerClassName = classNames(_classes?.symbolContainer, classes?.symbolContainer);
+    const rootletTextBoxClassName = classNames(_classes?.rootletTextBox, classes?.rootletTextBox);
     const draggableClass = classes?.draggable || '';
 
     //------------------------------------------------------------------------------------------------------------------

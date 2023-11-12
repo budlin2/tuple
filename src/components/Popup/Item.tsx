@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import { PopupItemT } from './PopupTypes';
+import { classNames } from '../../utils';
 
 import _classes from './popup.module.css';
-import { classNames } from '../../utils';
 
 export interface ItemClassesT {
     item?:          string,
@@ -42,8 +42,6 @@ const Item = ({
         hovered && classNames(_classes?.itemHover, classes?.itemHover),
         active && classNames(_classes?.itemActive, classes?.itemActive),
     );
-
-    console.log(itemClassName)
     
     const itemStyle = {
         ...styles?.item,

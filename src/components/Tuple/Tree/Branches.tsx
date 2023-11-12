@@ -87,7 +87,7 @@ const Branches = ({
     const branchClassName           = classNames(_classes?.branch_base, classes?.branch_base);
     const branchHoverClassName      = classNames(_classes?.branch_hover, classes?.branch_hover);
     const branchDragOverClassName   = classNames(_classes?.branch_dragOver, classes?.branch_dragOver);
-    const branchActiveClassName     = classNames(_classes.branch_active, classes.branch_active);
+    const branchActiveClassName     = classNames(_classes.branch_renaming, classes.branch_renaming);
     
     const branchesClassName         = classNames(_classes?.branches_base, classes?.branches_base);
     const branchesHoverClassName    = classNames(_classes?.branches_hover, classes?.branches_hover);
