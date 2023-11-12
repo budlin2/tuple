@@ -90,7 +90,7 @@ const Rootlet = ({
             onMouseLeave    ={ mouseLeaveHandler }>
             <>
                 <div className={symbolContainerClassName} style={styles.symbolContainer}>
-                    { displaySymbol }
+                    <strong>{ displaySymbol }</strong>
                 </div>
 
                 <input type="text" ref={ textboxRef }

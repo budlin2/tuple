@@ -159,7 +159,7 @@ const useDynamicInputNode = ({
 
             if (nodeState == NodeStateT.ADDING_LEAF && onLeafAdd)
                 onLeafAdd(inputValue);
-    
+
             setNewNodeName('');
             setNodeState(NodeStateT.NULL);
             return;
@@ -215,6 +215,7 @@ const useDynamicInputNode = ({
         newNodeName,
         nodeState,
         popupItems,
+        setNodeState,
     };
 };
 
