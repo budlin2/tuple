@@ -10,13 +10,14 @@ export default defineConfig({
     libCss(),
     dts({
       insertTypesEntry: true,
+      include: ['./src/lib/**', './src/components/**', './src/utils/**'],
     }),
   ],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/lib/index.ts'),
-      name: 'tuple',
-      fileName: 'tuple'
+      name: 'index',
+      fileName: (format) => `tuple.${format}.js`,
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
@@ -24,8 +25,9 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-        }
-      }
-    }
+        },
+        format: 'es',
+      },
+    },
   },
 })
