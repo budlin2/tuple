@@ -11,7 +11,8 @@ import { PopupItemsT } from "../../../Popup/PopupTypes";
 import { PopupDetailsT } from "../TreeTypes";
 
 
-// Don't overthink this hook. It merely exists to combine common logic for leaf, branch, and rootlet input components
+// Don't overthink this hook. It merely exists to combine common
+// logic for leaf, branch, and rootlet input components
 
 
 export const isAddingNode = (nodeState: NodeStateT) => nodeState === NodeStateT.ADDING_BRANCH || nodeState === NodeStateT.ADDING_LEAF;
@@ -27,7 +28,7 @@ interface Props {
 };
 
 
-const useDynamicInputNode = ({
+const useContextMenu = ({
     initialNodeName,
     setPopupDetails,
     onRename,
@@ -219,4 +220,4 @@ const useDynamicInputNode = ({
     };
 };
 
-export default useDynamicInputNode;
+export default useContextMenu;

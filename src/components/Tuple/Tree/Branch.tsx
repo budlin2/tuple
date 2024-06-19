@@ -11,9 +11,9 @@ import {
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { TupleContext } from '..';
 import { PopupDetailsT } from './TreeTypes';
-import { NodeStateT } from './useDynamicInputNode/types';
+import { NodeStateT } from './useContextMenu/types';
 import { classNames } from '../../../utils';
-import useDynamicInputNode, { isAddingNode } from './useDynamicInputNode';
+import useContextMenu, { isAddingNode } from './useContextMenu';
 
 import _classes from './tree.module.css';
 import _global_classes from '../../styles.module.css';
@@ -104,7 +104,7 @@ const Branch = ({
         nodeState,
         popupItems,
         setNodeState,
-    } = useDynamicInputNode({
+    } = useContextMenu({
         initialNodeName: text,
         setPopupDetails,
         onRename:       (name: string) => onRename(path.concat(id), name),
@@ -229,7 +229,7 @@ const Branch = ({
                 onContextMenu   ={ onRightClickHandler }
             />
 
-            { expanded && (
+            { expanded && (!!Children.count(children)) && (
                 <div className={ _branchesClassName }
                     style       ={ _branchesStyle }
                     onMouseOver ={ onBranchesMouseOverHandler }

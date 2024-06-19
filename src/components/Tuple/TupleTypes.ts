@@ -74,7 +74,11 @@ export interface TupleStylesT {
         renaming?:      CSSProperties,
     },
     root?:              CSSProperties,
-    rootlet?:           CSSProperties,
+    rootlet?: {
+        base?:          CSSProperties,
+        hover?:         CSSProperties,
+        renaming?:      CSSProperties,
+    },
     rootlets?:          CSSProperties,
     rootletTextBox?:    CSSProperties,
     rootletContainer?:  CSSProperties,
@@ -133,7 +137,9 @@ export interface TupleClassesT {
         leaf_dragOver?:     string,
         leaf_renaming?:     string,
     root?:                  string,
-    rootlet?:               string,
+    rootlet_base?:          string,
+        rootlet_hover?:     string,
+        rootlet_renaming?:  string,
     rootlets?:              string,
     rootletTextBox?:        string,
     rootletContainer?:      string,
@@ -176,6 +182,7 @@ export interface StoragePort {
     open: boolean,
     ports: PortsT,
     rootId: ID,
+    name: string,
 }
 
 export interface StoragePorts { [key: ID]: StoragePort }

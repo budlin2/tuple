@@ -9,100 +9,149 @@ import {
 
 import { TupleContext } from '..';
 import { cleanupDraggable, setCustomDragImage } from '../../Draggable';
-import { open_new_viewport_window, rename_storage_port_key } from '../state/browser-actions';
-import { TupleContextT } from '../TupleTypes';
+import { open_new_viewport_window, remove_storage_port_key, rename_storage_port, set_storage_port } from '../state/browser-actions';
+import { ID, TupleContextT } from '../TupleTypes';
 
 import _classes from './tree.module.css';
 import { classNames } from '../../../utils';
+import useContextMenu, { isAddingNode } from './useContextMenu';
+import { PopupDetailsT } from './TreeTypes';
+import { NodeStateT } from './useContextMenu/types';
 
 
 interface Props {
-    text: string,
-    open: boolean,
-    openSymbol?: string | ReactNode, //TODO: Maybe a part of context?
-    closeSymbol?: string | ReactNode,
-    hoverSymbol?: string | ReactNode
+    id:                 ID,
+    text:               string,
+    open:               boolean,
+    openSymbol?:        string | ReactNode, //TODO: Maybe a part of context?
+    closeSymbol?:       string | ReactNode,
+    hoverSymbol?:       string | ReactNode,
+    setPopupDetails?:   (details: PopupDetailsT | null) => void,
+    onDelete?:          (id: ID) => void,
 }
 
 
 const Rootlet = ({
+    id,
     text,
     open,
-    closeSymbol='\u25CB',
-    openSymbol='\u25CF',
-    hoverSymbol='\u25C9'
+    closeSymbol ='\u25CB',
+    openSymbol  ='\u25CF',
+    hoverSymbol ='\u25C9',
+    setPopupDetails,
+    onDelete,
 }: Props) => {
-    const textboxRef = useRef<HTMLInputElement>();
-
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
-    const [_text, setText] = useState(text);
-    const [hoveringSymbol, setHoveringSymbol] = useState(false);
+    const [hovering, setHovering] = useState(false);
+    const { state: { classes, styles } }: TupleContextT = useContext(TupleContext);
+
     const {
-        state: { classes, styles }
-    }: TupleContextT = useContext(TupleContext);
+        inputRef,
+        newNodeRef,
+        nodeName,
+        newNodeName,
+        nodeState,
+        popupItems,
+    } = useContextMenu({
+        initialNodeName: text,
+        setPopupDetails,
+        onRename:       (name: string) => rename_storage_port(id, name),
+        onDelete:       () => onDelete(id),
+    });
 
     const displaySymbol = open
         ? openSymbol
-        : (hoveringSymbol ? hoverSymbol : closeSymbol);
+        : ( hovering
+            ? hoverSymbol
+            : closeSymbol
+        );
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling
     //------------------------------------------------------------------------------------------------------------------
-    const rootletClassName = classNames(_classes?.rootlet, classes?.rootlet);
     const symbolContainerClassName = classNames(_classes?.symbolContainer, classes?.symbolContainer);
     const rootletTextBoxClassName = classNames(_classes?.rootletTextBox, classes?.rootletTextBox);
     const draggableClass = classes?.draggable || '';
 
+    const newNodeClassName = classNames(
+        _classes?.rootlet_base,
+        classes?.rootlet_base,
+        _classes?.rootlet_renaming,
+        classes?.rootlet_renaming
+    );
+
+    const rootletClassName = classNames(
+        _classes?.rootlet_base,
+        classes?.rootlet_base,
+        hovering && _classes?.rootlet_hover,
+        hovering && classes?.rootlet_hover,
+    );
+
+    const rootletStyle = {
+        ...styles?.rootlet?.base,
+        ...styles?.rootlet?.hover,
+        ...(hovering ? styles?.rootlet?.hover : {})
+    };
+
     //------------------------------------------------------------------------------------------------------------------
     // Event Handlers
     //------------------------------------------------------------------------------------------------------------------
-    const mouseEnterHandler = () => setHoveringSymbol(true);
-    const mouseLeaveHandler = () => setHoveringSymbol(false);
+    const onMouseEnterHandler = () => setHovering(true);
+    const onMouseLeaveHandler = () => setHovering(false);
 
-    const doubleClickHandler = () => open_new_viewport_window(_text);
-    const textDoubleClickHandler = (e: rMouseEvent) => e.stopPropagation();
-
-    const textChangeHandler = (e: any) => {
-        const { value: newText } = e.target;
-        const renamed: boolean = rename_storage_port_key(_text, newText);
-        if (renamed)
-            setText(newText);
+    const onDragStartHandler = (e: DragEvent) => {
+        // TODO:
+        setCustomDragImage(e, nodeName, draggableClass, styles.draggable);
     }
 
-    const dragStartHandler = (e: DragEvent) => {
-        setCustomDragImage(e, _text, draggableClass, styles.draggable);
-    }
-
-    const dragEndHandler = () => {
+    const onDragEndHandler = () => {
+        // TODO:
         cleanupDraggable();
-        open_new_viewport_window(_text);
+        open_new_viewport_window(nodeName);
     }
+
+    const onRightClickHandler = (event: rMouseEvent) => {
+        if (!popupItems.length) return;
+
+        event.preventDefault();
+        const { clientX: x, clientY: y } = event;
+
+        setPopupDetails({
+            items: popupItems,
+            pos: { x, y }
+        });
+    };
+
+    const onDoubleClickHandler = () => open_new_viewport_window(id);
 
     return (
-        <div draggable className={ rootletClassName }
-            style           ={ styles.rootlet }
-            onDoubleClick   ={ doubleClickHandler }
-            onDragStart     ={ dragStartHandler }
-            onDragEnd       ={ dragEndHandler }
-            onMouseEnter    ={ mouseEnterHandler }
-            onMouseLeave    ={ mouseLeaveHandler }>
-            <>
+        <div className={ rootletClassName } style={ rootletStyle }>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div className={symbolContainerClassName} style={styles.symbolContainer}>
                     <strong>{ displaySymbol }</strong>
                 </div>
-
-                <input type="text" ref={ textboxRef }
-                    id              ={ _text }
-                    name            ={ _text }
-                    value           ={ _text }
+                <input ref={ inputRef } type="text" draggable
+                    value           ={ nodeName }
+                    readOnly        ={ !(nodeState == NodeStateT.RENAMING) }
                     className       ={ rootletTextBoxClassName }
                     style           ={ styles.rootletTextBox }
-                    onDoubleClick   ={ textDoubleClickHandler }
-                    onChange        ={ textChangeHandler }
+                    onDoubleClick   ={ onDoubleClickHandler }
+                    onMouseOver     ={ onMouseEnterHandler }
+                    onMouseLeave    ={ onMouseLeaveHandler }
+                    onDragStart     ={ onDragStartHandler }
+                    onDragEnd       ={ onDragEndHandler }
+                    onContextMenu   ={ onRightClickHandler }
                 />
-            </>
+            </div>
+            { (isAddingNode(nodeState)) && (
+                <input ref={ newNodeRef } type="text"
+                    value       ={ newNodeName }
+                    className   ={ newNodeClassName }
+                    style       ={ styles?.leaf?.renaming }
+                />
+            )}
         </div>
     );
 };

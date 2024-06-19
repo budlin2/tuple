@@ -33,21 +33,22 @@ export const get_storage_port = (id: ID): StoragePort | null => {
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-export const set_storage_port = (portId: ID, ports: PortsT, rootId: ID, open: boolean) => {
+export const set_storage_port = (key: ID, ports: PortsT, rootId: ID, open: boolean, name: string) => {
     const storagePorts: StoragePorts = get_storage_ports() || {};
-    storagePorts[portId] = {
+    storagePorts[key] = {
         open,
         ports,
         rootId,
+        name,
     } as StoragePort;
 
     localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
 }
 
-export const remove_storage_port_key = (portId: ID) => {
+export const remove_storage_port_key = (key: ID) => {
     const storagePorts: StoragePorts = get_storage_ports();
     if (storagePorts) {
-        delete storagePorts[portId];
+        delete storagePorts[key];
     }
 
     localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
@@ -55,21 +56,13 @@ export const remove_storage_port_key = (portId: ID) => {
 
 //---------------------------------------------------------------------------------------------------------------------
 // Returns true if successfully renamed; false otherwise
-export const rename_storage_port_key = (oldKey: ID, newKey: ID): boolean => {
-    const storagePorts: StoragePorts = get_storage_ports();
-    if (storagePorts[oldKey]) {
-        const { ports, rootId, open }: StoragePort = storagePorts[oldKey];
+export const rename_storage_port = (key: ID, newName: string): boolean => {
+    const storagePorts: StoragePorts = get_storage_ports() || {};
 
-        if (open) {
-            alert('Please close this viewport before renaming');
-            return false;
-        }
-
-        if (ports) {
-            set_storage_port(newKey, ports, rootId, false);
-            remove_storage_port_key(oldKey);
-            return true;
-        }
+    if (key in storagePorts) {
+        storagePorts[key] = { ...storagePorts[key], name: newName } as StoragePort;
+        localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));
+        return true;
     }
 
     return false;
@@ -101,6 +94,7 @@ export const set_storage_port_from_page_id = (pageId: ID): ID => {
         open: false,
         ports: newPorts,
         rootId: portId,
+        name: portId,
     } as StoragePort;
 
     localStorage.setItem(STORAGE_ID, JSON.stringify(storagePorts));

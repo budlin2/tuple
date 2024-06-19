@@ -18,9 +18,9 @@ import { addTab, addNewView } from '../state/dispatchers';
 import { DragSourceT, ID, TupleContextT } from '../TupleTypes';
 import { PortsT } from '../Viewport/ViewportTypes';
 import { PopupDetailsT } from './TreeTypes';
-import { NodeStateT } from './useDynamicInputNode/types';
+import { NodeStateT } from './useContextMenu/types';
 import { classNames } from '../../../utils';
-import useDynamicInputNode, { isAddingNode } from './useDynamicInputNode';
+import useContextMenu, { isAddingNode } from './useContextMenu';
 
 import _classes from './tree.module.css';
 
@@ -78,7 +78,7 @@ const Leaf = ({
         newNodeName,
         nodeState,
         popupItems,
-    } = useDynamicInputNode({
+    } = useContextMenu({
         initialNodeName: text,
         setPopupDetails,
         onRename:       (name: string) => onRename(id, name),

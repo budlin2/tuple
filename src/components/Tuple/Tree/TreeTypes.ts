@@ -28,6 +28,7 @@ export interface RootletDisplayT {
     id: ID,
     text: string,
     open: boolean,
+    name: string,
 }
 
 export interface PositionT { x: number, y: number };

@@ -136,7 +136,6 @@
 }
 
 /**********  ROOT  **********/
-/* TODO: Need to really revisit roots */
 .root {
     display: flex;
     align-items: center;
@@ -167,13 +166,13 @@
     color: var(--COLOR-SECONDARY-1);
 }
 
-.rootlet {
+.rootlet_base {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
-    width: 100%;
+    flex: 1;
 }
 
 .rootletTextBox {
@@ -181,7 +180,7 @@
     color: var(--COLOR-SECONDARY-1);
     border: 1px solid transparent;
 
-    width: 75%;
+    flex: 1;
     margin-right: var(--PADDING_HORIZONTAL);
     padding: 0.2rem;
 
@@ -195,8 +194,6 @@
 /* TODO: This should be rootletTextBox_active */
 .rootletTextBox:focus {
     outline: none;
-    border: 1px solid var(--COLOR-PRIMARY-1);;
-    cursor: text;
 }
 
 .symbolContainer {

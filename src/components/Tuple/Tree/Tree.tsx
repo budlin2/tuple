@@ -96,7 +96,7 @@ const Tree = ({
         <div className={_classes.treeContainer}>
             <div ref={treeRef} className={treeClassName} style={styles.tree}>
                 <div ref={rootContainerRef}>
-                    <Root rootName='Tuple' />
+                    <Root rootName='Tuple' setPopupDetails={ setPopupDetails }/>
                 </div>
 
                 <ScrollPane className={scrollPaneClassName} style={scrollPaneStyle}>
