@@ -31,7 +31,7 @@ export const initialViewport: ViewportStateT = { root: '', ports: {}, skipTabRem
 const _with_storage_update = (state: TupleStateT) => {
     const portId = get_viewport_id_from_query_params() || ROOT_PORT_ID;
     const { ports, root } = state?.viewport;
-    set_storage_port(portId, ports, root, true);
+    set_storage_port(portId, ports, root, true, '');
 
     return state;
 }

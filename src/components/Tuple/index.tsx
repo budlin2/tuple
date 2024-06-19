@@ -213,12 +213,12 @@ const Tuple = ({
         // Props
         if (views) {
             const { ports, rootId } = buildPortMap(views);
-            set_storage_port(ROOT_PORT_ID, ports, rootId, true);
+            set_storage_port(ROOT_PORT_ID, ports, rootId, true, '');
             return { ports, rootId };
         }
 
         // No ports found. Create new root
-        set_storage_port(ROOT_PORT_ID, {}, null, true);
+        set_storage_port(ROOT_PORT_ID, {}, null, true, '');
         return emptyPortMap;
     };
 
