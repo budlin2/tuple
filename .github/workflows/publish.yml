@@ -1,0 +1,48 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Get previous commit package.json
+        run: git show HEAD~1:package.json > package_previous.json
+
+      - name: Compare versions
+        id: version_check
+        run: |
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          PREVIOUS_VERSION=$(jq -r '.version' package_previous.json)
+          echo "Current version: $CURRENT_VERSION"
+          echo "Previous version: $PREVIOUS_VERSION"
+          if [ "$CURRENT_VERSION" == "$PREVIOUS_VERSION" ]; then
+            echo "Version has not changed. Exiting."
+            exit 1
+          else
+            echo "Version has changed. Proceeding with the publish."
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
