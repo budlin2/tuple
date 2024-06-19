@@ -16,11 +16,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '20' # or the version of Node.js you use
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch previous commit
+        run: git fetch --depth=2
+
       - name: Get previous commit package.json
-        run: git show HEAD~1:package.json > package_previous.json
+        run: |
+          if git cat-file -e HEAD~1:package.json; then
+            git show HEAD~1:package.json > package_previous.json
+          else
+            echo '{}' > package_previous.json
+          fi
 
       - name: Compare versions
         id: version_check
@@ -30,14 +41,11 @@ jobs:
           echo "Current version: $CURRENT_VERSION"
           echo "Previous version: $PREVIOUS_VERSION"
           if [ "$CURRENT_VERSION" == "$PREVIOUS_VERSION" ]; then
-            echo "Version has not changed. Exiting."
+            echo "Version has not changed."
             exit 1
           else
-            echo "Version has changed. Proceeding with the publish."
+            echo "Version has changed."
           fi
-
-      - name: Install dependencies
-        run: npm install
 
       - name: Build the project
         run: npm run build
