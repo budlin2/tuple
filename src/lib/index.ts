@@ -10,3 +10,7 @@ export const templates = {
 }
 
 export { getUniqueId } from '../utils';
+
+export { default as usePlatform } from '../hooks/usePlatform';
+export type { InstallPromptEvent, PlatformT } from '../hooks/usePlatform';
+export { default as useInstalled } from '../hooks/useInstalled';

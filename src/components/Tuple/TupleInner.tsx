@@ -14,6 +14,8 @@ import { classNames } from '../../utils';
 
 
 import _classes from './tuple.module.css';
+import usePlatform, { PlatformT } from '../../hooks/usePlatform';
+import MobileView from '../MobileView';
 
 
 interface TupleInnerProps {
@@ -22,6 +24,9 @@ interface TupleInnerProps {
 }
 
 const TupleInner = ({ enableTrashcan, children=null }: TupleInnerProps) => {
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
     const { state: {
         tree,
         styles,
@@ -30,12 +35,21 @@ const TupleInner = ({ enableTrashcan, children=null }: TupleInnerProps) => {
     }}: TupleContextT = useContext(TupleContext);
 
     const isRootViewport = get_viewport_id_from_query_params() === '';
+    const platform = usePlatform();
+    const isMobile = platform === PlatformT.iOS || platform === PlatformT.Android;
 
+    //------------------------------------------------------------------------------------------------------------------
+    // Styling
+    //------------------------------------------------------------------------------------------------------------------
     const tupleClassName = classNames(
         _classes?.tuple,
         classes?.tuple,
     );
 
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {
         if (darkMode) {
             const doc = document.documentElement;
@@ -63,16 +77,26 @@ const TupleInner = ({ enableTrashcan, children=null }: TupleInnerProps) => {
         return <Viewport />;
 
     return (
-        <div className={tupleClassName} style={styles.tuple}>
-            <SplitPane resizerPos='25%'>
-                { children || (
-                    <Tree tree={tree} enableTrashcan={ enableTrashcan } />
-                )}
-                <Viewport />
-            </SplitPane>
+        <div className={ tupleClassName } style={ styles.tuple }>
+            { !isMobile
+            ? (
+                <SplitPane resizerPos='25%'>
+                    { children || (
+                        <Tree tree={ tree } enableTrashcan={ enableTrashcan } />
+                    )}
+                    <Viewport />
+                </SplitPane>
+            )
+            : (
+                <MobileView>
+                    <Viewport />
+                    { children || (
+                        <Tree tree={ tree } enableTrashcan={ enableTrashcan } />
+                    )}
+                </MobileView>
+            )}
         </div>
     );
 }
-
 
 export default TupleInner;

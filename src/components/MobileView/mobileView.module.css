@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 200vh; /* Double the height for scrolling effect */
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    scroll-behavior: smooth; /* Add smooth scrolling */
+    margin: 0;
+    padding: 0;
+}
+
+.view {
+    height: 100vh; /* Full viewport height */
+    flex: none;
+    scroll-snap-align: start;
+}
