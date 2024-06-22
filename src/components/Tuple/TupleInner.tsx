@@ -14,7 +14,6 @@ import { classNames } from '../../utils';
 
 
 import _classes from './tuple.module.css';
-import usePlatform, { PlatformT } from '../../hooks/usePlatform';
 import MobileView from '../MobileView';
 
 
@@ -32,11 +31,10 @@ const TupleInner = ({ enableTrashcan, children=null }: TupleInnerProps) => {
         styles,
         classes,
         darkMode,
+        isMobile,
     }}: TupleContextT = useContext(TupleContext);
 
     const isRootViewport = get_viewport_id_from_query_params() === '';
-    const platform = usePlatform();
-    const isMobile = platform === PlatformT.iOS || platform === PlatformT.Android;
 
     //------------------------------------------------------------------------------------------------------------------
     // Styling

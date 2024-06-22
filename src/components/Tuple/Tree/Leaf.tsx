@@ -64,12 +64,13 @@ const Leaf = ({
             classes,
             styles,
             events,
+            isMobile,
         }
     }: TupleContextT = useContext(TupleContext);
 
     const [hovering, setHovering]           = useState(false);
     const [isDraggedOver, setIsDraggedOver] = useState(false);
-    const [_, setDragging]                  = useLocalStorage(DRAGGING_ID, false);
+    // const [_, setDragging]                  = useLocalStorage(DRAGGING_ID, false);
 
     const {
         inputRef,
@@ -155,12 +156,12 @@ const Leaf = ({
     const onDragStartHandler = (e: rDragEvent) => {
         setCustomDragImage(e, text, draggableClass, styles.draggable);
         e.dataTransfer.setData('pageId', pageId as string);
-        setDragging(true);
+        // setDragging(true);
     };
 
     const onDragEndHandler = async (e: rDragEvent) => {
         cleanupDraggable();
-        setDragging(false);
+        // setDragging(false);
 
         const { clientX: x, clientY: y } = e;
         if (outsideWindow(x, y)) {
@@ -213,7 +214,8 @@ const Leaf = ({
 
     return (
         <>
-            <input ref={inputRef} type="text" draggable
+            <input ref={inputRef} type="text"
+                draggable       ={ !isMobile }
                 value           ={ nodeName }
                 readOnly        ={ !(nodeState == NodeStateT.RENAMING) }
                 className       ={ leafClassName }

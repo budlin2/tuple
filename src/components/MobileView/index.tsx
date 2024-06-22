@@ -18,9 +18,9 @@ const MobileView = ({
     }, [children]);
 
     return (
-        <div className="container">
-            <div className="view">{ childrenArr && childrenArr[0] }</div>
-            <div className="view">{ childrenArr && childrenArr[1] }</div>
+        <div className={ _classes.container }>
+            <div className={ _classes.view }>{ childrenArr && childrenArr[0] }</div>
+            <div className={ _classes.view }>{ childrenArr && childrenArr[1] }</div>
         </div>
     );
 }

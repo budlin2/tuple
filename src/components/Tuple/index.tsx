@@ -19,6 +19,7 @@ import {
     PagesT,
     PortMapT,
     StoragePort,
+    TupleActionKind,
     TupleClassesT,
     TupleContextT,
     TupleStateT,
@@ -45,6 +46,7 @@ import {
 } from './state/browser-actions';
 import { TreeProps } from './Tree/Tree';
 import { setPages } from './state/dispatchers';
+import usePlatform, { PlatformT } from '../../hooks/usePlatform';
 
 export const ROOT_PORT_ID = 'root';
 
@@ -58,6 +60,7 @@ export const TupleContext = createContext({
         classes: {},
         events: {},
         darkMode: false,
+        isMobile: false,
     }
 } as TupleContextT);
 
@@ -228,6 +231,9 @@ const Tuple = ({
     //------------------------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------------------------
+    const platform = usePlatform();
+    const isMobile = platform === PlatformT.iOS || platform === PlatformT.Android;
+
     const initState: TupleStateT = {
         pages,
         viewport: initViewportState,
@@ -237,6 +243,7 @@ const Tuple = ({
         classes: classes || {},
         events: events || {},
         darkMode,
+        isMobile,
     };
 
     const [state, dispatch] = useReducer(reducer, initState);
@@ -248,8 +255,15 @@ const Tuple = ({
     // TODO: Is this needed?
     useEffect(() => setPages(dispatch, pages), [pages]);
 
+    useEffect(() => {
+        if (isMobile) {
+            console.log('isMobile', isMobile);
+            dispatch({ type: TupleActionKind.SET_IS_MOBILE, payload: { isMobile } });
+        }
+    }, [isMobile]);
+
     return (
-        <TupleContext.Provider value={context}>
+        <TupleContext.Provider value={ context }>
             <TupleInner enableTrashcan={ enableTrashcan }>
                 { children }
             </TupleInner>

@@ -200,6 +200,7 @@ export interface TupleStateT {
     classes: TupleClassesT,
     events: EventsT,
     darkMode: boolean,
+    isMobile: boolean,
 }
 
 export interface TupleContextT {
@@ -219,6 +220,7 @@ export enum TupleActionKind {
 
     // Other
     SET_PAGES="SET_PAGES",
+    SET_IS_MOBILE="SET_IS_MOBILE",
 }
 
 export interface AddTabPayloadT { portId: ID, pageId: ID, dragPortId: ID, index: number };
@@ -242,10 +244,14 @@ export interface ChangeActiveViewActionT { type: TupleActionKind.CHANGE_ACTIVE_V
 export interface SetPagesPayloadT { pages: PagesT };
 export interface SetPagesActionT { type: TupleActionKind.SET_PAGES, payload: SetPagesPayloadT };
 
+export interface SetIsMobilePayloadT { isMobile: boolean };
+export interface SetIsMobileActionT { type: TupleActionKind.SET_IS_MOBILE, payload: SetIsMobilePayloadT };
+
 export type TupleActionT = AddTabActionT
                          | RemoveTabActionT
                          | AddNewViewActionT
                          | AddViewActionT
                          | RemoveViewActionT
                          | ChangeActiveViewActionT
-                         | SetPagesActionT;
+                         | SetPagesActionT
+                         | SetIsMobileActionT;

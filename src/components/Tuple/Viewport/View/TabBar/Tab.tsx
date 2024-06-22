@@ -53,7 +53,8 @@ export const Tab = ({
             classes,
             styles,
             viewport,
-            viewportId
+            viewportId,
+            isMobile,
         },
     }: TupleContextT = useContext(TupleContext);
 
@@ -192,7 +193,8 @@ export const Tab = ({
 
 
     return (
-        <div draggable ref={ tabRef }
+        <div ref={ tabRef }
+            draggable       ={ !isMobile }
             style           ={ tabStyle }
             className       ={ tabClassName }
 

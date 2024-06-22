@@ -7,6 +7,7 @@ import {
     ChangeActiveViewPayloadT,
     RemoveTabPayloadT,
     RemoveViewPayloadT,
+    SetIsMobilePayloadT,
     SetPagesPayloadT,
     TupleActionKind,
     TupleActionT,
@@ -62,6 +63,10 @@ export const reducer = (state: TupleStateT, action: TupleActionT): TupleStateT =
         case TupleActionKind.SET_PAGES:
             const { pages } = action.payload as SetPagesPayloadT;
             return { ...state, pages };
+
+        case TupleActionKind.SET_IS_MOBILE:
+            const { isMobile } = action.payload as SetIsMobilePayloadT;
+            return { ...state, isMobile };
 
         default:
             return state;
