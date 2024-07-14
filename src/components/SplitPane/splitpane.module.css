@@ -24,25 +24,20 @@
 /***********************************************************************************************************************
 * Resizer
 ************************************************************************************************************************/
-:root {
-    --RESIZER_WIDTH: 10px;
-    --RESIZER_OFFSET: -5px;
-}
-
 .resizer {
     z-index: 1;
     flex-shrink: 0;
-    background-color: #01010158;
+    background-color: var(--COLOR-SECONDARY-3);
 }
 
 .horizontal > .resizer {
-    width: 1px;
+    width: 2px;
     cursor: col-resize;
     height: 100%;
 }
 
 .vertical > .resizer {
-    height: 1px;
+    height: 2px;
     cursor: row-resize;
     width: 100%;
 }

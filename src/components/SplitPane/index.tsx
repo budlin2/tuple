@@ -27,10 +27,24 @@ const SplitPane: React.FC<Props> = ({
     onResize = null,
 }: Props) => {
     const containerRef = useRef<HTMLDivElement>(null);
+
+    //------------------------------------------------------------------------------------------------------------------
+    // State
+    //------------------------------------------------------------------------------------------------------------------
     const [paneSize, setPaneSize] = useState(resizerPos);
     const [isResizing, setIsResizing] = useState(false);
-    const isHorizontal = dir === 'horizontal';
 
+    const isHorizontal = dir === 'horizontal';
+    const childrenArray = React.Children.toArray(children);
+
+    if ((dir !== 'none' && childrenArray.length !== 2) || (dir === 'none' && childrenArray.length !== 1)) {
+        console.error(`SplitPane requires exactly ${dir === 'none' ? 'one' : 'two'} child(ren) when direction is set to ${dir}.`);
+        return null;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Effects
+    //------------------------------------------------------------------------------------------------------------------
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (!isResizing || !containerRef.current) return;
@@ -60,16 +74,11 @@ const SplitPane: React.FC<Props> = ({
         };
     }, [isResizing, isHorizontal, onResize]);
 
-    const handleMouseDown = () => {
-        setIsResizing(true);
-    };
 
-    const childrenArray = React.Children.toArray(children);
-
-    if ((dir !== 'none' && childrenArray.length !== 2) || (dir === 'none' && childrenArray.length !== 1)) {
-        console.error(`SplitPane requires exactly ${dir === 'none' ? 'one' : 'two'} child(ren) when direction is set to ${dir}.`);
-        return null;
-    }
+    //------------------------------------------------------------------------------------------------------------------
+    // Event Handlers
+    //------------------------------------------------------------------------------------------------------------------
+    const handleMouseDown = () => setIsResizing(true);
 
     return (
         <div
