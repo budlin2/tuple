@@ -1,53 +1,48 @@
-/***************
+/***********************************************************************************************************************
 * Container
-****************/
+************************************************************************************************************************/
 .container {
     display: flex;
-    /* height: 100%;
-    width: 100%; */
-}
-.containerVertical { flex-direction: column }
-
-
-/***************
-* Panes
-****************/
-.pane {
     width: 100%;
     height: 100%;
+}
+
+.horizontal { flex-direction: row; }
+.vertical { flex-direction: column; }
+
+/***********************************************************************************************************************
+* Panes
+************************************************************************************************************************/
+.pane {
     min-height: var(--TAB-HEIGHT);
     min-width: 10px;
     overflow: hidden;
+    flex-grow: 1;
+    display: flex;
 }
-.paneHead { position: relative }
-.paneTail { flex: 1 }
 
-
-/***************
+/***********************************************************************************************************************
 * Resizer
-****************/
-:root{
+************************************************************************************************************************/
+:root {
     --RESIZER_WIDTH: 10px;
     --RESIZER_OFFSET: -5px;
 }
 
 .resizer {
-    position: absolute;
-    opacity: 0;
-    z-index: 2;
+    z-index: 1;
+    flex-shrink: 0;
+    background-color: #01010158;
 }
-.resizerHorizontal {
-    top: 0;
-    right: var(--RESIZER_OFFSET);
-    width: var(--RESIZER_WIDTH);
-    cursor: w-resize;
+
+.horizontal > .resizer {
+    width: 1px;
+    cursor: col-resize;
     height: 100%;
 }
 
-.resizerVertical {
-    left: 0;
-    bottom: var(--RESIZER_OFFSET);
-    height: var(--RESIZER_WIDTH);
-    cursor: n-resize;
+.vertical > .resizer {
+    height: 1px;
+    cursor: row-resize;
     width: 100%;
 }

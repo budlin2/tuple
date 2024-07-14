@@ -1,200 +1,118 @@
-import {
-    useState,
-    useRef,
-    MouseEvent,
-    ReactNode,
-    CSSProperties,
-    Children,
-    useEffect,
-    MutableRefObject,
-} from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import styles from './splitpane.module.css';
 
-import _classes from './splitpane.module.css';
-import _global_classes from '../styles.module.css';
-import { DirectionT } from './SplitPaneTypes';
-
-
-const validateSplitPane = (direction: DirectionT, children: Array<ReactNode>) => {
-    if (children.length > 2)
-        throw new Error('SplitPane can only take a maximum of two children');
-
-    if (children.length < 1)
-        throw new Error('SplitPane needs at least one child');
-
-    if (direction == 'none' && children.length !== 1)
-        console.warn('Views with diection "none" should have one and only one child.');
-    
-    if ((direction == 'horizontal' || direction == 'vertical') && children.length !== 2)
-        throw new Error(`"${direction}" views require two children`);
-};
-
+export type DirectionT = 'horizontal' | 'vertical' | 'none';
 
 export interface Props {
-    dir?: DirectionT,
-    width?: number | string,
-    height?: number | string,
-    resizerPos?: number | string,
-    resizable?: boolean,
-    paneStyle?: CSSProperties
-    paneClassName?: string,
-    children: ReactNode,
-    onResize?: ((e: MouseEvent) => null) | null,
+    dir?: DirectionT;
+    width?: number | string;
+    height?: number | string;
+    resizerPos?: number | string;
+    resizable?: boolean;
+    paneStyle?: React.CSSProperties;
+    paneClassName?: string;
+    children: React.ReactNode;
+    onResize?: ((e: MouseEvent) => null) | null;
 }
 
-
-const SplitPane = ({
-    dir='horizontal',
-    width='100%',
-    height='100%',
-    resizerPos='50%',
-    resizable=true,
-    paneStyle={},
-    paneClassName='',
+const SplitPane: React.FC<Props> = ({
+    dir = 'horizontal',
+    width = '100%',
+    height = '100%',
+    resizerPos = '50%',
+    resizable = true,
+    paneStyle = {},
+    paneClassName = '',
     children,
-    onResize=null,
+    onResize = null,
 }: Props) => {
-    const childrenArr = Children.toArray(children);
-    validateSplitPane(dir, childrenArr);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [paneSize, setPaneSize] = useState(resizerPos);
+    const [isResizing, setIsResizing] = useState(false);
+    const isHorizontal = dir === 'horizontal';
 
-    const containerRef = useRef<HTMLDivElement>();
-    const headRef = useRef<HTMLDivElement>();
-    const resizerRef = useRef<HTMLDivElement>();
-    const tailRef = useRef<HTMLDivElement>();
-
-    const [resizing, setResizing] = useState<boolean>(false);
-    const [headLength, setHeadLength] = useState<number | string>(resizerPos);
-    const [mousePos, setMousePos] = useState<number>(0);
-
-    // After first render, make sure headLength is number
     useEffect(() => {
-        const headLen: number = (dir === 'horizontal')
-            ? headRef.current?.offsetWidth
-            : headRef.current?.offsetHeight;
-        setHeadLength(headLen);
-    }, [resizerPos, headRef, setHeadLength]);
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isResizing || !containerRef.current) return;
 
-    //------------------------------------------------------------------------------------------------------------------
-    // Event Handlers
-    //------------------------------------------------------------------------------------------------------------------
-    const mouseDownHandler = (e: MouseEvent) => {
-        if (dir === 'horizontal') {
-            setResizing(true);
-            setMousePos(e.clientX);
-            setHeadLength(headRef.current?.offsetWidth);
-        } else if (dir === 'vertical') {
-            setResizing(true);
-            setMousePos(e.clientY);
-            setHeadLength(headRef.current?.offsetHeight as number);
-        }
+            const rect = containerRef.current.getBoundingClientRect();
+            const size = isHorizontal ? rect.width : rect.height;
+            const offset = isHorizontal ? e.clientX - rect.left : e.clientY - rect.top;
+            const newSize = ((offset / size) * 100).toFixed(2) + '%';
 
-        e.stopPropagation();
-        e.preventDefault();
+            setPaneSize(newSize);
+
+            if (onResize) {
+                onResize(e);
+            }
+        };
+
+        const handleMouseUp = () => {
+            setIsResizing(false);
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isResizing, isHorizontal, onResize]);
+
+    const handleMouseDown = () => {
+        setIsResizing(true);
     };
 
-    const mouseMoveHandler = (e: MouseEvent): void => {
-        if (!resizing) return;
+    const childrenArray = React.Children.toArray(children);
 
-        const container = containerRef.current as HTMLDivElement;
-        const head = headRef.current as HTMLDivElement;
-
-        if (dir === 'horizontal') {
-            const deltaX = e.clientX - mousePos;
-            const offsetWidth = containerRef.current?.offsetWidth as number;
-            const newHeadLength = (((headLength as number) + deltaX) * 100) / offsetWidth;
-
-            container.style.cursor = 'w-resize';
-            head.style.width = `${newHeadLength}%`;
-
-        } else if (dir === 'vertical') {
-            const deltaY = e.clientY - mousePos;
-            const offsetHeight = containerRef.current?.offsetHeight as number;
-            const newHeadLength = (((headLength as number) + deltaY) * 100) / offsetHeight;
-
-            container.style.cursor = 'n-resize';
-            head.style.height = `${newHeadLength}%`;
-        }
-
-        onResize && onResize(e);
-
-        e.stopPropagation();
-        e.preventDefault();
-    };
-
-    const mouseUpHandler = (e: MouseEvent) => {
-        setResizing(false);
-        const container = containerRef.current as HTMLDivElement;
-        container.style.cursor = 'default';
-
-        e.stopPropagation();
-        e.preventDefault();
-    };
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Styling
-    //------------------------------------------------------------------------------------------------------------------
-    let containerClassName  = _classes.container;
-    let resizerClassName    = _classes.resizer;
-
-    const headClassName= `
-        ${_global_classes.noScrollbar}
-        ${_classes.pane}
-        ${_classes.paneHead}
-        ${paneClassName}`;
-
-    const tailClassName = `
-        ${_global_classes.noScrollbar}
-        ${_classes.pane}
-        ${_classes.paneTail}
-        ${paneClassName}`;
-
-    const containerStyle: CSSProperties = { width, height };
-    const tailStyle: CSSProperties      = paneStyle;
-    let headStyle: CSSProperties        = paneStyle;
-
-    switch(dir) {
-        case 'horizontal':
-            headStyle           = { ...headStyle, width: headLength };
-            resizerClassName    = `${resizerClassName} ${_classes.resizerHorizontal}`;
-            break;
-        case 'vertical':
-            containerClassName  = `${_classes.container} ${_classes.containerVertical}`;
-            headStyle           = { ...headStyle, height: headLength };
-            resizerClassName    = `${resizerClassName} ${_classes.resizerVertical}`;
-            break;
-        case 'none':
-        default:
-            if (childrenArr.length != 1)
-                throw 'Only one child allowed unless dir paramater is set to "horizontal" or "vertical"';
+    if ((dir !== 'none' && childrenArray.length !== 2) || (dir === 'none' && childrenArray.length !== 1)) {
+        console.error(`SplitPane requires exactly ${dir === 'none' ? 'one' : 'two'} child(ren) when direction is set to ${dir}.`);
+        return null;
     }
 
     return (
-        <div ref={containerRef as MutableRefObject<HTMLDivElement>}
-            style={containerStyle}
-            className={containerClassName}
-            onMouseMove={mouseMoveHandler}
-            onMouseUp={mouseUpHandler}
-            onMouseLeave={mouseUpHandler}>
-
-            <div className={headClassName} style={headStyle}
-                ref={headRef as MutableRefObject<HTMLDivElement>}>
-
-                { childrenArr && childrenArr[0] }
-                { resizable &&
-                    <div ref={ resizerRef as MutableRefObject<HTMLDivElement> }
-                        className={resizerClassName}
-                        onMouseDown={mouseDownHandler}/>
-                }
-
-            </div>
-            <div className={tailClassName} style={tailStyle}
-                ref={tailRef as MutableRefObject<HTMLDivElement>}>
-
-                { dir !== 'none' && childrenArr && childrenArr[1] }
-
-            </div>
+        <div
+            ref={containerRef}
+            className={`${styles.container} ${isHorizontal ? styles.horizontal : styles.vertical}`}
+            style={{ width, height }}
+        >
+            {dir !== 'none' ? (
+                <>
+                    <div
+                        className={`${styles.pane} ${paneClassName}`}
+                        style={{
+                            ...paneStyle,
+                            [isHorizontal ? 'width' : 'height']: paneSize,
+                            [isHorizontal ? 'height' : 'width']: '100%',
+                        }}
+                    >
+                        {childrenArray[0]}
+                    </div>
+                    {resizable && (
+                        <div
+                            className={styles.resizer}
+                            onMouseDown={handleMouseDown}
+                        />
+                    )}
+                    <div
+                        className={`${styles.pane} ${paneClassName}`}
+                        style={{
+                            ...paneStyle,
+                            [isHorizontal ? 'width' : 'height']: `calc(100% - ${paneSize})`,
+                            [isHorizontal ? 'height' : 'width']: '100%',
+                        }}
+                    >
+                        {childrenArray[1]}
+                    </div>
+                </>
+            ) : (
+                <div className={`${styles.pane} ${paneClassName}`} style={{ ...paneStyle }}>
+                    {childrenArray[0]}
+                </div>
+            )}
         </div>
     );
-}
-
+};
 
 export default SplitPane;
