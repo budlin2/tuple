@@ -109,8 +109,8 @@ const Branch = ({
         setPopupDetails,
         onRename:       (name: string) => onRename(path.concat(id), name),
         onDelete:       () => onDelete(path.concat(id)),
-        onBranchAdd:    (name: string) => onBranchAdd(path.concat(id), 0, name),
-        onLeafAdd:      (name: string) => onLeafAdd(path.concat(id), 0, name),
+        onBranchAdd:    (name: string) => { onBranchAdd(path.concat(id), 0, name); setExpanded(true); },
+        onLeafAdd:      (name: string) => { onLeafAdd(path.concat(id), 0, name); setExpanded(true); },
     });
 
     //------------------------------------------------------------------------------------------------------------------
@@ -212,7 +212,8 @@ const Branch = ({
     //------------------------------------------------------------------------------------------------------------------
     // Render
     //------------------------------------------------------------------------------------------------------------------
-    
+    const branchesOpen = (expanded && !!Children.count(children)) || isAddingNode(nodeState);
+
     return (
         <div style={{ overflow: 'hidden' }}>
             <input ref={inputRef} type="text"
@@ -229,7 +230,7 @@ const Branch = ({
                 onContextMenu   ={ onRightClickHandler }
             />
 
-            { expanded && (!!Children.count(children)) && (
+            { branchesOpen && (
                 <div className={ _branchesClassName }
                     style       ={ _branchesStyle }
                     onMouseOver ={ onBranchesMouseOverHandler }
